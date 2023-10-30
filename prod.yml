@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+    gui:
+        image: dhf0820/oucv_meteor:231020.0
+        ports:
+            - "3000:3000"
+        environment:
+            PORT: 3000
+            APP_SOURCE_FOLDER: /opt/src
+            ROOT_URL: ${APP_ROOT_URL:-http://localhost:3000}
+            MONGO_URL: mongodb://mongo:27017/meteor
+            LOGIN_BASE_URL: "http://dev.vertisoft.com:30300/api/rest/v1/"
+            CORE_URL: " http://dev.vertisoft.com:30300"
+    mongo:
+        image: mongo:latest
+        command:
+            - --storageEngine=wiredTiger
+        ports:
+            - "27017:27017"
+        volumes:
+            - data:/data/db
+
+volumes:
+    data:
