@@ -4,7 +4,7 @@ TAG ?= 141022
 TEST = dhf0820
 PROD = dhf0820
 VERSION ?= $(TAG)
-IMG_NAME ?= dhf_product_meteor
+IMG_NAME ?= uc_blaze_dhf
 DOCKER_NAME=$(IMG_NAME)
 
 build:

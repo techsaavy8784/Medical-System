@@ -2,7 +2,7 @@ version: "3"
 
 services:
     gui:
-        image: dhf0820/oucv_meteor:231020.0
+        image: dhf0820/uc_blaze_dhf:231020.0
         ports:
             - "3000:3000"
         environment:
