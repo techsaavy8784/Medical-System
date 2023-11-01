@@ -1,0 +1,17 @@
+<head>
+  <title>UniversalChart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  {{> header}}
+  <!-- {{> mainContainer}} -->
+</body>
+
+
+<template name="mainContainer">
+  <div class="content">
+    <!-- {{> template.dynamic template=content}} -->
+    {{> yield}}
+  </div>
+</template>
