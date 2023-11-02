@@ -3,8 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 import { Template } from 'meteor/templating';
 import {Router} from "meteor/iron:router"
-import { isLogin } from './login'; 
-
+import { Session } from 'meteor/session';
 import './main.html';
 import './login'
 import './home'
@@ -27,17 +26,16 @@ Router.route('/login', function () {
   this.render('login');
 });
 
+
+
+
 Router.route('/find-patient', function () {
-  this.render('find-patient');
-});
-
-// Create a 404 route (catch-all)
-// Router.route('/asd', function () {
-//   if (!isLogin) {
-
-//   } else {
-//     Router.go("/")
+  console.log("isLogin", Session.get("isLogin"))
+  const isLogin = Session.get("isLogin")
+  if (!isLogin) {
+    Router.go("/login")
+  } else {
     
-//   }
-//   // this.render('notFound');
-// });
+  }
+  // this.render('notFound');
+});

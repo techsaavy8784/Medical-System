@@ -46,6 +46,13 @@ Template.header.helpers({
     visitPractice() {
         const activeText = activePractice();
         return activeText;
+    },
+    isActiveHos() {
+        if (Session.get("isActive") === "hospital") {
+            return true
+        } else {
+            return false
+        }
     }
   });
 
@@ -55,6 +62,7 @@ Template.header.helpers({
     this.activeHosPra = new ReactiveVar("");
     this.visitHopital = new ReactiveVar("");
     this.visitPractice = new ReactiveVar("");
+    this.isActiveHos = new ReactiveVar(true);
 });
 
 
