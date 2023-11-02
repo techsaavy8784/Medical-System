@@ -4,7 +4,7 @@ import { Template } from 'meteor/templating'
 import { Meteor } from "meteor/meteor"
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Router } from "meteor/iron:router"
-// import { Session } from 'meteor/session';
+import { Session } from 'meteor/session';
 
 
 export const isLogin = new ReactiveVar(false);
@@ -53,15 +53,11 @@ Template.login.onCreated(function loginOnCreated() {
                 instance.userInfo.set(result);
                 instance.isLogging.set(false);
                 
-                localStorage.setItem('userInfo', result);
+                Session.set('practices', result.practices);
+                Session.set('facilities', result.facilities);
+                Session.set('isLogin', true);
+                Session.set('isActive', "hospital");
                 
-                localStorage.setItem('token', result.token);
-
-                localStorage.setItem('facilities', result.facilities);
-
-                localStorage.setItem('practices', result.practices);
-
-                localStorage.setItem('isLogin', true);
 
                 Router.go('/');
               } else {

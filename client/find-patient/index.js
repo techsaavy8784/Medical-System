@@ -1,0 +1,1 @@
+import './findPatient.html'

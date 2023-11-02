@@ -7,6 +7,9 @@
 			>
 				<div class="container-fluid">
 					<a class="navbar-brand" href="/">UniversalChart</a>
+                    {{#if isLogin}}
+					<a class="navbar-brand" >{{activeHosPra}}</a>
+                    {{/if}}
 					<button
 						class="navbar-toggler"
 						type="button"
@@ -20,65 +23,85 @@
 					</button>
 
 					<div
-						class="collapse navbar-collapse justify-content-center"
+						class="collapse navbar-collapse justify-content-end"
 						id="navbarSupportedContent"
 					>
-                    
-                    {{#if isLogin}}
-                    <ul class="navbar-nav mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a
-                                class="nav-link active"
-                                aria-current="page"
-                                href="#"
-                                >FindPractice</a
-                            >
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">CurrentPatient</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a
-                                class="nav-link dropdown-toggle"
-                                href="#"
-                                role="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                            >
-                                CreatePatient
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="#"
-                                        >Action</a
-                                    >
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#"
-                                        >Another action</a
-                                    >
-                                </li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li>
-                                    <a class="dropdown-item" href="#"
-                                        >Something else here</a
-                                    >
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    
-                    {{/if}}
-                    </div>
-                    {{#if isLogin}}
-                    <button class="btn btn-outline-success align-items-end btn-logout" >Logout</button>
-                    {{else}}
-                    <a href="/login">
-                        <button class="btn btn-outline-success align-items-end">Login</button>
-                    </a>
-                    {{/if}}
+						{{#if isLogin}}
+						<ul class="navbar-nav mb-2 mb-lg-0">
+							<li class="nav-item">
+								<a
+									class="nav-link active"
+									aria-current="page"
+									href="/find-patient"
+									>FindPatient</a
+								>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">CurrentPatient</a>
+							</li>
+							<li class="nav-item dropdown">
+								<a
+									class="nav-link dropdown-toggle"
+									href="#"
+									role="button"
+									data-bs-toggle="dropdown"
+									aria-expanded="false"
+								>
+									CreatePatient
+								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a class="dropdown-item" href="#"
+											>Action</a
+										>
+									</li>
+									<li>
+										<a class="dropdown-item" href="#"
+											>Another action</a
+										>
+									</li>
+									<li><hr class="dropdown-divider" /></li>
+									<li>
+										<a class="dropdown-item" href="#"
+											>Something else here</a
+										>
+									</li>
+								</ul>
+							</li>
+						</ul>
+
+						{{/if}} 
+                        
+                        {{#if isLogin}}
+						<button
+							class="btn btn-outline-success align-items-end btn-logout"
+						>
+							Logout
+						</button>
+						{{else}}
+						<a href="/login">
+							<button
+								class="btn btn-outline-success align-items-end"
+							>
+								Login
+							</button>
+						</a>
+						{{/if}}
+					</div>
 				</div>
 			</nav>
+
+
+            {{#if isLogin}}
+			<ul class="nav mt-5 bg-light d-flex justify-content-between w-100 " >
+                <li class="nav-item click-Hospital" style="cursor: pointer;">
+                  <a class="nav-link active " aria-current="page" ><h5>Hospital - {{visitHopital}}</h5></a>
+                </li>
+                <li class="nav-item click-Practice" style="cursor: pointer;">
+                  <a class="nav-link  disabled" aria-disabled="true"><h5>Practice - {{visitPractice}}</h5></a>
+                </li>
+              </ul>
+            {{/if}}
 		</div>
 	</header>
 </template>
