@@ -36,15 +36,18 @@ Template.login.onCreated(function loginOnCreated() {
         
         instance.isLogging.set(true);
         const target = event.target;
-        const username = target.username.value;
-        const password = target.password.value;
+        const username = target.username.value.toLowerCase();
+        const password = target.password.value.toLowerCase();
 
         if (!(username && password)) return
 
         Meteor.call('loginUser', username, password, (error, result) => {
+
             if (error) {
               console.error(error);
               isLogin.set(false);
+              instance.isLogging.set(false);
+              
             } else {
                 if (result.status == 200) {
                   console.log("login---", result);
@@ -62,8 +65,10 @@ Template.login.onCreated(function loginOnCreated() {
                 Router.go('/');
               } else {
                 isLogin.set(false);
+                instance.isLogging.set(false);
               }
             }
+            
           });
     },
   });
