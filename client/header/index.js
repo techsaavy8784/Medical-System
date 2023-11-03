@@ -71,7 +71,6 @@ Template.header.helpers({
   Template.header.events({
     'click .btn-logout': function(event) {
       event.preventDefault();
-      
         Session.clear();
         if (Router.path() !== "/") {
             

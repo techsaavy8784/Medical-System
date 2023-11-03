@@ -9,6 +9,7 @@ import './login'
 import './home'
 import './header'
 import './find-patient'
+import './current-patient'
 
 // Template.layout.onCreated(function () {
 //   this.layout = new IronLayout({ template: 'layout' });
@@ -30,8 +31,9 @@ Router.route('/login', function () {
 
 
 Router.route('/find-patient', function () {
-  console.log("isLogin", Session.get("isLogin"))
+  
   const isLogin = Session.get("isLogin")
+  this.render('findPatient');
   if (!isLogin) {
     Router.go("/login")
   } else {
@@ -39,3 +41,13 @@ Router.route('/find-patient', function () {
   }
   // this.render('notFound');
 });
+
+Router.route('/current-patient', function() {
+  const isLogin = Session.get("isLogin")
+  this.render('currentPatient');
+  if (!isLogin) {
+    Router.go('/login')
+  } else {
+
+  }
+})

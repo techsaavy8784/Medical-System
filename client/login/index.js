@@ -50,7 +50,6 @@ Template.login.onCreated(function loginOnCreated() {
               
             } else {
                 if (result.status == 200) {
-                  console.log("login---", result);
                 
                 isLogin.set(true);
                 instance.userInfo.set(result);
@@ -60,8 +59,8 @@ Template.login.onCreated(function loginOnCreated() {
                 Session.set('facilities', result.facilities);
                 Session.set('isLogin', true);
                 Session.set('isActive', "hospital");
+                Session.set('headers', result.token);
                 
-
                 Router.go('/');
               } else {
                 isLogin.set(false);

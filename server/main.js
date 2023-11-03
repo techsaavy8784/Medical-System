@@ -39,10 +39,19 @@ Meteor.methods({
       console.error("Error fetching tagline:", error);
       throw new Meteor.Error('tagline-fetch-failed', 'Failed to fetch tagline');
     }
+  },
+  async patientTestQuery(url, headers) {
+    console.log("patientTestQuery")
+    try {
+      console.log("patientTestQuery-url:", url)
+      console.log("patientTestQuery-headers : ", headers);
+      const response = await HTTP.get(url, { headers });
+      const { data } = response;
+      console.log("Response data: ", data.bundle.entry[0]);
+      return data;
+    } catch (e) {
+      console.log("ERROR ", e);
+      throw new Meteor.Error(e)
+    }
   }
-});
-
-
-Meteor.methods({
-  
 });

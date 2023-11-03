@@ -1,3 +1,155 @@
-<template name="find-patient">
+<template name="findPatient">
     
+    <div class="card" style="margin-top: 100px;">
+        <div class="card-body">
+          <h5 class="card-title">Patient Search</h5>
+
+          <form class="row g-3 search-patient-form">
+            <div class="col-xs-12 col-sm-6 col-lg-3">
+              <div class="form-floating">
+                <input type="text" name="lastName" class="form-control" id="findLastName" placeholder="Last Name">
+                <label for="floatingName">Last Name</label>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-lg-3">
+              <div class="form-floating">
+                <input type="text" name="firstName" class="form-control" id="findFirstName" placeholder="First Name">
+                <label for="floatingEmail">First Name</label>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-lg-3">
+              <div class="form-floating">
+                  <input type="date" name="birthday" class="form-control">
+                  <label for="inputDate" class="col-sm-2 col-form-label">Date</label>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-lg-3">
+                <div class="form-floating">
+                  <input type="text" name="encounter" class="form-control" id="findEncounter" placeholder="Encounter">
+                  <label for="floatingEmail">Encounter</label>
+                </div>
+            </div>
+            <!-- <div class="col-xs-12 col-sm-6 col-lg-3">
+              <div class="col-md-12">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="floatingCity" placeholder="City">
+                  <label for="floatingCity">City</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-floating mb-3">
+                <select class="form-select" id="floatingSelect" aria-label="State">
+                  <option selected>New York</option>
+                  <option value="1">Oregon</option>
+                  <option value="2">DC</option>
+                </select>
+                <label for="floatingSelect">State</label>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="floatingZip" placeholder="Zip">
+                <label for="floatingZip">Zip</label>
+              </div>
+            </div> -->
+            <div class="col-xs-12 text-end">
+              <button type="submit" class="btn btn-primary search-patient">Search</button>
+              <button  class="btn btn-secondary reset">Reset</button>
+            </div>
+          </form>
+
+        </div>
+        {{#if isFindLoading}}
+            <div class=" d-flex fixed-center justify-content-center align-items-center h-100">
+            <div class="spinner-border font-size-5 text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        {{else}}
+            {{> searchResult}}
+        {{/if}}
+    </div>
+    
+</template>
+
+<template name="searchResult">
+    
+    <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+  
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Search Results</h5>
+                
+  
+                <!-- Table with stripped rows -->
+                <table class="table datatable">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Birth</th>
+                      <th scope="col">Gender</th>
+                      <th scope="col">Marital Status</th>
+                      <th scope="col">Options</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Brandon Jacob</td>
+                      <td>Designer</td>
+                      <td>28</td>
+                      <td>2016-05-25</td>
+                      <td>2016-05-25</td>
+                      <td>2016-05-25</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Bridie Kessler</td>
+                      <td>Developer</td>
+                      <td>35</td>
+                      <td>2014-12-05</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>Ashleigh Langosh</td>
+                      <td>Finance</td>
+                      <td>45</td>
+                      <td>2011-08-12</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">4</th>
+                      <td>Angus Grady</td>
+                      <td>HR</td>
+                      <td>34</td>
+                      <td>2012-06-11</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">5</th>
+                      <td>Raheem Lehner</td>
+                      <td>Dynamic Division Officer</td>
+                      <td>47</td>
+                      <td>2011-04-19</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">6</th>
+                      <td>Raheem Lehner</td>
+                      <td>Dynamic Division Officer</td>
+                      <td>47</td>
+                      <td>2011-04-19</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- End Table with stripped rows -->
+  
+              </div>
+            </div>
+  
+          </div>
+        </div>
+      </section>
 </template>
