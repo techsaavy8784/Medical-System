@@ -1,35 +1,60 @@
 <template name="findPatient">
-    
-    <div class="card" style="margin-top: 100px;">
-        <div class="card-body">
-          <h5 class="card-title">Patient Search</h5>
+	<div class="card" style="margin-top: 100px">
+		<div class="card-body">
+			<h5 class="card-title">Patient Search</h5>
 
-          <form class="row g-3 search-patient-form">
-            <div class="col-xs-12 col-sm-6 col-lg-3">
-              <div class="form-floating">
-                <input type="text" name="lastName" class="form-control" id="findLastName" placeholder="Last Name">
-                <label for="floatingName">Last Name</label>
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-lg-3">
-              <div class="form-floating">
-                <input type="text" name="firstName" class="form-control" id="findFirstName" placeholder="First Name">
-                <label for="floatingEmail">First Name</label>
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-lg-3">
-              <div class="form-floating">
-                  <input type="date" name="birthday" class="form-control">
-                  <label for="inputDate" class="col-sm-2 col-form-label">Date</label>
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-lg-3">
-                <div class="form-floating">
-                  <input type="text" name="encounter" class="form-control" id="findEncounter" placeholder="Encounter">
-                  <label for="floatingEmail">Encounter</label>
-                </div>
-            </div>
-            <!-- <div class="col-xs-12 col-sm-6 col-lg-3">
+			<form id="formFindPatient" class="row g-3 search-patient-form">
+				<div class="col-xs-12 col-sm-6 col-lg-3">
+					<div class="form-floating">
+						<input
+							type="text"
+							name="lastName"
+							class="form-control"
+							id="findLastName"
+							placeholder="Last Name"
+						/>
+						<label id="findLastName" for="floatingName"
+							>Last Name</label
+						>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-3">
+					<div class="form-floating">
+						<input
+							type="text"
+							name="firstName"
+							class="form-control"
+							id="findFirstName"
+							placeholder="First Name"
+						/>
+						<label for="floatingEmail">First Name</label>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-3">
+					<div class="form-floating">
+						<input
+							type="date"
+							name="birthday"
+							class="form-control"
+						/>
+						<label for="inputDate" class="col-sm-2 col-form-label"
+							>Date</label
+						>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-3">
+					<div class="form-floating">
+						<input
+							type="text"
+							name="encounter"
+							class="form-control"
+							id="findEncounter"
+							placeholder="Encounter"
+						/>
+						<label for="floatingEmail">Encounter</label>
+					</div>
+				</div>
+				<!-- <div class="col-xs-12 col-sm-6 col-lg-3">
               <div class="col-md-12">
                 <div class="form-floating">
                   <input type="text" class="form-control" id="floatingCity" placeholder="City">
@@ -53,75 +78,165 @@
                 <label for="floatingZip">Zip</label>
               </div>
             </div> -->
-            <div class="col-xs-12 text-end">
-              <button type="submit" class="btn btn-primary search-patient">Search</button>
-              <button  class="btn btn-secondary reset">Reset</button>
-            </div>
-          </form>
+				<div class="col-xs-12 text-end">
+					<button
+						type="submit"
+						class="btn btn-primary search-patient"
+					>
+						Search
+					</button>
+					<button class="btn btn-secondary reset">Reset</button>
+				</div>
+			</form>
+		</div>
+		{{#if isFindLoading}}
+		<div
+			class="d-flex fixed-center justify-content-center align-items-center h-100"
+		>
+			<div class="spinner-border font-size-5 text-info" role="status">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+		</div>
+		{{else}} 
+        <!-- {{> searchResult findPatientHos}}  -->
+        
+	<section class="section">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Search Results</h5>
 
-        </div>
-        {{#if isFindLoading}}
-            <div class=" d-flex fixed-center justify-content-center align-items-center h-100">
-            <div class="spinner-border font-size-5 text-info" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-        {{else}}
-            <!-- {{> searchResult}} -->
-            
-    <section class="section">
-        <div class="row">
-          <div class="col-lg-12">
-  
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Search Results</h5>
-                
-                <!-- Table with stripped rows -->
-                <table class="table datatable">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                        
-                      <th scope="col">text</th>
-                      <th scope="col">Options</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {{#each entry in findPatientHos}}
-                    <tr>
-                      <th scope="row">{{@index}}</th>
-                      
-                      <td><div class="patientDiv">{{{entry.text.div}}}</div></td>
-                      <td>
-                        <div style="width: 10%;">
-                        <select id="inputState" class="form-select w-5">
-                            <option selected>View details</option>
-                            <option>Select an Option</option>
-                            <option>Show Detail</option>
-                            <option>Save in Practice</option>
-                            <option>Print Patient Info</option>
-                            <option>View FHIR</option>
-                        </select>
-                    </div>
-                        </td>
-                    </tr>
-                    {{/each}}
-                  </tbody>
-                </table>
-                <!-- End Table with stripped rows -->
-  
-              </div>
-            </div>
-  
-          </div>
-        </div>
-      </section>
+						<!-- Table with stripped rows -->
+						<table class="table datatable">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+
+									<th scope="col">text</th>
+									<th scope="col">Options</th>
+								</tr>
+							</thead>
+							<tbody>
+                                {{#if isActive}}
+								{{#each entry in findPatientHos}}
+								<tr>
+									<th scope="row">{{@index}}</th>
+									<td>
+										<div class="patientDiv">
+											{{{entry.text.div}}}
+										</div>
+									</td>
+									<td style="width: 10%">
+										<select
+											id="inputState"
+											class="form-select w-5"
+										>
+											<option selected>
+												Select an Option
+											</option>
+											<option>View details</option>
+											<option>Show Detail</option>
+											<option>Save in Practice</option>
+											<option>Print Patient Info</option>
+											<option>View FHIR</option>
+										</select>
+									</td>
+								</tr>
+								{{/each}}
+                                {{else}}
+                                
+								{{#each entry in findPatientPra}}
+								<tr>
+									<th scope="row">{{@index}}</th>
+									<td>
+										<div class="patientDiv">
+											{{{entry.text.div}}}
+										</div>
+									</td>
+									<td style="width: 10%">
+										<select
+											id="inputState"
+											class="form-select w-5"
+										>
+											<option selected>
+												Select an Option
+											</option>
+											<option>View details</option>
+											<option>Show Detail</option>
+											<option>Save in Practice</option>
+											<option>Print Patient Info</option>
+											<option>View FHIR</option>
+										</select>
+									</td>
+								</tr>
+								{{/each}}
+                                {{/if}}
+
+							</tbody>
+						</table>
+						<!-- End Table with stripped rows -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
         {{/if}}
-    </div>
-    
+	</div>
 </template>
 
 <template name="searchResult">
-    
+	<section class="section">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Search Results</h5>
+
+						<!-- Table with stripped rows -->
+						<table class="table datatable">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+
+									<th scope="col">text</th>
+									<th scope="col">Options</th>
+								</tr>
+							</thead>
+							<tbody>
+								{{#each entry in findPatientHos}}
+								<tr>
+									<th scope="row">{{@index}}</th>
+									<td>
+										<div class="patientDiv">
+											{{{entry.text.div}}}
+										</div>
+									</td>
+									<td style="width: 10%">
+										<select
+											id="inputState"
+											class="form-select w-5"
+										>
+											<option selected>
+												Select an Option
+											</option>
+											<option>View details</option>
+											<option>Show Detail</option>
+											<option>Save in Practice</option>
+											<option>Print Patient Info</option>
+											<option>View FHIR</option>
+										</select>
+									</td>
+								</tr>
+								{{/each}}
+							</tbody>
+						</table>
+						<!-- End Table with stripped rows -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 </template>
+
+<template name="entryPatient"> </template>
