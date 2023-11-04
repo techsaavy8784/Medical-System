@@ -46,7 +46,9 @@ Meteor.methods({
       console.log("patientTestQuery-url:", url)
       console.log("patientTestQuery-headers : ", headers);
       const response = await HTTP.get(url, { headers });
+      
       const { data } = response;
+      data.bundle.entry = data.bundle.entry.map(e => ({...e, text: e.resource.text}));
       console.log("Response data: ", data.bundle.entry[0]);
       return data;
     } catch (e) {

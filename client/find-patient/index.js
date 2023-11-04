@@ -6,6 +6,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import { Session } from 'meteor/session';
 
 
+
 Template.findPatient.onCreated(function loginOnCreated() {
     this.searchLastName = new ReactiveVar("");
     this.searchFirstName = new ReactiveVar("");
@@ -91,18 +92,7 @@ Template.findPatient.onCreated(function loginOnCreated() {
                     }
                 );
             });
-            
-        //   return new Promise(function (resolver, reject) {
-        //     Meteor.call('patientTestQuery', `${coreUrl}/${query}`, headers, body, (error, result) => {
-        //       if (error) reject(error);
-        //       resolver(result)
-        //     });
-        //   })
         };
-        console.log("coreUrl", coreUrl());
-        console.log("buildQuery", buildQuery());
-        console.log("buildHeaders", authToken);
-        console.log("findPatientBody", findPatientBody);
         const res = await getFindPatients(coreUrl(), buildQuery(), {Authorization: authToken})
         console.log("res", res)
         instance.isFindLoading.set(false);
@@ -113,20 +103,17 @@ Template.findPatient.onCreated(function loginOnCreated() {
                 pageNumber: res.pageNumber,
                 totalPages: res.pageNumber,
                 countInPage: res.countInPage,
-            }            
+            }
         });
+        // const patients = res.bundle.entry.map((e) => (
+        //     e.text.div.replace('div', 'div style=\'display: flex;\'')
+        // ))
+        // instance.findPatientHos.set(patients);
+        instance.findPatientHos.set(res.bundle.entry);
+        console.log("patients--", instance.findPatientHos.get());
         
         return false;
     },
   });
   
-//   Template.login.onRendered(function () {
-
-//   })
-
   
-//   Session.set('userInfo', result);
-//   Session.set('token', result.token);
-//   Session.set('facilities', result.facilities);
-//   Session.set('practices', result.practices);
-//   Session.set('isLogin', true);

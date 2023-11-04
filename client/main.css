@@ -17,3 +17,16 @@ body {
 .main-content {
   flex: 1 0 auto;
 }
+
+.patientDiv > div {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+
+.patientDiv > div > p {
+  display: flex;
+  width: 16%;
+  justify-content: start;
+}
