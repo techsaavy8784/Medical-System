@@ -4,9 +4,10 @@ import { Template } from "meteor/templating"
 import { Meteor } from "meteor/meteor"
 import { ReactiveVar } from "meteor/reactive-var"
 import { Session } from "meteor/session"
+import { Router } from "meteor/iron:router"
 // import { Tracker } from "meteor/tracker"
 
-Template.findPatient.onCreated(function loginOnCreated() {
+Template.findPatient.onCreated(function findPatientOnCreated() {
 	this.searchLastName = new ReactiveVar("")
 	this.searchFirstName = new ReactiveVar("")
 	this.searchDate = new ReactiveVar("")
@@ -14,9 +15,8 @@ Template.findPatient.onCreated(function loginOnCreated() {
 	this.headers = new ReactiveVar("")
 	this.resultPatients = new ReactiveVar("")
 	this.isFindLoading = new ReactiveVar(false)
-    // this.isActive = new ReactiveVar("")
-    
 })
+
 
 Template.findPatient.helpers({
 	headers() {
@@ -28,25 +28,23 @@ Template.findPatient.helpers({
 	findPatientPra() {
 		return Session.get("findPatientPra")?.patients
 	},
-    // resultPatients() {
-    //     return Template.instance().resultPatients.get();
-    // },
 	isFindLoading() {
 		return Template.instance().isFindLoading.get()
 	},
     isActive() {
         return Session.get("isActive") === "hospital";
-    }
+    },
 })
 
-// Tracker.autorun(() => {
-    
-  
-//     if (Template.instance().findPatientHos.get()) {
-//     //   Session.set('oldest', oldest.name);
-        
-//     }
-//   });
+
+Template.searchPatientFhirModal.helpers({
+	fhirModalData() {
+		return Session.get("fhirModalData");
+	},
+	showSaveModal() {
+		return Session.get("showSaveModal");
+	}
+})
 
 Template.findPatient.events({
 	async "submit .search-patient-form"(event, instance) {
@@ -143,14 +141,56 @@ Template.findPatient.events({
             }
 		}
         
-
 		return false
 	},
-	"change #inputState": function (event, data) {
-		// event.target.value contains selected value
-		console.log("Selection changed to: " + event.target.value)
+    'click reset': function () {
+        console.log("click reset-------")
+        Session.set("findPatientHos", null)
+        Session.set("findPatientPra", null)
+    },
+    'change .inputFindPatient'(event, instance) {
+        // Get select element
+        const select = event.target;
+        // Get selected value
+        const value = select.value;
+		console.log("value", value);
+		
+        // Handle based on entry and value
+        if(value === 'View FHIR') {
+			const data = JSON.stringify(this.resource)
 
-		console.log("Selection changed to: " + data)
-		// handle change here
-	},
+			Session.set("fhirModalData", data);
+			console.log('Viewing details for:', this.resource);
+			
+		  $('#searchPatientFhirModal').modal('show');
+        } else if(value === 'Save in Practice') {
+			// const data = JSON.stringify(this.resource)
+			Session.set("showSaveModal", true);
+			Session.set("fhirModalData", this.resource.text.div);
+			console.log('Viewing details for:', this.resource);
+			
+		  $('#searchPatientFhirModal').modal('show');
+        }
+      },
+	'click .textRawPatient' (event, instance) {
+		console.log("textRawPatient", `Patient: ${this.resource?.name[0]?.text} - MRN:${this.resource?.id}`)
+		const currentPatient = "Patient: " + this.resource?.name[0]?.text + "MRN: " + this.resource?.id;
+		Session.set("currentPatientInfo", currentPatient);
+		Session.set("currentPatientID", this.resource.id);
+    	Router.go('/current-patient')
+	}
 })
+
+
+Template.searchPatientFhirModal.onRendered(function() {
+	const modalElement = this.find('#searchPatientFhirModal');
+	
+	const instance = this;
+	const parentInstance = instance.view.parentView.templateInstance();
+	$(modalElement).on('hidden.bs.modal', function (event) {
+    	const selectElement = parentInstance.find('#inputFindPatient');
+	  $(selectElement).val('Select an Option');
+		Session.set("showSaveModal", false);
+
+	});
+  });

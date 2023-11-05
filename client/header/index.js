@@ -53,6 +53,9 @@ Template.header.helpers({
         } else {
             return false
         }
+    },
+    currentPatientInfo() {  
+        return Session.get("currentPatientInfo")
     }
   });
 
