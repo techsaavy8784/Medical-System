@@ -2,53 +2,152 @@
 
     {{> sidebar}}
     {{#if currentPatientInfo}}
-    {{> resourceTable}}
+    
+      {{#if isFindingDoc}}
+      <div
+        class="d-flex fixed-center justify-content-center align-items-center h-100" style="margin-top: 100px;"
+      >
+        <div class="spinner-border font-size-5 text-info" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      {{else}}
+
+        <main id="main" class="main" style="margin-top: 100px;">
+    
+          <!-- Table with stripped rows -->
+          
+
+          <section class="section">
+          <div class="row">
+          <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Search Results</h5>
+              <div class="row g-3">
+                <div class="col-md-2">
+                  <label for="inputDate" class="form-label">Start Date</label>
+                  <!-- <input type="text" data-bind="value: first"/> -->
+                  <input type="date" id="filter-start-date" class="form-control filter-start-date">
+                  
+                </div>
+                <div class="col-md-2">
+                  <label for="inputDate" class="form-label">End Date</label>
+                  <input type="date" id="filter-end-date" class="form-control filter-end-date">
+                  
+                </div>
+                <div class="col-md-2">
+                  <label for="inputState" class="form-label">Document Type</label>
+                  <select id="filter-document-type" class="form-select filter-document-type">
+                    <option selected>All</option>
+                    <option>Rheumatology Consultation</option>
+                    <option>Progress Note Generic</option>
+                    <option>Admission Note Physician</option>
+                    <option>Neurology Progress Note</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label for="inputState" class="form-label">Resource Per Page</label>
+                  <select id="filter-count" class="form-select filter-patient-count">
+                    <option >5</option>
+                    <option selected>10</option>
+                    <option>20</option>
+                    <option>50</option>
+                    <option>100</option>
+                  </select>
+                </div>
+              </div>
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">text</th>
+                    <th scope="col">Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each currentPatientDocs}}
+                      <tr >
+                          <th scope="row">{{@index}}</th>
+                          <td>
+                              <div id="textRawDoc" class="docDiv textRawDocs" >
+                                  {{{text.div}}}
+                              </div>
+                          </td>
+                          <td style="width: 10%">
+                              
+                              <select  id="inputFindDoc" class="form-select inputFindDoc" >
+                                  <option selected5>
+                                      Select an Option
+                                  </option>
+                                  <option>Save</option>
+                                  <option>Show PDF</option>
+                                  <option>Show XML</option>
+                                  <option>Print</option>
+                                  <option>FHIR</option>
+                              </select>
+                              
+                          </td>
+                      </tr>
+                  {{/each}}
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+          </div>
+          </div>
+          </section>
+
+        </main>
+      {{/if}}
     {{/if}}
+    {{> pdfModal}}
 </template>
 
 <template name="sidebar">
     <aside id="sidebar" class="sidebar mt-5">
         <ul class="sidebar-nav " id="sidebar-nav-patient">
           
-          <li id="Resource Type" class="nav-item resource-item">
+          <li id="Resource Type" class=" resource-item">
             <!-- <a class="nav-link "> -->
               <i class="bi bi-grid"></i>
               <span>Resource Type</span>
             <!-- </a> -->
           </li><!-- End Dashboard Nav -->
           
-          <li id="Document Reference" class="nav-item resource-item">
-            <a class="nav-link "   href="#">
+          <li id="DocumentReference" class=" resource-item active">
+            <a class="nav-link"   href="#">
               <i class="bi bi-menu-button-wide"></i><span>Document Reference</span>
             </a>
           </li><!-- End Components Nav -->
           
-          <li id="Diagnostic Report" class="nav-item resource-item">
+          <li id="DiagnosticReport" class=" resource-item">
             <a class="nav-link"  href="#">
               <i class="bi bi-journal-text"></i><span>Diagnostic Report</span>
             </a>
           </li><!-- End Forms Nav -->
     
-          <li id="Observation" class="nav-item resource-item">
+          <li id="Observation" class=" resource-item">
             <a class="nav-link "  href="#">
               <i class="bi bi-layout-text-window-reverse"></i><span>Observation</span>
             </a>
           </li><!-- End Tables Nav -->
 
-          <li id="Condition" class="nav-item resource-item">
+          <li id="Condition" class=" resource-item">
             <a class="nav-link "  href="#">
               <i class="bi bi-layout-text-window-reverse"></i><span>Condition</span>
             </a>
           </li><!-- End Tables Nav -->
 
-          <li id="Immunization" class="nav-item resource-item">
+          <li id="Immunization" class=" resource-item">
             <a class="nav-link "   href="#">
               <i class="bi bi-bar-chart"></i><span>Immunization</span>
             </a>
     
           </li><!-- End Charts Nav -->
           
-          <li id="Questionnaire Response" class="nav-item resource-item">
+          <li id="QuestionnaireResponse" class=" resource-item">
             <a class="nav-link "   href="#">
               <i class="bi bi-bar-chart"></i><span>Questionnaire Response</span>
             </a>
@@ -58,120 +157,35 @@
     </aside>
 </template>
 
+<template name="pdfModal">
+  <div class="modal fade" id="docPdfModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h1 class="modal-title fs-5" id="exampleModalLabel">Show PDF</h1>
+			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+        <iframe
+                src="{{currentDocPdf}}"
+                width="100%"
+                height="700"
+                frameborder="0"
+              ></iframe>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+</template>
+
 <template name="resourceTable">
-      <main id="main" class="main">
-      <section class="section" style="margin-top: 100px;">
-        <div class="row">
-          <div class="col-lg-12">
-  
-            <div class="card">
-              <div class="card-body">
-                
-                {{> searchPatientResource}}
-                <!-- Table with stripped rows -->
-                
-		<!-- {{#if isFindLoading}}
-		<div
-			class="d-flex fixed-center justify-content-center align-items-center h-100"
-		>
-			<div class="spinner-border font-size-5 text-info" role="status">
-				<span class="visually-hidden">Loading...</span>
-			</div>
-		</div>
-		{{else}} 
-        
-	<section class="section">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="card">
-					<div class="card-body">
-						<h5 class="card-title">Search Results</h5>
-
-						<table class="table datatable">
-							<thead>
-								<tr>
-									<th scope="col">#</th>
-									<th scope="col">text</th>
-									<th scope="col">Options</th>
-								</tr>
-							</thead>
-							<tbody>
-                {{#each findPatientResource}}
-                    <tr >
-                        <th scope="row">{{@index}}</th>
-                        <td>
-                            <div class="patientDiv textRawPatient" >
-                                {{{text.div}}}
-                            </div>
-                        </td>
-                        <td style="width: 10%">
-                            
-                            <select  id="inputFindPatient" class="form-select inputFindPatient" >
-                                <option selected5>
-                                    Select an Option
-                                </option>
-                                <option>View details</option>
-                                <option>Save in Practice</option>
-                                <option>Print Patient Info</option>
-                                <option>View FHIR</option>
-                            </select>
-                            
-                        </td>
-                    </tr>
-                {{/each}}
-
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-        {{/if}} -->
-                <!-- End Table with stripped rows -->
-  
-              </div>
-            </div>
-  
-          </div>
-        </div>
-      </section>
-    </main>
+      
 </template>
 
 <template name="searchPatientResource">
-  <h5 class="card-title">Search Results</h5>
-  <div class="row g-3">
-    <div class="col-md-2">
-      <label for="inputDate" class="form-label">Start Date</label>
-       <!-- <input type="text" data-bind="value: first"/> -->
-       <input type="date" id="filter-start-date" class="form-control filter-start-date">
-      
-    </div>
-    <div class="col-md-2">
-      <label for="inputDate" class="form-label">End Date</label>
-      <input type="date" class="form-control filter-end-date">
-      
-    </div>
-    <div class="col-md-2">
-      <label for="inputState" class="form-label">Document Type</label>
-      <select id="filter-document-type" class="form-select filter-document-type">
-        <option selected>All</option>
-        <option>Rheumatology Consultation</option>
-        <option>Progress Note Generic</option>
-        <option>Admission Note Physician</option>
-        <option>Neurology Progress Note</option>
-      </select>
-    </div>
-    <div class="col-md-2">
-      <label for="inputState" class="form-label">Resource Per Page</label>
-      <select id="filter-count" class="form-select filter-patient-count">
-        <option >5</option>
-        <option selected>10</option>
-        <option>20</option>
-        <option>50</option>
-        <option>100</option>
-      </select>
-    </div>
-  </div>
 </template>
+

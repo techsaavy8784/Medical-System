@@ -48,7 +48,17 @@ Meteor.methods({
       const response = await HTTP.get(url, { headers });
       
       const { data } = response;
-      data.bundle.entry = data.bundle.entry.map(e => ({...e, text: e.resource.text}));
+      data.bundle.entry = data.bundle.entry.map(e => {
+        let title = data.resourceType;
+        if (data.resourceType === "DocumentReference") {
+          title = "Document Reference"
+        } else if (data.resourceType === "DiagnosticReport") {
+          title = "Diagnostic Report"
+        }
+          
+        e.resource.text.div = e.resource.text.div.split(`<p><b>${title}</b></p>`).join("")
+        return {...e, text: e.resource.text}
+        });
       console.log("Response data: ", data.bundle.entry[0]);
       return data;
     } catch (e) {

@@ -5,7 +5,6 @@ import { Meteor } from "meteor/meteor"
 import { ReactiveVar } from "meteor/reactive-var"
 import { Session } from "meteor/session"
 import { Router } from "meteor/iron:router"
-// import { Tracker } from "meteor/tracker"
 
 Template.findPatient.onCreated(function findPatientOnCreated() {
 	this.searchLastName = new ReactiveVar("")
@@ -36,15 +35,6 @@ Template.findPatient.helpers({
     },
 })
 
-
-Template.searchPatientFhirModal.helpers({
-	fhirModalData() {
-		return Session.get("fhirModalData");
-	},
-	showSaveModal() {
-		return Session.get("showSaveModal");
-	}
-})
 
 Template.findPatient.events({
 	async "submit .search-patient-form"(event, instance) {
@@ -183,13 +173,22 @@ Template.findPatient.events({
 })
 
 
+Template.searchPatientFhirModal.helpers({
+	fhirModalData() {
+		return Session.get("fhirModalData");
+	},
+	showSaveModal() {
+		return Session.get("showSaveModal");
+	}
+})
+
 Template.searchPatientFhirModal.onRendered(function() {
 	const modalElement = this.find('#searchPatientFhirModal');
 	
 	const instance = this;
 	const parentInstance = instance.view.parentView.templateInstance();
 	$(modalElement).on('hidden.bs.modal', function (event) {
-    	const selectElement = parentInstance.find('#inputFindPatient');
+    	const selectElement = parentInstance.find('.inputFindPatient');
 	  $(selectElement).val('Select an Option');
 		Session.set("showSaveModal", false);
 

@@ -84,10 +84,14 @@ Template.header.helpers({
     'click .click-Hospital': function(event) {
         // event.target.classList.add('nav-link active click-Hospital');
         Session.set("isActive", "hospital")
+        const facility = Session.get("facilities")[0]
+        Session.set("coreURL", facility.systems[0].coreUrl)
     },
     'click .click-Practice': function(event) {
         // event.target.classList.add('nav-link click-Practice active');
         Session.set("isActive", "practice")
+        const practice = Session.get("practices")[0]
+        Session.set("coreURL", practice.systems[0].coreUrl)
     }
   });
 
