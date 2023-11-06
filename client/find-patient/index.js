@@ -143,8 +143,9 @@ Template.findPatient.events({
         
 		return false
 	},
-    'click reset': function () {
+    'submit .reset': function (event, instance) {
         console.log("click reset-------")
+		event.preventDefault()
         Session.set("findPatientHos", null)
         Session.set("findPatientPra", null)
     },
@@ -177,7 +178,7 @@ Template.findPatient.events({
 		const currentPatient = "Patient: " + this.resource?.name[0]?.text + "MRN: " + this.resource?.id;
 		Session.set("currentPatientInfo", currentPatient);
 		Session.set("currentPatientID", this.resource.id);
-    	Router.go('/current-patient')
+    	Router.go('/current-patient', {_id: this.resource.id})
 	}
 })
 

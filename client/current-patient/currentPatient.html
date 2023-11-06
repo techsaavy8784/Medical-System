@@ -1,47 +1,60 @@
 <template name="currentPatient">
 
     {{> sidebar}}
+    {{#if currentPatientInfo}}
     {{> resourceTable}}
+    {{/if}}
 </template>
 
 <template name="sidebar">
-    <aside id="sidebar" class="sidebar">
-
-        <ul class="sidebar-nav" id="sidebar-nav">
-    
-          <li class="nav-item">
-            <a class="nav-link collapsed" >
+    <aside id="sidebar" class="sidebar mt-5">
+        <ul class="sidebar-nav " id="sidebar-nav-patient">
+          
+          <li id="Resource Type" class="nav-item resource-item">
+            <!-- <a class="nav-link "> -->
               <i class="bi bi-grid"></i>
               <span>Resource Type</span>
-            </a>
+            <!-- </a> -->
           </li><!-- End Dashboard Nav -->
-    
-          <li class="nav-item">
-            <a class="nav-link " data-bs-target="#components-nav active" data-bs-toggle="collapse" href="#">
-              <i class="bi bi-menu-button-wide"></i><span>Document Reference</span><i class="bi bi-chevron-down ms-auto"></i>
+          
+          <li id="Document Reference" class="nav-item resource-item">
+            <a class="nav-link "   href="#">
+              <i class="bi bi-menu-button-wide"></i><span>Document Reference</span>
             </a>
           </li><!-- End Components Nav -->
-    
-          <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-              <i class="bi bi-journal-text"></i><span>Document Reference</span><i class="bi bi-chevron-down ms-auto"></i>
+          
+          <li id="Diagnostic Report" class="nav-item resource-item">
+            <a class="nav-link"  href="#">
+              <i class="bi bi-journal-text"></i><span>Diagnostic Report</span>
             </a>
           </li><!-- End Forms Nav -->
     
-          <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-              <i class="bi bi-layout-text-window-reverse"></i><span>Document Reference</span><i class="bi bi-chevron-down ms-auto"></i>
+          <li id="Observation" class="nav-item resource-item">
+            <a class="nav-link "  href="#">
+              <i class="bi bi-layout-text-window-reverse"></i><span>Observation</span>
             </a>
           </li><!-- End Tables Nav -->
+
+          <li id="Condition" class="nav-item resource-item">
+            <a class="nav-link "  href="#">
+              <i class="bi bi-layout-text-window-reverse"></i><span>Condition</span>
+            </a>
+          </li><!-- End Tables Nav -->
+
+          <li id="Immunization" class="nav-item resource-item">
+            <a class="nav-link "   href="#">
+              <i class="bi bi-bar-chart"></i><span>Immunization</span>
+            </a>
     
-          <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-              <i class="bi bi-bar-chart"></i><span>Document Reference</span><i class="bi bi-chevron-down ms-auto"></i>
+          </li><!-- End Charts Nav -->
+          
+          <li id="Questionnaire Response" class="nav-item resource-item">
+            <a class="nav-link "   href="#">
+              <i class="bi bi-bar-chart"></i><span>Questionnaire Response</span>
             </a>
           </li><!-- End Charts Nav -->
-    
+          
         </ul>
-    
     </aside>
 </template>
 
@@ -53,69 +66,68 @@
   
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Search Results</h5>
                 
-  
+                {{> searchPatientResource}}
                 <!-- Table with stripped rows -->
-                <table class="table datatable">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Birth</th>
-                      <th scope="col">Gender</th>
-                      <th scope="col">Marital Status</th>
-                      <th scope="col">Options</th>
+                
+		<!-- {{#if isFindLoading}}
+		<div
+			class="d-flex fixed-center justify-content-center align-items-center h-100"
+		>
+			<div class="spinner-border font-size-5 text-info" role="status">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+		</div>
+		{{else}} 
+        
+	<section class="section">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Search Results</h5>
+
+						<table class="table datatable">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">text</th>
+									<th scope="col">Options</th>
+								</tr>
+							</thead>
+							<tbody>
+                {{#each findPatientResource}}
+                    <tr >
+                        <th scope="row">{{@index}}</th>
+                        <td>
+                            <div class="patientDiv textRawPatient" >
+                                {{{text.div}}}
+                            </div>
+                        </td>
+                        <td style="width: 10%">
+                            
+                            <select  id="inputFindPatient" class="form-select inputFindPatient" >
+                                <option selected5>
+                                    Select an Option
+                                </option>
+                                <option>View details</option>
+                                <option>Save in Practice</option>
+                                <option>Print Patient Info</option>
+                                <option>View FHIR</option>
+                            </select>
+                            
+                        </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Brandon Jacob</td>
-                      <td>Designer</td>
-                      <td>28</td>
-                      <td>2016-05-25</td>
-                      <td>2016-05-25</td>
-                      <td>2016-05-25</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Bridie Kessler</td>
-                      <td>Developer</td>
-                      <td>35</td>
-                      <td>2014-12-05</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Ashleigh Langosh</td>
-                      <td>Finance</td>
-                      <td>45</td>
-                      <td>2011-08-12</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">4</th>
-                      <td>Angus Grady</td>
-                      <td>HR</td>
-                      <td>34</td>
-                      <td>2012-06-11</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">5</th>
-                      <td>Raheem Lehner</td>
-                      <td>Dynamic Division Officer</td>
-                      <td>47</td>
-                      <td>2011-04-19</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">6</th>
-                      <td>Raheem Lehner</td>
-                      <td>Dynamic Division Officer</td>
-                      <td>47</td>
-                      <td>2011-04-19</td>
-                    </tr>
-                  </tbody>
-                </table>
+                {{/each}}
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+        {{/if}} -->
                 <!-- End Table with stripped rows -->
   
               </div>
@@ -125,4 +137,41 @@
         </div>
       </section>
     </main>
+</template>
+
+<template name="searchPatientResource">
+  <h5 class="card-title">Search Results</h5>
+  <div class="row g-3">
+    <div class="col-md-2">
+      <label for="inputDate" class="form-label">Start Date</label>
+       <!-- <input type="text" data-bind="value: first"/> -->
+       <input type="date" id="filter-start-date" class="form-control filter-start-date">
+      
+    </div>
+    <div class="col-md-2">
+      <label for="inputDate" class="form-label">End Date</label>
+      <input type="date" class="form-control filter-end-date">
+      
+    </div>
+    <div class="col-md-2">
+      <label for="inputState" class="form-label">Document Type</label>
+      <select id="filter-document-type" class="form-select filter-document-type">
+        <option selected>All</option>
+        <option>Rheumatology Consultation</option>
+        <option>Progress Note Generic</option>
+        <option>Admission Note Physician</option>
+        <option>Neurology Progress Note</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label for="inputState" class="form-label">Resource Per Page</label>
+      <select id="filter-count" class="form-select filter-patient-count">
+        <option >5</option>
+        <option selected>10</option>
+        <option>20</option>
+        <option>50</option>
+        <option>100</option>
+      </select>
+    </div>
+  </div>
 </template>

@@ -23,6 +23,10 @@ Router.route('/', function () {
   this.render('home');
 });
 
+// Router.route('/newNav', function () {
+//   this.render('newNav');
+// });
+
 Router.route('/login', function () {
   this.render('login');
 });
@@ -51,3 +55,16 @@ Router.route('/current-patient', function() {
 
   }
 })
+
+
+// Router.route('/current-patient/:_id', function() {
+//   const isLogin = Session.get("isLogin")
+  
+//   if (!isLogin) {
+//     Router.go('/login')
+//   } else {
+//     this.render('currentPatient');
+//   }
+// }, {
+//   name: 'current-patient.show'
+// })

@@ -7,6 +7,8 @@ body {
   flex-direction: column;
   min-height: 100vh;
   margin: 0;
+  background: #f6f9ff;
+  color: #444444;
 }
 
 
@@ -190,4 +192,9 @@ body {
 
 .sidebar-nav .nav-content a.active i {
   background-color: #4154f1;
+}
+
+.current_page_item {
+  background-color: #C00;
+  color: #FFF;
 }
