@@ -164,8 +164,7 @@ Template.findPatient.events({
         }
       },
 	'click .textRawPatient' (event, instance) {
-		console.log("textRawPatient", `Patient: ${this.resource?.name[0]?.text} - MRN:${this.resource?.id}`)
-		const currentPatient = "Patient: " + this.resource?.name[0]?.text + "MRN: " + this.resource?.id;
+		const currentPatient = "Patient: " + this.resource?.name[0]?.text + " - MRN: " + this.resource?.id;
 		Session.set("currentPatientInfo", currentPatient);
 		Session.set("currentPatientID", this.resource.id);
     	Router.go('/current-patient', {_id: this.resource.id})

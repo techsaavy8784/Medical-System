@@ -33,6 +33,7 @@ Template.header.helpers({
     activeHosPra() {
         if (Session.get("isActive") === "hospital") {
             const activeText = activeHopital();
+
             return activeText;
         } else if (Session.get("isActive") === "practice") {
             const activeText = activePractice();
@@ -56,6 +57,16 @@ Template.header.helpers({
     },
     currentPatientInfo() {  
         return Session.get("currentPatientInfo")
+    },
+    hospitalStyle() {
+        if (Session.get("isActive") === "hospital") {
+            return "color: blue"
+        }
+    },
+    practiceStyle() {
+        if (Session.get("isActive") === "practice") {
+            return "color: blue"
+        }
     }
   });
 

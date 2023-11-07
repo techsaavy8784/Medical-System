@@ -67,7 +67,6 @@ const setDocs = (res) => {
         patients: res?.bundle?.entry,
             cache: {
                 id: res?.queryId,
-    
                 pageNumber: res?.pageNumber,
                 totalPages: res?.pageNumber,
                 countInPage: res?.countInPage,
@@ -79,7 +78,7 @@ const setDocs = (res) => {
 Template.currentPatient.onCreated(function currentPatientOnCreated() {
     // const isFindingDoc = new ReactiveVar(false)
     Session.set("isFindingDoc", false);
-    
+
 })
 
 Template.currentPatient.helpers({
@@ -92,42 +91,81 @@ Template.currentPatient.helpers({
     currentPatientDocs() {
         return Session.get("getPatientDocs")?.patients;
     },
-    // existDocs() {
-    //     return Session.get("")
-    // }
+    emptySearchDocs() {
+        // console.log("emptySearchDocs", Session.get("getPatientDocs")?.patients)
+        // return Session.get("getPatientDocs")?.patients?.length ? false : true
+        if (Session.get("getPatientDocs")?.patients?.length) {
+            return false
+        } else {
+            return true
+        }
+    }
 })
 
 
 Template.currentPatient.events({
     async 'change .filter-start-date'(event, instance) {
+        event.preventDefault()
         if (Session.get("isFindingDoc")) return
         Session.set("isFindingDoc", true);
         const authToken = Session.get("headers")
         const startDate = event.target.value;
         Session.set("startDate", startDate)
         
-        const res = await getPatientDocs(buildEndPoint(), {
-			Authorization: authToken,
-		});
+        // const res = await getPatientDocs(buildEndPoint(), {
+		// 	Authorization: authToken,
+		// });
         // setDocs(res);
+        setTimeout(() => {
+            // alert("Delayed alert!");
+            // const inputElement = instance.find("#filter-start-date");
+            // inputElement.value = Session.get("startDate");
+            // instance.find(".filter-start-date").value = Session.get("startDate")
+            Session.set("isFindingDoc", false);
+          }, 2500);
         console.log("query---", buildEndPoint())
     },
     'change .filter-end-date'(event, instance) {
+        Session.set("isFindingDoc", true)
         const endDate = event.target.value;
         Session.set("endDate", endDate)
+        setTimeout(() => {
+            Session.set("isFindingDoc", false);
+          }, 2500);
         console.log("query---", buildEndPoint())
     },
-    'change .filter-document-type'(event, instance) {
+    async 'change .filter-document-type'(event, instance) {
+        event.preventDefault()
+        if (Session.get("isFindingDoc")) return
+        Session.set("isFindingDoc", true);
         const documentType = event.target.value;
         Session.set("documentType",documentType)
+        
+        // const authToken = Session.get("headers")
+        // const res = await getPatientDocs(buildEndPoint(), {
+		// 	Authorization: authToken,
+		// });
+        // setDocs(res);
+        setTimeout(() => {
+            Session.set("isFindingDoc", false);
+          }, 2500);
         console.log("query---", buildEndPoint())
     },
-    'change .filter-patient-count'(event, instance) {
+    async 'change .filter-patient-count'(event, instance) {
+        event.preventDefault()
+        if (Session.get("isFindingDoc")) return
+        Session.set("isFindingDoc", true);
         const filterCount = event.target.value;
         Session.set("filterCount", filterCount)
+        const authToken = Session.get("headers")
+        
+        const res = await getPatientDocs(buildEndPoint(), {
+			Authorization: authToken,
+		});
+        setDocs(res);
         console.log("query---", buildEndPoint())
     },
-    'click #textRawDoc' (event, instance) {
+    async 'click #textRawDoc' (event, instance) {
         if (Session.get("isFindingDoc")) return
         Session.set("isFindingDoc", true);
         console.log("isFindingDoc", Session.get("isFindingDoc"))
@@ -136,19 +174,29 @@ Template.currentPatient.events({
         const requestOptions = {headers: {
             Accept: "application/pdf"
         }};
-
-        HTTP.get(pdfUrl, requestOptions, (error, response) => {
-            if (error) {
-              console.log("fetchPDF", error);
-            } else {
-              const blob = new Blob([response.content], { type: "application/pdf" });
-              const pdfData = URL.createObjectURL(blob);
-              Session.set("pdfData", pdfData); // Set the PDF data
-            }
-          });
-        Session.set("isFindingDoc", false);
-        $('#docPdfModal').modal('show');
-        console.log("isFindingDoc", Session.get("isFindingDoc"))
+        try {
+            const response = await new Promise((resolve, reject) => {
+              HTTP.get(pdfUrl, requestOptions, (error, response) => {
+                if (error) {
+                  reject(error);
+                } else {
+                  resolve(response);
+                }
+              });
+            });
+        
+            const blob = new Blob([response.content], { type: "application/pdf" });
+            // console.log("Blob URL", URL.createObjectURL(blob));
+            const pdfData = URL.createObjectURL(blob);
+            
+            Session.set("pdfData", pdfData);
+            Session.set("isFindingDoc", false);
+            $('#docPdfModal').modal('show');
+          } catch (error) {
+            console.log("fetchPDF", error);
+          }
+          
+          console.log("pdfData", Session.get("pdfData"));
         // console.log("resource", pdfUrl, requestOptions)
     }
 });
@@ -158,13 +206,24 @@ Template.sidebar.onCreated(function sidebarOnCreated() {
 });
 
 Template.sidebar.helpers({
-    // isActive(item) {
-    //     const activeItem = Template.instance().selectedResourceItem.get();
-    //     console.log("isActive", activeItem)
-    //     console.log("item", item)
-    //     return item === activeItem ? 'active' : '';
-    // }
-    
+    referenceStyle() {
+        return  (Session.get("resourceType") === "DocumentReference") ? "background: #c0c7d4;" : null
+    },
+    reportStyle() {
+        return (Session.get("resourceType") === "DiagnosticReport") ? "background: #c0c7d4;" : null
+    },
+    observationStyle() {
+        return (Session.get("resourceType") === "Observation") ? "background: #c0c7d4;" : null
+    },
+    conditionStyle() {
+        return (Session.get("resourceType") === "Condition") ? "background: #c0c7d4;" : null
+    },
+    immunizationStyle() {
+        return (Session.get("resourceType") === "Immunization") ? "background: #c0c7d4;" : null
+    },
+    questionnaireStyle() {
+        return (Session.get("resourceType") === "QuestionnaireResponse") ? "background: #c0c7d4;" : null
+    }
 })
 
 Template.sidebar.events({
@@ -176,20 +235,22 @@ Template.sidebar.events({
         instance.selectedResourceItem.set(clickedItem)
         clearQuery();
         Session.set("resourceType", clickedItem)
+        
+        // clickedItem.querySelectorAll(".nav-link").style.color = "red"
         // $('#sidebar-nav-patient a').click(function(e) {
         //     $('#sidebar-nav-patient a').removeClass('current_page_item');
         //     $(`#${clickedItem}`).addClass('current_page_item');
         // });
         
-	    const parentInstance = instance.view.parentView.templateInstance();
-        const clearStartDate = parentInstance.find('#filter-start-date');
-        const clearEndDate = parentInstance.find('#filter-end-date');
-        const clearDocumentType = parentInstance.find('#filter-document-type');
-        const clearCount = parentInstance.find('#filter-count');
-        clearStartDate.value = "";
-        clearEndDate.value = "";
-        clearDocumentType.value = 'All';
-        clearCount.value = "10";
+	    // const parentInstance = instance.view.parentView.templateInstance();
+        // const clearStartDate = parentInstance.find('#filter-start-date');
+        // const clearEndDate = parentInstance.find('#filter-end-date');
+        // const clearDocumentType = parentInstance.find('#filter-document-type');
+        // const clearCount = parentInstance.find('#filter-count');
+        // clearStartDate.value = "";
+        // clearEndDate.value = "";
+        // clearDocumentType.value = 'All';
+        // clearCount.value = "10";
         console.log("query---", buildEndPoint());
 
         const res = await getPatientDocs(buildEndPoint(), {
@@ -217,6 +278,6 @@ Template.pdfModal.onRendered(function() {
     // 	const selectElement = parentInstance.find('.inputFindPatient');
 	//   $(selectElement).val('Select an Option');
 	// 	Session.set("showSaveModal", false);
-
 	// });
+    // console.log("currentDocPdf", this.data.currentDocPdf);
   });

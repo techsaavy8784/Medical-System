@@ -147,15 +147,18 @@ body {
   font-weight: 600;
   color: #4154f1;
   transition: 0.3;
-  background: #f6f9ff;
   padding: 10px 15px;
   border-radius: 4px;
 }
 
+/* .sidebar-nav .nav-link:hover {
+  background: #4a4555;
+ } */
+
 .sidebar-nav .nav-link i {
   font-size: 16px;
   margin-right: 10px;
-  color: #4154f1;
+  color: #411fd8;
 }
 
 .sidebar-nav .nav-link.collapsed {
@@ -169,10 +172,10 @@ body {
 
 .sidebar-nav .nav-link:hover {
   color: #4154f1;
-  background: #f6f9ff;
+  background: #c0c7d4;
 }
 
-.sidebar-nav .nav-link:hover i {
+.sidebar-nav  {
   color: #4154f1;
 }
 
@@ -221,4 +224,8 @@ body {
 /* .current_page_item {
   background-color: #C00;
   color: #FFF;
+} */
+
+/* .resource-type:hover {
+  color: red;
 } */
