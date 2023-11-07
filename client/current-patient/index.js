@@ -74,11 +74,41 @@ const setDocs = (res) => {
     })
 }
 
+const showPdfModal = async (data) => {
+    
+    if (Session.get("isFindingDoc")) return
+    Session.set("isFindingDoc", true);
+    console.log("isFindingDoc", Session.get("isFindingDoc"))
+    const pdfUrl = data.resource?.content[0]?.attachment.url;
+    console.log("pdfUrl", pdfUrl);
+    
+    const requestOptions = {
+        method: 'GET',
+        headers: {
+            Accept: "application/pdf"
+        },
+        redirect: 'follow',
+      };
+      fetch(pdfUrl, requestOptions)
+        .then((response) => response.blob())
+        .then((blob) => {
+  
+          const pdfDataUrl = URL.createObjectURL(blob);
+          // window.open(pdfDataUrl, "_blank");
+          
+            Session.set("isFindingDoc", false);
+            Session.set("pdfDataUrl", pdfDataUrl);
+            $('#docPdfModal').modal('show');
+        })
+        .catch((error) => {
+            console.log('fetchPDF', error);
+        });
+}
 
 Template.currentPatient.onCreated(function currentPatientOnCreated() {
     // const isFindingDoc = new ReactiveVar(false)
     Session.set("isFindingDoc", false);
-
+    Session.set("resourceType", null);
 })
 
 Template.currentPatient.helpers({
@@ -99,6 +129,9 @@ Template.currentPatient.helpers({
         } else {
             return true
         }
+    },
+    resourceId() {
+        return Template.instance().data.resourceId;
     }
 })
 
@@ -166,39 +199,64 @@ Template.currentPatient.events({
         console.log("query---", buildEndPoint())
     },
     async 'click #textRawDoc' (event, instance) {
-        if (Session.get("isFindingDoc")) return
-        Session.set("isFindingDoc", true);
-        console.log("isFindingDoc", Session.get("isFindingDoc"))
-        const pdfUrl = this.resource.content[0].attachment.url;
-        
-        const requestOptions = {headers: {
-            Accept: "application/pdf"
-        }};
-        try {
-            const response = await new Promise((resolve, reject) => {
-              HTTP.get(pdfUrl, requestOptions, (error, response) => {
-                if (error) {
-                  reject(error);
-                } else {
-                  resolve(response);
-                }
-              });
-            });
-        
-            const blob = new Blob([response.content], { type: "application/pdf" });
-            // console.log("Blob URL", URL.createObjectURL(blob));
-            const pdfData = URL.createObjectURL(blob);
+
+        await showPdfModal(this);
+        // console.log("resource", pdfUrl, requestOptions)
+    },
+    'change .inputFindDoc'(event, instance) {
+        // Get select element
+        const select = event.target;
+        // Get selected value
+        const value = select.value;
+		console.log("value", value);
+		
+        // Handle based on entry and value
+        if(value === 'FHIR') {
+			const data = JSON.stringify(this, null, 2);
+
+			Session.set("fhirDocModalData", data);
+            Session.set("showDocFhirModal", true);
+			console.log('Viewing details for:', this);
+			
+		  $('#resourceDocModal').modal('show');
+        } else if(value === 'Save') {
+			Session.set("showDocSaveModal", true);
+			Session.set("saveDocModalData", this.text.div);
+		  $('#resourceDocModal').modal('show');
+        } else if (value === "Show PDF") {
+            showPdfModal(this);
+        } else if (value === "Show XML") {
+            const xmlUrl = this.resource?.content[1]?.attachment.url;
+            console.log("xmlUrl: ----", xmlUrl);
+            async function fetchAndShowXML() {
+                Session.set("isFindingDoc", true);
             
-            Session.set("pdfData", pdfData);
-            Session.set("isFindingDoc", false);
-            $('#docPdfModal').modal('show');
-          } catch (error) {
-            console.log("fetchPDF", error);
+                try {
+                const response = await fetch(xmlUrl, {
+                    headers: {
+                    Accept: "application/xml",
+                    },
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP request failed with status ${response.status}`);
+                }
+            
+                const xmlContent = await response.text();
+                const xmlStringify = JSON.stringify(xmlContent, null, 2)
+                console.log("xmlContent", xmlStringify);
+                Session.set("docXMLModalData", xmlStringify);
+                $('#resourceDocModal').modal('show');
+                } catch (error) {
+                    console.error("Error fetching XML file: ", error);
+                }
+                Session.set("isFindingDoc", false);
+                Session.set("showXMLModal", true);
           }
           
-          console.log("pdfData", Session.get("pdfData"));
-        // console.log("resource", pdfUrl, requestOptions)
-    }
+          fetchAndShowXML();
+        }
+      },
 });
 
 Template.sidebar.onCreated(function sidebarOnCreated() {
@@ -228,6 +286,7 @@ Template.sidebar.helpers({
 
 Template.sidebar.events({
     async 'click .resource-item'(event, instance) {
+        console.log("isFindingDoc", Session.get("isFindingDoc"));
         if (Session.get("isFindingDoc")) return
         Session.set("isFindingDoc", true);
         const authToken = Session.get("headers")
@@ -235,22 +294,7 @@ Template.sidebar.events({
         instance.selectedResourceItem.set(clickedItem)
         clearQuery();
         Session.set("resourceType", clickedItem)
-        
-        // clickedItem.querySelectorAll(".nav-link").style.color = "red"
-        // $('#sidebar-nav-patient a').click(function(e) {
-        //     $('#sidebar-nav-patient a').removeClass('current_page_item');
-        //     $(`#${clickedItem}`).addClass('current_page_item');
-        // });
-        
-	    // const parentInstance = instance.view.parentView.templateInstance();
-        // const clearStartDate = parentInstance.find('#filter-start-date');
-        // const clearEndDate = parentInstance.find('#filter-end-date');
-        // const clearDocumentType = parentInstance.find('#filter-document-type');
-        // const clearCount = parentInstance.find('#filter-count');
-        // clearStartDate.value = "";
-        // clearEndDate.value = "";
-        // clearDocumentType.value = 'All';
-        // clearCount.value = "10";
+
         console.log("query---", buildEndPoint());
 
         const res = await getPatientDocs(buildEndPoint(), {
@@ -262,8 +306,8 @@ Template.sidebar.events({
 })
 
 Template.pdfModal.helpers({
-    currentDocPdf() {
-        return Session.get("pdfData");
+    pdfDataUrl() {
+        return Session.get("pdfDataUrl");
     }
 })
 
@@ -281,3 +325,52 @@ Template.pdfModal.onRendered(function() {
 	// });
     // console.log("currentDocPdf", this.data.currentDocPdf);
   });
+
+  Template.resourceDocModal.events({    
+  })
+
+  
+  Template.resourceDocModal.onCreated(function resourceOnCreated(){
+    Session.set("showDocSaveModal", false);
+    Session.set("showDocFhirModal", false);
+    Session.set("showXMLModal", false);
+    
+  })
+
+  Template.resourceDocModal.helpers({
+    showDocSaveModal() {
+        return Session.get("showDocSaveModal")
+    },
+    saveDocModalData() {
+        return Session.get("saveDocModalData")
+    },
+    showDocFhirModal() {
+        return Session.get("showDocFhirModal")
+    },
+    showXMLModal() {
+        return Session.get("showXMLModal");
+    },
+    fhirDocModalData() {
+        return Session.get("fhirDocModalData");
+    },
+    
+    docXMLModalData() {
+        return Session.get("docXMLModalData");
+    },
+  })
+
+  Template.resourceDocModal.onRendered(function () {
+    
+	const modalElement = this.find('#resourceDocModal');
+	
+	const instance = this;
+	const parentInstance = instance.view.parentView.templateInstance();
+	$(modalElement).on('hidden.bs.modal', function (event) {
+    	const selectElement = parentInstance.find('.inputFindDoc');
+	    $(selectElement).val('Select an Option');
+		Session.set("showDocSaveModal", false);
+        Session.set("showDocFhirModal", false);
+        Session.set("showXMLModal", false);
+	});
+    console.log("currentDocPdf", this.data.currentDocPdf);
+  })

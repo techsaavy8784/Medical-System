@@ -77,10 +77,3 @@ Template.login.onCreated(function loginOnCreated() {
   Template.login.onRendered(function () {
 
   })
-
-  
-//   Session.set('userInfo', result);
-//   Session.set('token', result.token);
-//   Session.set('facilities', result.facilities);
-//   Session.set('practices', result.practices);
-//   Session.set('isLogin', true);

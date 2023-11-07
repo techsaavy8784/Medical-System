@@ -3,7 +3,6 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { Meteor } from "meteor/meteor"
 import { ReactiveVar } from 'meteor/reactive-var';
-// import {isLogin} from '../login'
 import { Router } from "meteor/iron:router"
 
 import './header.html'

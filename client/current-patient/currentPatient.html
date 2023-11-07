@@ -77,7 +77,6 @@
                               </div>
                           </td>
                           <td style="width: 12%">
-                              
                               <select  id="inputFindDoc" class="form-select inputFindDoc" >
                                   <option selected5>
                                       Select an Option
@@ -106,50 +105,57 @@
       {{/if}}
     {{/if}}
     {{> pdfModal}}
+    {{> resourceDocModal}}
 </template>
 
 <template name="sidebar">
     <aside id="sidebar" class="sidebar mt-5">
         <ul class="sidebar-nav " id="sidebar-nav-patient">
           
-          <li id="Resource Type" class=" resource-item">
+          <li id="Resource Type">
               <i class="bi bi-grid"></i>
               <span>Resource Type</span>
           </li><!-- End Dashboard Nav -->
           
-          <li id="DocumentReference" class=" resource-item" style="{{referenceStyle}}">
-            <a class=" resource-type nav-link"   href="#">
+          <li id="DocumentReference" class="resource-item" style="{{referenceStyle}} cursor: pointer;">
+            <a class=" resource-type nav-link">
+              <!-- href="./{{resourceId}}/reference" -->
               <i class="bi bi-menu-button-wide"></i><span>Document Reference</span>
             </a>
           </li><!-- End Components Nav -->
           
-          <li id="DiagnosticReport" class=" resource-item" style="{{reportStyle}}">
-            <a class=" resource-type nav-link"  href="#">
+          <li id="DiagnosticReport" class="resource-item" style="{{reportStyle}} cursor: pointer;">
+            <a class=" resource-type nav-link" >
+              <!-- href="./{{resourceId}}/diagnostic" -->
               <i class="bi bi-journal-text"></i><span>Diagnostic Report</span>
             </a>
           </li><!-- End Forms Nav -->
     
-          <li id="Observation" class=" resource-item" style="{{observationStyle}}">
-            <a class=" resource-type nav-link "  href="#">
+          <li id="Observation" class="resource-item" style="{{observationStyle}} cursor: pointer;">
+            <a class=" resource-type nav-link ">
+              <!-- href="./{{resourceId}}/observation" -->
               <i class="bi bi-layout-text-window-reverse"></i><span>Observation</span>
             </a>
           </li><!-- End Tables Nav -->
 
-          <li id="Condition" class=" resource-item" style="{{conditionStyle}}">
-            <a class=" resource-type nav-link "  href="#">
+          <li id="Condition" class="resource-item" style="{{conditionStyle}} cursor: pointer;">
+            <a class=" resource-type nav-link " >
+              <!-- href="./{{resourceId}}/condition" -->
               <i class="bi bi-layout-text-window-reverse"></i><span>Condition</span>
             </a>
           </li><!-- End Tables Nav -->
 
-          <li id="Immunization" class=" resource-item" style="{{immunizationStyle}}">
-            <a class=" resource-type nav-link "   href="#">
+          <li id="Immunization" class="resource-item" style="{{immunizationStyle}} cursor: pointer;">
+            <a class=" resource-type nav-link ">
+              <!-- href="./{{resourceId}}/immunization" -->
               <i class="bi bi-bar-chart"></i><span>Immunization</span>
             </a>
     
           </li><!-- End Charts Nav -->
           
-          <li id="QuestionnaireResponse" class=" resource-item" style="{{questionnaireStyle}}">
-            <a class=" resource-type nav-link "   href="#">
+          <li id="QuestionnaireResponse" class="resource-item" style="{{questionnaireStyle}} cursor: pointer;">
+            <a class=" resource-type nav-link ">
+              <!-- href="./{{resourceId}}/questionnaire" -->
               <i class="bi bi-bar-chart"></i><span>Questionnaire Response</span>
             </a>
           </li><!-- End Charts Nav -->
@@ -168,7 +174,7 @@
 			</div>
 			<div class="modal-body">
         <iframe
-                src="{{currentDocPdf}}"
+                src="{{pdfDataUrl}}"
                 width="100%"
                 height="700"
                 frameborder="0"
@@ -177,6 +183,36 @@
 			<div class="modal-footer">
 			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 			  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+</template>
+
+<template name="resourceDocModal">
+	<div class="modal fade" id="resourceDocModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h1 class="modal-title fs-5" id="exampleModalLabel">Show Modal</h1>
+			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				{{#if showDocSaveModal}}
+				{{{saveDocModalData}}}
+				{{else if showDocFhirModal }}
+          <pre>
+          {{fhirDocModalData}}
+          </pre>
+          {{else if showXMLModal}}
+          <pre>
+          {{docXMLModalData}}
+          </pre>
+				{{/if}}
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			  <!-- <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button> -->
 			</div>
 		  </div>
 		</div>

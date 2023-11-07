@@ -148,10 +148,9 @@ Template.findPatient.events({
 		
         // Handle based on entry and value
         if(value === 'View FHIR') {
-			const data = JSON.stringify(this.resource)
-
+			const data = JSON.stringify(this, null, 2)
 			Session.set("fhirModalData", data);
-			console.log('Viewing details for:', this.resource);
+			console.log('Viewing details for:', this);
 			
 		  $('#searchPatientFhirModal').modal('show');
         } else if(value === 'Save in Practice') {
@@ -167,7 +166,8 @@ Template.findPatient.events({
 		const currentPatient = "Patient: " + this.resource?.name[0]?.text + " - MRN: " + this.resource?.id;
 		Session.set("currentPatientInfo", currentPatient);
 		Session.set("currentPatientID", this.resource.id);
-    	Router.go('/current-patient', {_id: this.resource.id})
+		const route = `/current-patient/${this.resource.id}`
+    	Router.go(route)
 	}
 })
 
