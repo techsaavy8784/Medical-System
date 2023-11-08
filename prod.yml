@@ -2,13 +2,14 @@ version: "3"
 
 services:
     gui:
-        image: dhf0820/uc_blaze_dhf:231020.0
+        image: uc_blaze:latest
+        #dhf0820/uc_blaze_dhf:231101.4
         ports:
-            - "3000:3000"
+            - "80:3000"
         environment:
             PORT: 3000
             APP_SOURCE_FOLDER: /opt/src
-            ROOT_URL: ${APP_ROOT_URL:-http://localhost:3000}
+            ROOT_URL: ${APP_ROOT_URL:-http://universalcharts.com:80}
             MONGO_URL: mongodb://mongo:27017/meteor
             LOGIN_BASE_URL: "http://dev.vertisoft.com:30300/api/rest/v1/"
             CORE_URL: " http://dev.vertisoft.com:30300"
