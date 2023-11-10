@@ -22,10 +22,15 @@ ENV APP_BUNDLE_FOLDER /opt/bundle
 ENV SCRIPTS_FOLDER /docker
 
 # Runtime dependencies; if your dependencies need compilation (native modules such as bcrypt) or you are using Meteor <1.8.1, use app-with-native-dependencies.dockerfile instead
-RUN apk --no-cache add \
-		bash \
-		ca-certificates
-RUN apk add --no-cache python3 py3-pip make g++
+#RUN apk --no-cache add \
+RUN apt-get update && \
+	apt-get install --assume-yes bash && \
+	apt-get install --assume-yes apt-transport-https ca-certificates && \
+	apt-get install --assume-yes --no-install-recommends build-essential bzip2 curl git libarchive-tools python3
+		#bash \
+		#ca-certificates
+RUN apt-get install --assume-yes --no-cache python3 py3-pip make g++ 
+#RUN apk add --no-cache python3 py3-pip make g++
 
 # Copy in entrypoint
 COPY --from=0 $SCRIPTS_FOLDER $SCRIPTS_FOLDER/

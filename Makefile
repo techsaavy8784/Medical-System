@@ -1,10 +1,11 @@
 TAG ?= latest
-# NS ?= dhf0820
-NS ?= lovelygru
+NS ?= dhf0820make 
+#NS ?= lovelygru
 APP_NAME := uc_blaze
 image_name := uc_blaze
 stack_config_file := uc_blaze-stack.yml
-stack_name := vertisoft
+stack_config_file80 := uc_blaze-stack80.yml
+stack_name := gui
 
 .PHONY: build run stop clean
 
@@ -18,8 +19,12 @@ push:
 deploy:
 	@docker stack deploy --compose-file $(stack_config_file) $(stack_name)
 
+deploy80:
+	@docker stack deploy --compose-file $(stack_config_file_80) $(stack_name)
+
 stop:
 	@docker stack rm $(stack_name)
+	
 
 clean:
 	@docker system prune --volumes --force
