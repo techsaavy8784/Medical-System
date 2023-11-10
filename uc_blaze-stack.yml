@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  uc_blaze:
+    image: uc_blaze:231109.10
+    ports:
+      - 5000:3000
+    deploy:
+      replicas: 1   
+    networks:
+      uc:
+networks:
+  uc:
+ 
+    
