@@ -3,7 +3,6 @@ import { Template } from "meteor/templating"
 import { Session } from "meteor/session"
 import { ReactiveVar } from "meteor/reactive-var"
 import { Meteor } from "meteor/meteor"
-import { HTTP } from 'meteor/http';
 
 const buildEndPoint = () => {
     let baseURL = Session.get("coreURL");
@@ -75,11 +74,25 @@ const setDocs = (res) => {
 }
 
 const showPdfModal = async (data) => {
-    
+    console.log("emptyPdfData", Session.get("emptyPdfData"));
+    console.log("data", data);
+    // console.log("pdfUrl", data.resource?.presentedForm[0]?.url)
     if (Session.get("isFindingDoc")) return
+    let pdfUrl = "";
+    if (!!data.resource.content || !!data.resource?.presentedForm) {
+        if (Session.get("resourceType") === "DocumentReference") {
+            pdfUrl = data.resource?.content[0]?.attachment.url;
+        } else if (Session.get("resourceType") === "DiagnosticReport") {
+            pdfUrl = data.resource?.presentedForm[0]?.url;
+        }
+    } else {
+        Session.set("emptyPdfData", true);
+        $('#docPdfModal').modal('show');
+        return;
+    }
     Session.set("isFindingDoc", true);
     console.log("isFindingDoc", Session.get("isFindingDoc"))
-    const pdfUrl = data.resource?.content[0]?.attachment.url;
+    
     console.log("pdfUrl", pdfUrl);
     
     const requestOptions = {
@@ -97,6 +110,7 @@ const showPdfModal = async (data) => {
           // window.open(pdfDataUrl, "_blank");
           
             Session.set("isFindingDoc", false);
+            Session.set("emptyPdfData", false);
             Session.set("pdfDataUrl", pdfDataUrl);
             $('#docPdfModal').modal('show');
         })
@@ -106,9 +120,9 @@ const showPdfModal = async (data) => {
 }
 
 Template.currentPatient.onCreated(function currentPatientOnCreated() {
-    // const isFindingDoc = new ReactiveVar(false)
     Session.set("isFindingDoc", false);
-    Session.set("resourceType", null);
+    Session.set("filterCount", "10");
+
 })
 
 Template.currentPatient.helpers({
@@ -132,8 +146,22 @@ Template.currentPatient.helpers({
     },
     resourceId() {
         return Template.instance().data.resourceId;
+    },
+    startDate() {
+        return Session.get("startDate");
+    },
+    endDate() {
+        return Session.get("endDate");
+    },
+    documentType(value) {
+        const documentType = Session.get("documentType") ? Session.get("documentType") : "all"
+        return documentType === value ? "selected" : "";
+    },
+    filterCount(value) {
+        const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10"
+        return filterCount === value ? "selected" : "";
     }
-})
+});
 
 
 Template.currentPatient.events({
@@ -153,10 +181,9 @@ Template.currentPatient.events({
             // alert("Delayed alert!");
             // const inputElement = instance.find("#filter-start-date");
             // inputElement.value = Session.get("startDate");
-            // instance.find(".filter-start-date").value = Session.get("startDate")
             Session.set("isFindingDoc", false);
           }, 2500);
-        console.log("query---", buildEndPoint())
+          console.log("requestURL---", buildEndPoint())
     },
     'change .filter-end-date'(event, instance) {
         Session.set("isFindingDoc", true)
@@ -165,14 +192,14 @@ Template.currentPatient.events({
         setTimeout(() => {
             Session.set("isFindingDoc", false);
           }, 2500);
-        console.log("query---", buildEndPoint())
+        console.log("requestURL---", buildEndPoint())
     },
     async 'change .filter-document-type'(event, instance) {
         event.preventDefault()
         if (Session.get("isFindingDoc")) return
         Session.set("isFindingDoc", true);
         const documentType = event.target.value;
-        Session.set("documentType",documentType)
+        Session.set("documentType", documentType)
         
         // const authToken = Session.get("headers")
         // const res = await getPatientDocs(buildEndPoint(), {
@@ -182,10 +209,10 @@ Template.currentPatient.events({
         setTimeout(() => {
             Session.set("isFindingDoc", false);
           }, 2500);
-        console.log("query---", buildEndPoint())
+        console.log("requestURL---", buildEndPoint())
     },
     async 'change .filter-patient-count'(event, instance) {
-        event.preventDefault()
+        // event.preventDefault()
         if (Session.get("isFindingDoc")) return
         Session.set("isFindingDoc", true);
         const filterCount = event.target.value;
@@ -196,7 +223,7 @@ Template.currentPatient.events({
 			Authorization: authToken,
 		});
         setDocs(res);
-        console.log("query---", buildEndPoint())
+        console.log("resourceURL---", buildEndPoint())
     },
     async 'click #textRawDoc' (event, instance) {
 
@@ -226,7 +253,19 @@ Template.currentPatient.events({
         } else if (value === "Show PDF") {
             showPdfModal(this);
         } else if (value === "Show XML") {
-            const xmlUrl = this.resource?.content[1]?.attachment.url;
+            let xmlUrl = "";
+            if (!!this.resource.content || !!this.resource?.presentedForm) {
+                if (Session.get("resourceType") === "DocumentReference") {
+                    xmlUrl = this.resource?.content[1]?.attachment.url;
+                } else if (Session.get("resourceType") === "DiagnosticReport") {
+                    xmlUrl = this.resource?.presentedForm[1]?.url;
+                }
+            } else {
+                Session.set("emptyXmlData", true);
+                $('#resourceDocModal').modal('show');
+                return;
+            }
+            // this.resource?.content[1]?.attachment.url
             console.log("xmlUrl: ----", xmlUrl);
             async function fetchAndShowXML() {
                 Session.set("isFindingDoc", true);
@@ -257,6 +296,10 @@ Template.currentPatient.events({
           fetchAndShowXML();
         }
       },
+});
+
+Template.currentPatient.onRendered( function (){
+    
 });
 
 Template.sidebar.onCreated(function sidebarOnCreated() {
@@ -295,7 +338,7 @@ Template.sidebar.events({
         clearQuery();
         Session.set("resourceType", clickedItem)
 
-        console.log("query---", buildEndPoint());
+        console.log("resourceURL---", buildEndPoint());
 
         const res = await getPatientDocs(buildEndPoint(), {
 			Authorization: authToken,
@@ -308,13 +351,22 @@ Template.sidebar.events({
 Template.pdfModal.helpers({
     pdfDataUrl() {
         return Session.get("pdfDataUrl");
+    },
+    emptyPdfData() {
+        return Session.get("emptyPdfData");
+    },
+    emptyXmlData() {
+        return Session.get("emptyXmlData");
     }
 })
 
+Template.pdfModal.onCreated(function pdfModalOnCreated() {
+    Session.set("emptyPdfData", false);
+    Session.set("emptyXmlData", false);
+})
 
-
-Template.pdfModal.onRendered(function() {
-	// const modalElement = this.find('#docPdfModal');
+Template.pdfModal.onRendered( function () {
+	// const modalElement = this.find('#do  Template.instance().find("").value = Session.get("");cPdfModal');
 	
 	// const instance = this;
 	// const parentInstance = instance.view.parentView.templateInstance();
@@ -359,8 +411,7 @@ Template.pdfModal.onRendered(function() {
     },
   })
 
-  Template.resourceDocModal.onRendered(function () {
-    
+  Template.resourceDocModal.onRendered( function () {
 	const modalElement = this.find('#resourceDocModal');
 	
 	const instance = this;
@@ -371,6 +422,9 @@ Template.pdfModal.onRendered(function() {
 		Session.set("showDocSaveModal", false);
         Session.set("showDocFhirModal", false);
         Session.set("showXMLModal", false);
+        
+        Session.set("emptyPdfData", false);
+        Session.set("emptyXmlData", false);
 	});
     console.log("currentDocPdf", this.data.currentDocPdf);
   })

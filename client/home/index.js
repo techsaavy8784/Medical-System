@@ -9,7 +9,7 @@ Template.home.onCreated(function tagLineOnCreated() {
 
     Meteor.call('getTagLine', (error, result) => {
         if (error) {
-          console.error(error);
+          // console.error(error);
           this.tagLineText.set("Network Error!");
         } else {
           if (result.statusCode == 200) {

@@ -29,33 +29,33 @@
               {{else}}
               <div class="row g-3">
                 <div class="col-md-2">
-                  <label for="inputDate" class="form-label" >Start Date</label>
+                  <label for="filter-start-date" class="form-label"  >Start Date</label>
                   <!-- <input type="text" data-bind="value: first"/> -->
-                  <input type="date" id="filter-start-date" class="form-control filter-start-date">
+                  <input type="date" id="filter-start-date" class="form-control filter-start-date" value="{{startDate}}">
                   
                 </div>
                 <div class="col-md-2">
-                  <label for="inputDate" class="form-label">End Date</label>
-                  <input type="date" id="filter-end-date" class="form-control filter-end-date">
+                  <label for="filter-end-date" class="form-label">End Date</label>
+                  <input type="date" id="filter-end-date" class="form-control filter-end-date" value="{{endDate}}">
                 </div>
                 <div class="col-md-2">
-                  <label for="inputState" class="form-label">Document Type</label>
+                  <label for="filter-document-type" class="form-label">Document Type</label>
                   <select id="filter-document-type" class="form-select filter-document-type">
-                    <option selected>All</option>
-                    <option>Rheumatology Consultation</option>
-                    <option>Progress Note Generic</option>
-                    <option>Admission Note Physician</option>
-                    <option>Neurology Progress Note</option>
+                    <option value="all" {{documentType "all"}}>All</option>
+                    <option value="rheumatology" {{documentType "rheumatology"}}>Rheumatology Consultation</option>
+                    <option value="progress" {{documentType "progress"}}>Progress Note Generic</option>
+                    <option value="admission" {{documentType "admission"}}>Admission Note Physician</option>
+                    <option value="neurology" {{documentType "neurology"}}>Neurology Progress Note</option>
                   </select>
                 </div>
                 <div class="col-md-2">
-                  <label for="inputState" class="form-label">Resource Per Page</label>
-                  <select id="filter-count" class="form-select filter-patient-count">
-                    <option >5</option>
-                    <option selected>10</option>
-                    <option>20</option>
-                    <option>50</option>
-                    <option>100</option>
+                  <label for="filter-patient-count" class="form-label">Resource Per Page</label>
+                  <select id="filter-patient-count" class="form-select filter-patient-count" value="{{filterCount}}">
+                    <option value="5" {{filterCount "5"}}>5</option>
+                    <option value="10" {{filterCount "10"}}>10</option>
+                    <option value="20" {{filterCount "20"}}>20</option>
+                    <option value="50" {{filterCount "50"}}>50</option>
+                    <option value="100" {{filterCount "100"}}>100</option>
                   </select>
                 </div>
               </div>
@@ -69,15 +69,15 @@
                 </thead>
                 <tbody>
                   {{#each currentPatientDocs}}
-                      <tr >
+                      <tr>
                           <th scope="row">{{@index}}</th>
                           <td>
                               <div id="textRawDoc" class="docDiv textRawDocs" >
                                   {{{text.div}}}
                               </div>
                           </td>
-                          <td style="width: 12%">
-                              <select  id="inputFindDoc" class="form-select inputFindDoc" >
+                          <td style="width: 185px">
+                              <select  id="inputFindDoc_{{@index}}" class="form-select inputFindDoc" >
                                   <option selected5>
                                       Select an Option
                                   </option>
@@ -173,12 +173,16 @@
 			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
+        {{#if emptyPdfData}}
+        <h5>There is no to display pdf</h5>
+        {{else}}
         <iframe
                 src="{{pdfDataUrl}}"
                 width="100%"
                 height="700"
                 frameborder="0"
               ></iframe>
+        {{/if}}
 			</div>
 			<div class="modal-footer">
 			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -205,14 +209,18 @@
           {{fhirDocModalData}}
           </pre>
           {{else if showXMLModal}}
-          <pre>
+          {{#if emptyXmlData}}
+            <h5>There is no to display</h5>
+          {{else}}
+          <pre style="white-space: pre-wrap; word-wrap: break-word;">
           {{docXMLModalData}}
           </pre>
+          {{/if}}
 				{{/if}}
 			</div>
 			<div class="modal-footer">
 			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-			  <!-- <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button> -->
+			  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
 			</div>
 		  </div>
 		</div>

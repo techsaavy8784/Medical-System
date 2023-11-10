@@ -13,8 +13,9 @@ Template.findPatient.onCreated(function findPatientOnCreated() {
 	this.searchEncounter = new ReactiveVar("")
 	this.headers = new ReactiveVar("")
 	this.resultPatients = new ReactiveVar("")
-	this.isFindLoading = new ReactiveVar(false)
-})
+	this.isFindLoading = new ReactiveVar(false);
+	Session.set("isLastName", false)
+});
 
 
 Template.findPatient.helpers({
@@ -33,6 +34,9 @@ Template.findPatient.helpers({
     isActive() {
         return Session.get("isActive") === "hospital";
     },
+	isLastName() {
+		return Session.get("isLastName")
+	}
 })
 
 
@@ -42,8 +46,9 @@ Template.findPatient.events({
 		const target = event.target
 		const lastName = target.lastName.value.toLowerCase()
 		const firstName = target.firstName.value.toLowerCase()
-
+		const birthday = target.birthday.value;
 		if (!(lastName || firstName)) {
+			
 			return
 		}
 
@@ -62,14 +67,23 @@ Template.findPatient.events({
 
 		const buildQuery = () => {
 			if (lastName && firstName) {
-				return `Patient?family=${lastName}&given=${firstName}`
+				if (!!birthday) {
+					return `Patient?family=${lastName}&given=${firstName}&birthdate=${birthday}`
+				} else {
+					return `Patient?family=${lastName}&given=${firstName}`
+				}
 			} else {
-				return `Patient?family=${lastName}`
+				if (!!birthday) {
+					return `Patient?family=${lastName}&birthdate=${birthday}`
+				} else {
+					return `Patient?family=${lastName}`
+				}
 			}
 		}
 
 		const getFindPatients = async (coreUrl, query, headers) => {
 			return new Promise(function (resolver, reject) {
+				console.log("find-patientURL", `${coreUrl}/${query}`);
 				Meteor.call(
 					"patientTestQuery",
 					`${coreUrl}/${query}`,
@@ -133,11 +147,15 @@ Template.findPatient.events({
         
 		return false
 	},
-    'submit .reset': function (event, instance) {
-        console.log("click reset-------")
+    'click .reset': function (event, instance) {
 		event.preventDefault()
         Session.set("findPatientHos", null)
         Session.set("findPatientPra", null)
+		Session.set("isLastName", false);
+		instance.find('#findLastName').value = '';
+		instance.find('#findFirstName').value = '';
+		instance.find('[name="birthday"]').value = '';
+		instance.find('#findEncounter').value = '';
     },
     'change .inputFindPatient'(event, instance) {
         // Get select element
@@ -168,7 +186,16 @@ Template.findPatient.events({
 		Session.set("currentPatientID", this.resource.id);
 		const route = `/current-patient/${this.resource.id}`
     	Router.go(route)
-	}
+	},
+	'input #findLastName'(event, template) {
+		const lastName = event.target.value;
+		// Do something with the new value
+		if (!!lastName) {
+			Session.set("isLastName", true);
+		} else {
+			Session.set("isLastName", false);
+		}
+	  },
 })
 
 
@@ -178,7 +205,7 @@ Template.searchPatientFhirModal.helpers({
 	},
 	showSaveModal() {
 		return Session.get("showSaveModal");
-	}
+	},
 })
 
 Template.searchPatientFhirModal.onRendered(function() {

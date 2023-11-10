@@ -2,7 +2,7 @@
   "name": "uc-blaze",
   "private": true,
   "scripts": {
-    "start": "meteor run",
+    "start": "meteor run --settings settings.json",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer"
@@ -11,7 +11,8 @@
     "@babel/runtime": "^7.17.9",
     "bootstrap": "^5.3.2",
     "jquery": "^3.6.0",
-    "meteor-node-stubs": "^1.2.1"
+    "meteor-node-stubs": "^1.2.1",
+    "toastify-js": "^1.12.0"
   },
   "meteor": {
     "mainModule": {

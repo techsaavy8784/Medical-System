@@ -5,12 +5,13 @@ Meteor.startup(() => {
   // code to run on server at startup
 });
 
-const baseUrl = "http://dev.vertisoft.com:30300/api/rest/v1"
+const baseUrl = Meteor.settings.public.LOGIN_BASE_URL
 
 Meteor.methods({
   loginUser: function (username, password) {
     // Make an HTTP POST request to the authorize API endpoint
-    const requestUrl = baseUrl + "/authorize";
+    const requestUrl = baseUrl + "authorize";
+    console.log("requestUrl", requestUrl)
     try {
       const response = HTTP.post(requestUrl, {
         data: {
@@ -23,7 +24,7 @@ Meteor.methods({
 
     } catch (error) {
       console.error("Error fetching tagline:", error);
-      throw new Meteor.Error('tagline-fetch-failed', 'Failed to fetch tagline');
+      throw new Meteor.Error('login', 'Network connection Error!');
     }
 
   },

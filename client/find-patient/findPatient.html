@@ -12,32 +12,56 @@
 							class="form-control"
 							id="findLastName"
 							placeholder="Last Name"
+
 						/>
-						<label id="findLastName" for="floatingName"
+						<label for="findLastName"
 							>Last Name</label
 						>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6 col-lg-3">
 					<div class="form-floating">
+						{{#if isLastName}}
 						<input
 							type="text"
 							name="firstName"
 							class="form-control"
 							id="findFirstName"
 							placeholder="First Name"
+
 						/>
-						<label for="floatingEmail">First Name</label>
+						{{else}}
+						<input
+							type="text"
+							name="firstName"
+							class="form-control"
+							id="findFirstName"
+							placeholder="First Name"
+							disabled
+						/>
+						{{/if}}
+						<label for="findFirstName">First Name</label>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6 col-lg-3">
 					<div class="form-floating">
+						{{#if isLastName}}
 						<input
+							id="birthday"
 							type="date"
 							name="birthday"
 							class="form-control"
 						/>
-						<label for="inputDate" class="col-form-label"
+						{{else}}
+						<input
+							id="birthday"
+							type="date"
+							name="birthday"
+							class="form-control"
+							disabled
+						/>
+						{{/if}}
+						<label for="birthday" class="col-form-label"
 							>Date</label
 						>
 					</div>
@@ -51,7 +75,7 @@
 							id="findEncounter"
 							placeholder="Encounter"
 						/>
-						<label for="floatingEmail">Encounter</label>
+						<label for="findEncounter">Encounter</label>
 					</div>
 				</div>
 				<!-- <div class="col-xs-12 col-sm-6 col-lg-3">
@@ -79,6 +103,7 @@
               </div>
             </div> -->
 				<div class="col-xs-12 text-end">
+					{{#if isLastName}}
 					<button
 						type="submit"
 						class="btn btn-primary search-patient"
@@ -86,6 +111,16 @@
 						Search
 					</button>
 					<button class="btn btn-secondary reset">Reset</button>
+					{{else}}
+					<button
+						type="submit"
+						class="btn btn-primary search-patient"
+						disabled
+					>
+						Search
+					</button>
+					<button class="btn btn-secondary reset" disabled>Reset</button>
+					{{/if}}
 				</div>
 			</form>
 		</div>
@@ -120,7 +155,7 @@
 							<tbody>
                                 {{#if isActive}}
                                     {{#each findPatientHos}}
-                                        <tr >
+                                        <tr>
                                             <th scope="row">{{@index}}</th>
                                             <td>
                                                 <div class="patientDiv textRawPatient" >
@@ -129,7 +164,7 @@
                                             </td>
                                             <td style="width: 10%">
                                                 
-                                                <select  id="inputFindPatient" class="form-select inputFindPatient" >
+                                                <select  id="inputFindPatient_{{@index}}" class="form-select inputFindPatient" >
                                                     <option selected5>
                                                         Select an Option
                                                     </option>
@@ -154,7 +189,7 @@
 									</td>
 									<td style="width: 10%">
 										<select
-											id="inputFindPatient"
+											id="inputFindPatient_{{@index}}"
 											class="form-select inputFindPatient"
 										>
 											<option selected>

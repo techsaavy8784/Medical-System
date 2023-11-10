@@ -1,0 +1,10 @@
+{
+    "public": {
+      "ROOT_URL": "http://localhost:3000",
+      "LOGIN_BASE_URL": "http://dev.vertisoft.com:30300/api/rest/v1/",
+      "CORE_URL" : "http://dev.vertisoft.com:30300"
+    },
+    "private": {
+      "MONGO_URL": "mongodb://localhost:27017/uc-blaze"
+    }
+  }
