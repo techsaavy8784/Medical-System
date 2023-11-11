@@ -56,6 +56,8 @@ const getPatientDocs = async (url, headers) => {
     }).catch((error) => {
         // show error on screen
         Session.set("getPatientDocs", null)
+        Session.set("isFindingDoc", false)
+        alert("Error: " + "resourceType: " + error.error.response.data.resourceType)
         // alert("Error: " + "There is no Search Result")
     })
 }

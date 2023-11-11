@@ -102,7 +102,8 @@ Template.findPatient.events({
 			}).catch((error) => {
 				// show error on screen
                 Session.set("findPatientPra", null)
-				instance.isFindLoading.set(false)
+				// instance.isFindLoading.set(false)
+				// alert("Error: " + "resourceType: " + JSON.stringify(error.message))
 				// alert("Error: " + "There is no Search Result")
                 
 			})
