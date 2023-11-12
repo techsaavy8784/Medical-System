@@ -1,0 +1,15 @@
+
+version: "3.7"
+
+services:
+  uc-blaze_3000:
+    image: uc_blaze:${TAG}
+    build:
+      context: .
+      args:
+        TAG: ${TAG}
+      dockerfile: Dockerfile.new
+    ports:
+      - 3000:3000
+    #deploy:
+      #replicas: 1   

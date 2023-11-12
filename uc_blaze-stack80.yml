@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  blaze_80:
+    image: dhf0820/uc_blaze:231109.0
+    ports:
+      - 80:3000
+    deploy:
+      replicas: 1   
+    networks:
+      uc:
+networks:
+  uc:

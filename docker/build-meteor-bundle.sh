@@ -12,4 +12,5 @@ mkdir --parents $APP_BUNDLE_FOLDER
 
 cd $APP_SOURCE_FOLDER
 npm install --production
-meteor build --directory $APP_BUNDLE_FOLDER --settings settings.json --server-only --architecture os.linux.x86_64
+#meteor build --directory $APP_BUNDLE_FOLDER --settings settings.json --server-only --architecture os.linux.x86_64
+meteor build --directory $APP_BUNDLE_FOLDER  --server-only --architecture os.linux.x86_64
