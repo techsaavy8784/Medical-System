@@ -19,7 +19,7 @@ Meteor.methods({
           password: password
         }
       });
-
+      console.log("loginResponse: ", response.data);
       return response.data;
 
     } catch (error) {
@@ -35,6 +35,8 @@ Meteor.methods({
     try {
       const res = HTTP.get(requestUrl);
       // const { data } = res;
+      console.log("requestUrl", requestUrl);
+      console.log("tagLineResponse: ", res);
       return res;
     } catch (error) {
       console.error("Error fetching tagline:", error);
@@ -45,9 +47,10 @@ Meteor.methods({
     console.log("patientTestQuery")
     try {
       console.log("patientTestQuery-url:", url)
-      console.log("patientTestQuery-headers : ", headers);
+      
       const response = await HTTP.get(url, { headers });
       
+      console.log("testResponse: ", response.data)
       const { data } = response;
       data.bundle.entry = data.bundle.entry.map(e => {
         let title = data.resourceType;
@@ -60,7 +63,7 @@ Meteor.methods({
         e.resource.text.div = e.resource.text.div.split(`<p><b>${title}</b></p>`).join("")
         return {...e, text: e.resource.text}
         });
-      console.log("Response data: ", data.bundle.entry[0]);
+        
       return data;
     } catch (e) {
       console.log("ERROR ", e);
