@@ -31,7 +31,7 @@ Meteor.methods({
   getTagLine: function() {
     // Make an HTTP GET request to the getTagLine API endpoint
     
-    const requestUrl = baseUrl + "/TagLine";
+    const requestUrl = baseUrl + "TagLine";
     try {
       const res = HTTP.get(requestUrl);
       // const { data } = res;
