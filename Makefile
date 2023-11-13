@@ -1,5 +1,5 @@
 TAG ?= latest
-NS ?= dhf0820make 
+NS ?= dhf0820 
 #NS ?= lovelygru
 APP_NAME := uc_blaze
 image_name := uc_blaze
@@ -12,8 +12,9 @@ stack_name := gui
 build:
 	@docker compose build --build-arg TAG=$(TAG) --build-arg METEOR_DISABLE_OPTIMISTIC_CACHING=1
 
-push:
+tagIt:
 	@docker image tag $(image_name):$(TAG) $(NS)/$(image_name):$(TAG)
+push:
 	@docker image push $(NS)/$(image_name):$(TAG)
 
 deploy:

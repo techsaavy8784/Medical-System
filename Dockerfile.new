@@ -21,7 +21,9 @@ RUN curl https://install.meteor.com/ | sh
 
 # Install app dependencies
 RUN  meteor npm install
+RUN meteor npm install --save bootstrap
 RUN meteor npm install --save @babel/runtime
+#RUN meteor npm install --save @babel/runtime bootstrap
 # Create app directory
 RUN mkdir -p /app/${APP_NAME}
 WORKDIR /app/${APP_NAME}
@@ -33,4 +35,4 @@ COPY . /app/${APP_NAME}
 EXPOSE ${PORT}
 
 # Start the app
-CMD ["meteor", "run", "--allow-superuser"]
+CMD ["meteor", "run", "--settings package.json --allow-superuser"]
