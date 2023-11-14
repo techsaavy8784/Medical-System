@@ -2,9 +2,9 @@ version: "3"
 
 services:
   blaze_3000:
-    image: dhf0820/uc_blaze:231111.0
+    image: lovelygru/uc_blaze:231113.10
     ports:
-      - 3400:3000
+      - 3000:3000
     deploy:
       replicas: 1   
     networks:
