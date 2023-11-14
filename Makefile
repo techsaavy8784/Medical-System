@@ -1,6 +1,6 @@
 TAG ?= latest
-NS ?= dhf0820make 
-#NS ?= lovelygru
+NS ?= dhf0820
+# NS ?= lovelygru
 APP_NAME := uc_blaze
 image_name := uc_blaze
 stack_config_file := uc_blaze-stack.yml
