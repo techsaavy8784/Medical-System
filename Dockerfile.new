@@ -20,17 +20,19 @@ RUN apt-get install procps
 RUN curl https://install.meteor.com/ | sh
 
 # Install app dependencies
-RUN  meteor npm install
-RUN meteor npm install --save @babel/runtime
+RUN meteor npm install
+RUN meteor npm install --save @babel/runtime bootstrap
 # Create app directory
 RUN mkdir -p /app/${APP_NAME}
 WORKDIR /app/${APP_NAME}
 
 # Bundle app source
+# Copy the package.json and package-lock.json files to the container
+COPY package*.json ./
 COPY . /app/${APP_NAME}
 
 # Expose the app port
 EXPOSE ${PORT}
 
 # Start the app
-CMD ["meteor", "run", "--allow-superuser"]
+CMD ["meteor", "--settings", "settings.json", "--port", "3000", "--allow-superuser"]
