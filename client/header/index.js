@@ -79,8 +79,6 @@ Template.header.helpers({
 });
 
 
-
-
   Template.header.events({
     'click .btn-logout': function(event) {
       event.preventDefault();

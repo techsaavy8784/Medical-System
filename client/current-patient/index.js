@@ -97,28 +97,30 @@ const showPdfModal = async (data) => {
     
     console.log("pdfUrl", pdfUrl);
     
-    const requestOptions = {
+    const requestOptions  = {
         method: 'GET',
         headers: {
             Accept: "application/pdf"
         },
         redirect: 'follow',
       };
-      fetch(pdfUrl, requestOptions)
-        .then((response) => response.blob())
-        .then((blob) => {
-  
-          const pdfDataUrl = URL.createObjectURL(blob);
-          // window.open(pdfDataUrl, "_blank");
-          
-            Session.set("isFindingDoc", false);
-            Session.set("emptyPdfData", false);
-            Session.set("pdfDataUrl", pdfDataUrl);
-            $('#docPdfModal').modal('show');
-        })
-        .catch((error) => {
-            console.log('fetchPDF', error);
-        });
+      try {
+        const response = await fetch(pdfUrl, requestOptions);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch PDF: ${response.status} ${response.statusText}`);
+        }
+        
+        const blob = await response.blob();
+        const pdfDataUrl = URL.createObjectURL(blob);
+        
+        Session.set("isFindingDoc", false);
+        Session.set("emptyPdfData", false);
+        Session.set("pdfDataUrl", pdfDataUrl);
+        $('#docPdfModal').modal('show');
+      } catch (error) {
+        console.log('fetchPDF', error);
+        // Handle the error as needed
+      }
 }
 
 Template.currentPatient.onCreated(function currentPatientOnCreated() {
@@ -238,7 +240,8 @@ Template.currentPatient.events({
         // Get selected value
         const value = select.value;
 		console.log("value", value);
-		
+        console.log("selectedDoc", this);
+		Session.set("selectedDoc", this);
         // Handle based on entry and value
         if(value === 'FHIR') {
 			const data = JSON.stringify(this, null, 2);
@@ -380,9 +383,6 @@ Template.pdfModal.onRendered( function () {
     // console.log("currentDocPdf", this.data.currentDocPdf);
   });
 
-  Template.resourceDocModal.events({    
-  })
-
   
   Template.resourceDocModal.onCreated(function resourceOnCreated(){
     Session.set("showDocSaveModal", false);
@@ -390,6 +390,43 @@ Template.pdfModal.onRendered( function () {
     Session.set("showXMLModal", false);
     
   })
+
+  Template.resourceDocModal.events({
+    async 'click .save-doc-data'(event, instance) {
+        event.preventDefault();
+        const canSave = Session.get("showDocSaveModal");
+        const url = Session.get("coreURL").replace("30300", "30100") + "Patient";
+        const patientId = Session.get("currentPatientID");
+        const resourceType = Session.get("resourceType");
+		const destSystemId = Session.get("practices")[0].systems[0].id;
+		const srcSystemId = Session.get("facilities")[0].systems[0].id;
+        const srcResource = Session.get("selectedDoc").text.div;
+        const srcResourceId = Session.get("selectedDoc").resource.id;
+		const body = {
+			"ResourceType": resourceType,
+			"DestPatientId": patientId,
+			"SrcResourceId ": srcResourceId,
+			"DestSystemId": destSystemId,
+			"SrcSystemId": srcSystemId,
+			"SrcResource": srcResource
+		}
+        
+		const token = Session.get("headers");
+        if (canSave) {
+			console.log("save button is clicked.")
+			Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
+				if (error) {
+				  console.log("error", error);
+				  alert("ERROR !" + error?.reason.response?.data.issue[0].details.text)
+				} else {
+					console.log("result: ", result)
+					alert("Success saving Patient: " + result.data.issue[0].details.text)
+				}
+			  });
+		}
+    }
+})
+
 
   Template.resourceDocModal.helpers({
     showDocSaveModal() {

@@ -61,7 +61,7 @@ Template.login.onCreated(function loginOnCreated() {
                 
               } else {
                   if (result.status == 200) {
-                  
+                  console.log("loginResponse: ", result);
                   isLogin.set(true);
                   instance.userInfo.set(result);
                   instance.isLogging.set(false);
