@@ -84,8 +84,8 @@ Meteor.methods({
       console.log("saveResponse: ", res);
       return res;
     } catch (error) {
-      console.error("Error fetching tagline:", error);
-      throw new Meteor.Error('tagline-fetch-failed', error);
+      console.error("Error saving patient in practice!", error);
+      throw new Meteor.Error('Error saving patient in practice!', error);
     }
   },
 });
