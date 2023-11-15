@@ -230,7 +230,6 @@ Template.searchPatientFhirModal.events({
 		const body = {
 			"ResourceType": "Patient",
 			"DestPatientId": patientId,
-			"SrcResourceId": "",
 			"DestSystemId": destSystemId,
 			"SrcSystemId": srcSystemId,
 			"SrcResource": srcResource
