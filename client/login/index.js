@@ -21,13 +21,9 @@ Template.login.onCreated(function loginOnCreated() {
     isLogin() {
         return isLogin.get();
     },
-    
     isLogging() {
         return Template.instance().isLogging.get();
     }
-    // username() {
-    //   return Template.instance().counter.get();
-    // },
   });
   
   Template.login.events({
@@ -39,13 +35,6 @@ Template.login.onCreated(function loginOnCreated() {
         const password = target.password.value.toLowerCase();
         
         if (!(username && password)) {
-          // Toastify({
-          //   text: 'Input all field values',
-          //   duration: 3000,
-          //   gravity: 'top', // Adjust as per your preference
-          //   position: 'right', // Adjust as per your preference
-          //   backgroundColor: 'red',
-          // }).showToast();
           alert('Input all field values!')
           return;
         }
@@ -61,7 +50,7 @@ Template.login.onCreated(function loginOnCreated() {
                 
               } else {
                   if (result.status == 200) {
-                  
+                  console.log("loginResponse: ", result);
                   isLogin.set(true);
                   instance.userInfo.set(result);
                   instance.isLogging.set(false);

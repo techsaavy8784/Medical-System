@@ -9,10 +9,8 @@ import './header.html'
 
 const activeHopital = () => {
     const facilities = Session.get("facilities");
-    // console.log("facilities", facilities)
     if (facilities?.length) {
         const activeText = facilities[0].facilityName + "/" + facilities[0].systems[0].name;
-        // console.log("Session.isActive", activeText)
         return activeText;
     }
 }
@@ -32,7 +30,6 @@ Template.header.helpers({
     activeHosPra() {
         if (Session.get("isActive") === "hospital") {
             const activeText = activeHopital();
-
             return activeText;
         } else if (Session.get("isActive") === "practice") {
             const activeText = activePractice();
@@ -79,8 +76,6 @@ Template.header.helpers({
 });
 
 
-
-
   Template.header.events({
     'click .btn-logout': function(event) {
       event.preventDefault();
@@ -92,13 +87,11 @@ Template.header.helpers({
         
     },
     'click .click-Hospital': function(event) {
-        // event.target.classList.add('nav-link active click-Hospital');
         Session.set("isActive", "hospital")
         const facility = Session.get("facilities")[0]
         Session.set("coreURL", facility.systems[0].coreUrl)
     },
     'click .click-Practice': function(event) {
-        // event.target.classList.add('nav-link click-Practice active');
         Session.set("isActive", "practice")
         const practice = Session.get("practices")[0]
         Session.set("coreURL", practice.systems[0].coreUrl)

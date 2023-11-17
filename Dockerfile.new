@@ -11,8 +11,12 @@ FROM geoffreybooth/meteor-base:2.13.3
 
 # Set environment variables
 ENV APP_NAME=uc-blaze
-ENV ROOT_URL=http://universalcharts.com
+# ENV ROOT_URL=https://universalcharts.com
+ENV ROOT_URL=https://ucblaze.com
+
 ENV PORT=3000
+ENV METEOR_ALLOW_SUPERUSER=1
+ENV METEOR_DISABLE_OPTIMISTIC_CACHING=1
 # Install ps command
 RUN apt-get update
 RUN apt-get install procps
@@ -21,18 +25,23 @@ RUN curl https://install.meteor.com/ | sh
 
 # Install app dependencies
 RUN  meteor npm install
-RUN meteor npm install --save bootstrap
 RUN meteor npm install --save @babel/runtime
-#RUN meteor npm install --save @babel/runtime bootstrap
 # Create app directory
 RUN mkdir -p /app/${APP_NAME}
 WORKDIR /app/${APP_NAME}
 
 # Bundle app source
+# Copy the package.json and package-lock.json files to the container
+COPY package*.json ./
 COPY . /app/${APP_NAME}
+
+# Install app dependencies
+RUN meteor npm install
+RUN meteor npm install --save @babel/runtime bootstrap
+RUN chmod -R 700 /app/${APP_NAME}/.meteor/local
 
 # Expose the app port
 EXPOSE ${PORT}
 
 # Start the app
-CMD ["meteor", "run", "--settings package.json --allow-superuser"]
+CMD ["meteor", "run", "--allow-superuser"]

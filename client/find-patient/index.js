@@ -5,6 +5,7 @@ import { Meteor } from "meteor/meteor"
 import { ReactiveVar } from "meteor/reactive-var"
 import { Session } from "meteor/session"
 import { Router } from "meteor/iron:router"
+import {generateUniqueId} from "../utils/patientID"
 
 Template.findPatient.onCreated(function findPatientOnCreated() {
 	this.searchLastName = new ReactiveVar("")
@@ -36,7 +37,7 @@ Template.findPatient.helpers({
     },
 	isLastName() {
 		return Session.get("isLastName")
-	}
+	},
 })
 
 
@@ -47,8 +48,8 @@ Template.findPatient.events({
 		const lastName = target.lastName.value.toLowerCase()
 		const firstName = target.firstName.value.toLowerCase()
 		const birthday = target.birthday.value;
+
 		if (!(lastName || firstName)) {
-			
 			return
 		}
 
@@ -83,7 +84,7 @@ Template.findPatient.events({
 
 		const getFindPatients = async (coreUrl, query, headers) => {
 			return new Promise(function (resolver, reject) {
-				console.log("find-patientURL", `${coreUrl}/${query}`);
+				console.log("find-patientURL", `${coreUrl}${query}`);
 				Meteor.call(
 					"patientTestQuery",
 					`${coreUrl}/${query}`,
@@ -164,7 +165,8 @@ Template.findPatient.events({
         // Get selected value
         const value = select.value;
 		console.log("value", value);
-		
+		console.log("click---", this);
+		Session.set("selectedPatientInfo", this);
         // Handle based on entry and value
         if(value === 'View FHIR') {
 			const data = JSON.stringify(this, null, 2)
@@ -196,7 +198,7 @@ Template.findPatient.events({
 		} else {
 			Session.set("isLastName", false);
 		}
-	  },
+	},
 })
 
 
@@ -209,6 +211,46 @@ Template.searchPatientFhirModal.helpers({
 	},
 })
 
+
+Template.searchPatientFhirModal.events({
+	async 'click .fhir-data-save'(event, instance) {
+        event.preventDefault();
+		const canSave = Session.get("showSaveModal");
+		// const url = Session.get("coreURL").replace("30300", "30100") + "Patient";
+		const url = Session.get("coreURL") + "Patient";
+		// const patientId = Session.get("currentPatientID");
+		const patientId = generateUniqueId(5);
+		// const resourceId = 
+		// const patientName = Session.get("selectedPatientInfo").resource.name[0].text;
+		const destSystemId = Session.get("practices")[0].systems[0].id;
+		const srcSystemId = Session.get("facilities")[0].systems[0].id;
+		const srcResource = Session.get("selectedPatientInfo").resource;
+		
+		const body = {
+			"ResourceType": "Patient",
+			"DestPatientId": patientId,
+			"destSystemId": destSystemId,
+			"SrcResource": srcResource
+		}
+		console.log("payload", body);
+		const token = Session.get("headers");
+		if (canSave) {
+			console.log("save button is clicked.")
+			Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
+				if (error) {
+				  console.log("error", error);
+				  alert("ERROR !" + error?.reason.response?.data?.issue[0].details.text)
+				} else {
+					console.log("result: ", result)
+					alert("Success saving patient: " + result?.data?.issue[0].details.text)
+				}
+			  });
+		}
+    }
+});
+
+
+
 Template.searchPatientFhirModal.onRendered(function() {
 	const modalElement = this.find('#searchPatientFhirModal');
 	
@@ -218,6 +260,6 @@ Template.searchPatientFhirModal.onRendered(function() {
     	const selectElement = parentInstance.find('.inputFindPatient');
 	  $(selectElement).val('Select an Option');
 		Session.set("showSaveModal", false);
-
+		console.log("modal is hidden.")
 	});
   });
