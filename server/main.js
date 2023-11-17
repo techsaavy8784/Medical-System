@@ -6,7 +6,7 @@ Meteor.startup(() => {
 });
 
 const baseUrl = Meteor.settings.public.LOGIN_BASE_URL
-const saveCoreUrl = Meteor.settings.public.SAVE_CORE_URL
+// const saveCoreUrl = Meteor.settings.public.SAVE_CORE_URL
 
 Meteor.methods({
   loginUser: function (username, password) {

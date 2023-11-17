@@ -187,6 +187,7 @@ Template.findPatient.events({
 		const currentPatient = "Patient: " + this.resource?.name[0]?.text + " - MRN: " + this.resource?.id;
 		Session.set("currentPatientInfo", currentPatient);
 		Session.set("currentPatientID", this.resource.id);
+		Session.set("currentPatientName", this.resource?.name[0]?.text);
 		const route = `/current-patient/${this.resource.id}`
     	Router.go(route)
 	},
@@ -218,20 +219,30 @@ Template.searchPatientFhirModal.events({
 		const canSave = Session.get("showSaveModal");
 		// const url = Session.get("coreURL").replace("30300", "30100") + "Patient";
 		const url = Session.get("coreURL") + "Patient";
-		// const patientId = Session.get("currentPatientID");
-		const patientId = generateUniqueId(5);
+		const patientId = Session.get("currentPatientID");
+		// const patientId = generateUniqueId(5);
 		// const resourceId = 
 		// const patientName = Session.get("selectedPatientInfo").resource.name[0].text;
 		const destSystemId = Session.get("practices")[0].systems[0].id;
-		const srcSystemId = Session.get("facilities")[0].systems[0].id;
+		// const srcSystemId = Session.get("facilities")[0].systems[0].id;
 		const srcResource = Session.get("selectedPatientInfo").resource;
-		
+		// const patientName = Session.get("selectedPatientInfo").resource?.name[0]?.text;
 		const body = {
 			"ResourceType": "Patient",
 			"DestPatientId": patientId,
 			"destSystemId": destSystemId,
 			"SrcResource": srcResource
 		}
+
+		// const body = {
+		// 	"resourceType": "DiagnosticReport",
+		// 	"destPatientId": patientId,
+        //     "destPatientName": patientName,
+		// 	"destSystemId": destSystemId,
+        //     "srcResourceId": "197369077",
+		// 	"SrcResource": srcResource
+		// }
+
 		console.log("payload", body);
 		const token = Session.get("headers");
 		if (canSave) {

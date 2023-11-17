@@ -365,15 +365,18 @@ Template.pdfModal.onCreated(function pdfModalOnCreated() {
         const canSave = Session.get("showDocSaveModal");
         const url = Session.get("coreURL").replace("30300", "30100") + "Patient";
         const patientId = Session.get("currentPatientID");
+        const patientName = Session.get("currentPatientName");
         const resourceType = Session.get("resourceType");
-		// const destSystemId = Session.get("practices")[0].systems[0].id;
+		const destSystemId = Session.get("practices")[0].systems[0].id;
 		// const srcSystemId = Session.get("facilities")[0].systems[0].id;
-        const srcResource = Session.get("selectedDoc").text.div;
+        const srcResource = Session.get("selectedDoc").resource;
         // const srcResourceId = Session.get("selectedDoc").resource.id;
 		const body = {
-			"ResourceType": resourceType,
-			"DestPatientId": patientId,
-			"DestSystemId": "62f1c76bb3070d0b40e7aac2",
+			"resourceType": resourceType,
+			"destPatientId": patientId,
+            "destPatientName": patientName,
+			"destSystemId": destSystemId,
+            "srcResourceId": "",
 			"SrcResource": srcResource
 		}
         console.log("payload", body);
