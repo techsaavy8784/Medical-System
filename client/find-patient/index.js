@@ -38,7 +38,6 @@ Template.findPatient.helpers({
 	isLastName() {
 		return Session.get("isLastName")
 	},
-
 })
 
 
@@ -220,18 +219,17 @@ Template.searchPatientFhirModal.events({
 		// const url = Session.get("coreURL").replace("30300", "30100") + "Patient";
 		const url = Session.get("coreURL") + "Patient";
 		// const patientId = Session.get("currentPatientID");
-		const patientId = generateUniqueId(6);
+		const patientId = generateUniqueId(5);
 		// const resourceId = 
 		// const patientName = Session.get("selectedPatientInfo").resource.name[0].text;
 		const destSystemId = Session.get("practices")[0].systems[0].id;
 		const srcSystemId = Session.get("facilities")[0].systems[0].id;
-		const srcResource = Session.get("selectedPatientInfo").text.div;
+		const srcResource = Session.get("selectedPatientInfo").resource;
 		
 		const body = {
 			"ResourceType": "Patient",
 			"DestPatientId": patientId,
-			"DestSystemId": destSystemId,
-			"SrcSystemId": srcSystemId,
+			"destSystemId": destSystemId,
 			"SrcResource": srcResource
 		}
 		console.log("payload", body);
@@ -241,10 +239,10 @@ Template.searchPatientFhirModal.events({
 			Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
 				if (error) {
 				  console.log("error", error);
-				  alert("ERROR !" + error?.reason.response?.data.issue[0].details.text)
+				  alert("ERROR !" + error?.reason.response?.data?.issue[0].details.text)
 				} else {
 					console.log("result: ", result)
-					alert("Success saving patient: " + result?.data)
+					alert("Success saving patient: " + result?.data?.issue[0].details.text)
 				}
 			  });
 		}
