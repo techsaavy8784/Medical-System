@@ -12,7 +12,7 @@ FROM geoffreybooth/meteor-base:2.13.3
 # Set environment variables
 ENV APP_NAME=uc-blaze
 # ENV ROOT_URL=https://universalcharts.com
-ENV ROOT_URL=https://localhost
+ENV ROOT_URL=https://ucblaze.com
 
 ENV PORT=3000
 ENV METEOR_ALLOW_SUPERUSER=1
