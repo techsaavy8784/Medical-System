@@ -1,8 +1,10 @@
 version: "3"
 
 services:
+
   blaze_3400:
-    image: dhf0820/uc_blaze:231112.3
+    image: dhf0820/uc_blaze:231112.6
+
     ports:
       - 3400:3000
     deploy:
