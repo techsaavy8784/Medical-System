@@ -1,8 +1,11 @@
 version: "3"
 
 services:
+
   blaze_3000:
-    image: lovelygru/uc_blaze:231113.10
+    image: dhf0820/uc_blaze:231117.0
+#  blaze_3000:
+#    image: lovelygru/uc_blaze:231117.1
     ports:
       - 3000:3000
     deploy:
