@@ -57,7 +57,7 @@ const getPatientDocs = async (url, headers) => {
         // show error on screen
         Session.set("getPatientDocs", null)
         Session.set("isFindingDoc", false)
-        alert("Error: " + "resourceType: " + error.error.response.data.resourceType)
+        alert("Error: " + "resourceType: " + error.error.response?.data?.resourceType)
         // alert("Error: " + "There is no Search Result")
     })
 }
@@ -363,7 +363,7 @@ Template.pdfModal.onCreated(function pdfModalOnCreated() {
     async 'click .save-doc-data'(event, instance) {
         event.preventDefault();
         const canSave = Session.get("showDocSaveModal");
-        const url = Session.get("coreURL").replace("30300", "30100") + "Patient";
+        const url = Session.get("coreURL") + "Patient";
         const patientId = Session.get("currentPatientID");
         const patientName = Session.get("currentPatientName");
         const resourceType = Session.get("resourceType");
@@ -376,7 +376,7 @@ Template.pdfModal.onCreated(function pdfModalOnCreated() {
 			"destPatientId": patientId,
             "destPatientName": patientName,
 			"destSystemId": destSystemId,
-            "srcResourceId": "",
+            "srcResourceId": "197369077",
 			"SrcResource": srcResource
 		}
         console.log("payload", body);
@@ -386,10 +386,10 @@ Template.pdfModal.onCreated(function pdfModalOnCreated() {
 			Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
 				if (error) {
 				  console.log("error", error);
-				  alert("ERROR !" + error?.reason.response?.data.issue[0].details.text)
+				  alert("ERROR !" + error?.reason.response?.data?.issue[0].details.text)
 				} else {
 					console.log("result: ", result)
-					alert("Success saving Patient: " + result.data.issue[0].details.text)
+					alert("Success saving Patient: " + result.data?.issue[0].details.text)
 				}
 			  });
 		}

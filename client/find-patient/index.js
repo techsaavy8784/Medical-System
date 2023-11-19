@@ -219,14 +219,15 @@ Template.searchPatientFhirModal.events({
 		const canSave = Session.get("showSaveModal");
 		// const url = Session.get("coreURL").replace("30300", "30100") + "Patient";
 		const url = Session.get("coreURL") + "Patient";
-		const patientId = Session.get("currentPatientID");
-		// const patientId = generateUniqueId(5);
+		// const patientId = Session.get("currentPatientID");
+		const patientId = generateUniqueId(5);
 		// const resourceId = 
-		// const patientName = Session.get("selectedPatientInfo").resource.name[0].text;
+		const patientName = Session.get("selectedPatientInfo").resource.name[0].text;
 		const destSystemId = Session.get("practices")[0].systems[0].id;
 		// const srcSystemId = Session.get("facilities")[0].systems[0].id;
 		const srcResource = Session.get("selectedPatientInfo").resource;
 		// const patientName = Session.get("selectedPatientInfo").resource?.name[0]?.text;
+
 		const body = {
 			"ResourceType": "Patient",
 			"DestPatientId": patientId,

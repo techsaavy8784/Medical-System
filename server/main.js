@@ -53,7 +53,7 @@ Meteor.methods({
       
       console.log("testResponse: ", response.data)
       const { data } = response;
-      data.bundle.entry = data.bundle.entry.map(e => {
+      data.bundle.entry = data.bundle?.entry.map(e => {
         let title = data.resourceType;
         if (data.resourceType === "DocumentReference") {
           title = "Document Reference"
