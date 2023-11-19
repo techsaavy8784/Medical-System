@@ -14,7 +14,6 @@ Template.findPatient.onCreated(function findPatientOnCreated() {
 	this.searchEncounter = new ReactiveVar("")
 	this.headers = new ReactiveVar("")
 	this.resultPatients = new ReactiveVar("")
-	this.isFindLoading = new ReactiveVar(false);
 	Session.set("isLastName", false)
 });
 
@@ -30,20 +29,66 @@ Template.findPatient.helpers({
 		return Session.get("findPatientPra")?.patients
 	},
 	isFindLoading() {
-		return Template.instance().isFindLoading.get()
+		return Session.get("isFindLoading")
 	},
     isActive() {
         return Session.get("isActive") === "hospital";
     },
+})
+
+
+Template.findPatient.events({
+    'change .inputFindPatient'(event, instance) {
+        // Get select element
+        const select = event.target;
+        // Get selected value
+        const value = select.value;
+		console.log("value", value);
+		console.log("click---", this);
+		Session.set("selectedPatientInfo", this);
+        // Handle based on entry and value
+        if(value === 'View FHIR') {
+			const data = JSON.stringify(this, null, 2)
+			Session.set("fhirModalData", data);
+			console.log('Viewing details for:', this);
+			
+		  $('#searchPatientFhirModal').modal('show');
+        } else if(value === 'Save in Practice') {
+			// const data = JSON.stringify(this.resource)
+			Session.set("showSaveModal", true);
+			Session.set("fhirModalData", this.resource.text.div);
+			console.log('Viewing details for:', this.resource);
+			
+		  $('#searchPatientFhirModal').modal('show');
+        } else if (value === 'Follow Patient') {
+			$('#saveResourceModal').modal('show');
+		}
+      },
+	'click .textRawPatient' (event, instance) {
+		const currentPatient = "Patient: " + this.resource?.name[0]?.text + " - MRN: " + this.resource?.id;
+		Session.set("currentPatientInfo", currentPatient);
+		Session.set("currentPatientID", this.resource.id);
+		Session.set("currentPatientName", this.resource?.name[0]?.text);
+		const route = `/current-patient/${this.resource.id}`
+    	Router.go(route)
+	},
+	'click .btn-show-search-modal' (event, instance) {
+		$('#searchPatientModal').modal('show');
+	}
+})
+
+Template.searchPatientModal.helpers({
 	isLastName() {
 		return Session.get("isLastName")
 	},
 })
 
-
-Template.findPatient.events({
+Template.searchPatientModal.events({
+	
 	async "submit .search-patient-form"(event, instance) {
 		event.preventDefault()
+		$('#searchPatientModal').modal('hide');
+
 		const target = event.target
 		const lastName = target.lastName.value.toLowerCase()
 		const firstName = target.firstName.value.toLowerCase()
@@ -53,7 +98,7 @@ Template.findPatient.events({
 			return
 		}
 
-		instance.isFindLoading.set(true)
+		Session.set("isFindLoading", true)
 		const isActive = Session.get("isActive")
 		const facility = Session.get("facilities")[0]
 		const practice = Session.get("practices")[0]
@@ -103,7 +148,7 @@ Template.findPatient.events({
 			}).catch((error) => {
 				// show error on screen
                 Session.set("findPatientPra", null)
-				// instance.isFindLoading.set(false)
+				// Session.set("isFindLoading", false)
 				// alert("Error: " + "resourceType: " + JSON.stringify(error.message))
 				// alert("Error: " + "There is no Search Result")
                 
@@ -114,7 +159,7 @@ Template.findPatient.events({
 		})
 		console.log("res", res)
         
-		instance.isFindLoading.set(false)
+		Session.set("isFindLoading", false)
 		if (isActive === "hospital") {
             if (res) {
                 Session.set("findPatientHos", {
@@ -159,38 +204,6 @@ Template.findPatient.events({
 		instance.find('[name="birthday"]').value = '';
 		instance.find('#findEncounter').value = '';
     },
-    'change .inputFindPatient'(event, instance) {
-        // Get select element
-        const select = event.target;
-        // Get selected value
-        const value = select.value;
-		console.log("value", value);
-		console.log("click---", this);
-		Session.set("selectedPatientInfo", this);
-        // Handle based on entry and value
-        if(value === 'View FHIR') {
-			const data = JSON.stringify(this, null, 2)
-			Session.set("fhirModalData", data);
-			console.log('Viewing details for:', this);
-			
-		  $('#searchPatientFhirModal').modal('show');
-        } else if(value === 'Save in Practice') {
-			// const data = JSON.stringify(this.resource)
-			Session.set("showSaveModal", true);
-			Session.set("fhirModalData", this.resource.text.div);
-			console.log('Viewing details for:', this.resource);
-			
-		  $('#searchPatientFhirModal').modal('show');
-        }
-      },
-	'click .textRawPatient' (event, instance) {
-		const currentPatient = "Patient: " + this.resource?.name[0]?.text + " - MRN: " + this.resource?.id;
-		Session.set("currentPatientInfo", currentPatient);
-		Session.set("currentPatientID", this.resource.id);
-		Session.set("currentPatientName", this.resource?.name[0]?.text);
-		const route = `/current-patient/${this.resource.id}`
-    	Router.go(route)
-	},
 	'input #findLastName'(event, template) {
 		const lastName = event.target.value;
 		// Do something with the new value
@@ -201,7 +214,6 @@ Template.findPatient.events({
 		}
 	},
 })
-
 
 Template.searchPatientFhirModal.helpers({
 	fhirModalData() {
@@ -264,14 +276,37 @@ Template.searchPatientFhirModal.events({
 
 
 Template.searchPatientFhirModal.onRendered(function() {
-	const modalElement = this.find('#searchPatientFhirModal');
-	
+	const searchFhirModal = this.find('#searchPatientFhirModal');
 	const instance = this;
 	const parentInstance = instance.view.parentView.templateInstance();
-	$(modalElement).on('hidden.bs.modal', function (event) {
+
+	$(searchFhirModal).on('hidden.bs.modal', function (event) {
     	const selectElement = parentInstance.find('.inputFindPatient');
-	  $(selectElement).val('Select an Option');
+	  	$(selectElement).val('Select an Option');
 		Session.set("showSaveModal", false);
 		console.log("modal is hidden.")
 	});
+
   });
+
+  
+
+Template.saveResourceModal.onRendered(function() {
+	const saveResourceModal = this.find('#saveResourceModal');
+	const instance = this;
+	const parentInstance = instance.view.parentView.templateInstance();
+
+
+	$(saveResourceModal).on('hidden.bs.modal', function (event) {
+		console.log("modal is hidden");
+
+	});
+
+  });
+
+  
+Template.searchPatientFhirModal.events({
+	async 'click .btn-save-resource'(event, instance) {
+		
+	}
+})

@@ -1,128 +1,7 @@
 <template name="findPatient">
 	<div class="card">
 		<div class="card-body">
-			<h5 class="card-title">Patient Search</h5>
-
-			<form id="formFindPatient" class="row g-3 search-patient-form">
-				<div class="col-xs-12 col-sm-6 col-lg-3">
-					<div class="form-floating">
-						<input
-							type="text"
-							name="lastName"
-							class="form-control"
-							id="findLastName"
-							placeholder="Last Name"
-
-						/>
-						<label for="findLastName"
-							>Last Name</label
-						>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-6 col-lg-3">
-					<div class="form-floating">
-						{{#if isLastName}}
-						<input
-							type="text"
-							name="firstName"
-							class="form-control"
-							id="findFirstName"
-							placeholder="First Name"
-
-						/>
-						{{else}}
-						<input
-							type="text"
-							name="firstName"
-							class="form-control"
-							id="findFirstName"
-							placeholder="First Name"
-							disabled
-						/>
-						{{/if}}
-						<label for="findFirstName">First Name</label>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-6 col-lg-3">
-					<div class="form-floating">
-						{{#if isLastName}}
-						<input
-							id="birthday"
-							type="date"
-							name="birthday"
-							class="form-control"
-						/>
-						{{else}}
-						<input
-							id="birthday"
-							type="date"
-							name="birthday"
-							class="form-control"
-							disabled
-						/>
-						{{/if}}
-						<label for="birthday" class="col-form-label"
-							>Date</label
-						>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-6 col-lg-3">
-					<div class="form-floating">
-						<input
-							type="text"
-							name="encounter"
-							class="form-control"
-							id="findEncounter"
-							placeholder="Encounter"
-						/>
-						<label for="findEncounter">Encounter</label>
-					</div>
-				</div>
-				<!-- <div class="col-xs-12 col-sm-6 col-lg-3">
-              <div class="col-md-12">
-                <div class="form-floating">
-                  <input type="text" class="form-control" id="floatingCity" placeholder="City">
-                  <label for="floatingCity">City</label>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-floating mb-3">
-                <select class="form-select" id="floatingSelect" aria-label="State">
-                  <option selected>New York</option>
-                  <option value="1">Oregon</option>
-                  <option value="2">DC</option>
-                </select>
-                <label for="floatingSelect">State</label>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="form-floating">
-                <input type="text" class="form-control" id="floatingZip" placeholder="Zip">
-                <label for="floatingZip">Zip</label>
-              </div>
-            </div> -->
-				<div class="col-xs-12 text-end">
-					{{#if isLastName}}
-					<button
-						type="submit"
-						class="btn btn-primary search-patient"
-					>
-						Search
-					</button>
-					<button class="btn btn-secondary reset">Reset</button>
-					{{else}}
-					<button
-						type="submit"
-						class="btn btn-primary search-patient"
-						disabled
-					>
-						Search
-					</button>
-					<button class="btn btn-secondary reset" disabled>Reset</button>
-					{{/if}}
-				</div>
-			</form>
+			<button class="btn btn-secondary btn-show-search-modal">Patient Search</button>
 		</div>
 		{{#if isFindLoading}}
 		<div
@@ -217,9 +96,126 @@
 	</section>
         {{/if}}
 		{{> searchPatientFhirModal}}
+		{{> saveResourceModal}}
+		{{> searchPatientModal}}
 	</div>
 </template>
 
+
+<template name="searchPatientModal">
+	<div class="modal fade" id="searchPatientModal" tabindex="-1" aria-labelledby="searchPatientModal" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h1 class="modal-title fs-5" >Search Patient Modal</h1>
+			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+			<form id="formFindPatient" class="row g-3 search-patient-form">
+				
+					<div class="col-xs-12">
+						<div class="form-floating">
+							<input
+								type="text"
+								name="lastName"
+								class="form-control"
+								id="findLastName"
+								placeholder="Last Name"
+
+							/>
+							<label for="findLastName"
+								>Last Name</label
+							>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-floating">
+							{{#if isLastName}}
+							<input
+								type="text"
+								name="firstName"
+								class="form-control"
+								id="findFirstName"
+								placeholder="First Name"
+
+							/>
+							{{else}}
+							<input
+								type="text"
+								name="firstName"
+								class="form-control"
+								id="findFirstName"
+								placeholder="First Name"
+								disabled
+							/>
+							{{/if}}
+							<label for="findFirstName">First Name</label>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-floating">
+							{{#if isLastName}}
+							<input
+								id="birthday"
+								type="date"
+								name="birthday"
+								class="form-control"
+							/>
+							{{else}}
+							<input
+								id="birthday"
+								type="date"
+								name="birthday"
+								class="form-control"
+								disabled
+							/>
+							{{/if}}
+							<label for="birthday" class="col-form-label"
+								>Date</label
+							>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-floating">
+							<input
+								type="text"
+								name="encounter"
+								class="form-control"
+								id="recordNumber"
+								placeholder="Medial Record Number"
+							/>
+							<label for="recordNumber">Medical Record Number</label>
+						</div>
+					</div>
+				
+				<div class="col-xs-12">
+					<div class="col-xs-6 text-end">
+					{{#if isLastName}}
+					<button
+					type="submit"
+					class="btn btn-primary search-patient"
+				>
+					Search
+				</button>
+				<button class="btn btn-secondary reset">Reset</button>
+				{{else}}
+				<button
+					type="submit"
+					class="btn btn-primary search-patient"
+					disabled
+				>
+					Search
+				</button>
+				<button class="btn btn-secondary reset" disabled>Reset</button>
+				{{/if}}
+				</div>
+				</div>
+			</form>
+		</div>
+		  </div>
+		</div>
+	  </div>
+</template>
 
 <template name="searchPatientFhirModal">
 	<div class="modal fade" id="searchPatientFhirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -257,16 +253,62 @@
 			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				
+				<div class="col-sm-12">
+
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="save-reference">
+                      <label class="form-check-label" for="gridCheck1">
+                        Document Reference
+                      </label>
+                    </div>
+
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="save-diagnostic">
+                      <label class="form-check-label" for="gridCheck2">
+                        Diagnostic Report
+                      </label>
+                    </div>
+					
+                    <div class="form-check">
+						<input class="form-check-input" type="checkbox" id="save-observation">
+						<label class="form-check-label" for="gridCheck2">
+							Observation
+						</label>
+					</div>
+
+                    <div class="form-check">
+						<input class="form-check-input" type="checkbox" id="save-condition">
+						<label class="form-check-label" for="gridCheck2">
+							Condition
+						</label>
+					</div>
+
+                    <div class="form-check">
+						<input class="form-check-input" type="checkbox" id="save-immunization">
+						<label class="form-check-label" for="gridCheck2">
+							Immunization
+						</label>
+					</div>
+
+                    <div class="form-check">
+						<input class="form-check-input" type="checkbox" id="save-questionnaire">
+						<label class="form-check-label" for="gridCheck2">
+							Questionnaire Response
+						</label>
+					</div>
+
+                </div>
 			</div>
 			<div class="modal-footer">
 			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-			  <button type="button" class="btn btn-primary save-resource" data-bs-dismiss="modal">Save</button>
+			  <button type="button" class="btn btn-primary btn-save-resource" data-bs-dismiss="modal">Save</button>
 			</div>
 		  </div>
 		</div>
 	  </div>
 </template>
+
+
 
 <!-- <template name="savePatientFhirModal">
 	<div class="modal fade" id="searchPatientFhirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
