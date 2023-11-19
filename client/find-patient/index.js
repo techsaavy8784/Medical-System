@@ -23,6 +23,7 @@ Template.findPatient.helpers({
 		return Session.get("headers")
 	},
 	findPatientHos() {
+		// console.log("findPatientHos Patients", Session.get("findPatientHos")?.patients);
 		return Session.get("findPatientHos")?.patients
 	},
 	findPatientPra() {
@@ -34,6 +35,16 @@ Template.findPatient.helpers({
     isActive() {
         return Session.get("isActive") === "hospital";
     },
+	searchPatientQuery() {
+		return Session.get("searchPatientQuery");
+	},
+	// patientsEmpty() {
+	// 	if (Session.get("isActive") === "hospital") {
+	// 		return (!!Session.get("findPatientHos")?.patients);
+	// 	} else if (Session.get("isActive") === "hospital") {
+	// 		return (!!Session.get("findPatientPra")?.patients);
+	// 	}
+	// }
 })
 
 
@@ -114,15 +125,23 @@ Template.searchPatientModal.events({
 		const buildQuery = () => {
 			if (lastName && firstName) {
 				if (!!birthday) {
-					return `Patient?family=${lastName}&given=${firstName}&birthdate=${birthday}`
+					const searchPatientQuery = `family=${lastName}&given=${firstName}&birthdate=${birthday}`;
+					Session.set("searchPatientQuery", searchPatientQuery)
+					return `Patient?${searchPatientQuery}`
 				} else {
-					return `Patient?family=${lastName}&given=${firstName}`
+					const searchPatientQuery = `family=${lastName}&given=${firstName}`;
+					Session.set("searchPatientQuery", searchPatientQuery)
+					return `Patient?${searchPatientQuery}`
 				}
 			} else {
 				if (!!birthday) {
-					return `Patient?family=${lastName}&birthdate=${birthday}`
+					const searchPatientQuery = `Patient?family=${lastName}&birthdate=${birthday}`
+					Session.set("searchPatientQuery", searchPatientQuery)
+					return `Patient?${searchPatientQuery}`
 				} else {
-					return `Patient?family=${lastName}`
+					const searchPatientQuery = `family=${lastName}`
+					Session.set("searchPatientQuery", searchPatientQuery)
+					return `Patient?${searchPatientQuery}`
 				}
 			}
 		}
@@ -147,11 +166,7 @@ Template.searchPatientModal.events({
 				)
 			}).catch((error) => {
 				// show error on screen
-                Session.set("findPatientPra", null)
-				// Session.set("isFindLoading", false)
-				// alert("Error: " + "resourceType: " + JSON.stringify(error.message))
-				// alert("Error: " + "There is no Search Result")
-                
+                Session.set("findPatientPra", null)                
 			})
 		}
 		const res = await getFindPatients(coreUrl(), buildQuery(), {
@@ -160,6 +175,11 @@ Template.searchPatientModal.events({
 		console.log("res", res)
         
 		Session.set("isFindLoading", false)
+
+		if (!res === true) {
+			$('#searchPatientModal').modal('show');
+		}
+
 		if (isActive === "hospital") {
             if (res) {
                 Session.set("findPatientHos", {
@@ -202,7 +222,7 @@ Template.searchPatientModal.events({
 		instance.find('#findLastName').value = '';
 		instance.find('#findFirstName').value = '';
 		instance.find('[name="birthday"]').value = '';
-		instance.find('#findEncounter').value = '';
+		instance.find('#recordNumber').value = '';
     },
 	'input #findLastName'(event, template) {
 		const lastName = event.target.value;
@@ -231,8 +251,8 @@ Template.searchPatientFhirModal.events({
 		const canSave = Session.get("showSaveModal");
 		// const url = Session.get("coreURL").replace("30300", "30100") + "Patient";
 		const url = Session.get("coreURL") + "Patient";
-		// const patientId = Session.get("currentPatientID");
-		const patientId = generateUniqueId(5);
+		const patientId = Session.get("currentPatientID");
+		// const patientId = generateUniqueId(5);
 		// const resourceId = 
 		const patientName = Session.get("selectedPatientInfo").resource.name[0].text;
 		const destSystemId = Session.get("practices")[0].systems[0].id;
