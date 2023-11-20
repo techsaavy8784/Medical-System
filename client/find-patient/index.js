@@ -263,16 +263,16 @@ Template.searchPatientFhirModal.onRendered(function() {
 	async 'click .btn-save-patient'(event, instance) {
         event.preventDefault();
 		const inputMrn = instance.find('#patientMRN').value;
-		const patientId = Session.get("selectedPatientInfo")?.resource?.id;
-		console.log("inputMrn", inputMrn)
-		console.log("patientId", patientId)
-		if (inputMrn != patientId) {
-			event.preventDefault();
+		// const patientId = Session.get("selectedPatientInfo")?.resource?.id;
+		// console.log("inputMrn", inputMrn)
+		// console.log("patientId", patientId)
+		// if (inputMrn != patientId) {
+		// 	event.preventDefault();
 			
-			alert("Input patient's MRN again!");
-			$('#savePatientModal').modal('show');
-			return;
-		}
+		// 	alert("Input patient's MRN again!");
+		// 	$('#savePatientModal').modal('show');
+		// 	return;
+		// }
 		// const url = Session.get("coreURL").replace("30300", "30100") + "Patient";
 		const url = Session.get("coreURL") + "Patient";
 		// const patientId = generateUniqueId(5);
@@ -284,7 +284,7 @@ Template.searchPatientFhirModal.onRendered(function() {
 
 		const body = {
 			"ResourceType": "Patient",
-			"DestPatientId": patientId,
+			"DestPatientId": inputMrn,
 			"destSystemId": destSystemId,
 			"SrcResource": srcResource
 		}
