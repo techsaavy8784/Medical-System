@@ -17,7 +17,6 @@ Template.findPatient.onCreated(function findPatientOnCreated() {
 	Session.set("isLastName", false)
 });
 
-
 Template.findPatient.helpers({
 	headers() {
 		return Session.get("headers")
@@ -64,14 +63,14 @@ Template.findPatient.events({
 			console.log('Viewing details for:', this);
 			
 		  $('#searchPatientFhirModal').modal('show');
-        } else if(value === 'Save in Practice') {
+        } else if(value === 'Save Patient') {
 			// const data = JSON.stringify(this.resource)
 			Session.set("showSaveModal", true);
-			Session.set("fhirModalData", this.resource.text.div);
 			console.log('Viewing details for:', this.resource);
 			
-		  $('#searchPatientFhirModal').modal('show');
-        } else if (value === 'Follow Patient') {
+		  	$('#searchPatientFhirModal').modal('show');
+        } else if (value === 'Save Resource') {
+			Session.set("fhirModalData", this.resource.text.div);
 			$('#saveResourceModal').modal('show');
 		}
       },
@@ -86,7 +85,7 @@ Template.findPatient.events({
 	'click .btn-show-search-modal' (event, instance) {
 		$('#searchPatientModal').modal('show');
 	}
-})
+});
 
 Template.searchPatientModal.helpers({
 	isLastName() {
@@ -236,9 +235,6 @@ Template.searchPatientModal.events({
 })
 
 Template.searchPatientFhirModal.helpers({
-	fhirModalData() {
-		return Session.get("fhirModalData");
-	},
 	showSaveModal() {
 		return Session.get("showSaveModal");
 	},
@@ -249,11 +245,12 @@ Template.searchPatientFhirModal.events({
 	async 'click .fhir-data-save'(event, instance) {
         event.preventDefault();
 		const canSave = Session.get("showSaveModal");
+		if (!canSave) return;
 		// const url = Session.get("coreURL").replace("30300", "30100") + "Patient";
 		const url = Session.get("coreURL") + "Patient";
 		const patientId = Session.get("currentPatientID");
 		// const patientId = generateUniqueId(5);
-		// const resourceId = 
+		// const resourceId =  
 		const patientName = Session.get("selectedPatientInfo").resource.name[0].text;
 		const destSystemId = Session.get("practices")[0].systems[0].id;
 		// const srcSystemId = Session.get("facilities")[0].systems[0].id;
@@ -304,12 +301,12 @@ Template.searchPatientFhirModal.onRendered(function() {
     	const selectElement = parentInstance.find('.inputFindPatient');
 	  	$(selectElement).val('Select an Option');
 		Session.set("showSaveModal", false);
-		console.log("modal is hidden.")
+		console.log("searchFhirModal is hidden.")
 	});
 
   });
 
-  
+
 
 Template.saveResourceModal.onRendered(function() {
 	const saveResourceModal = this.find('#saveResourceModal');
@@ -318,11 +315,19 @@ Template.saveResourceModal.onRendered(function() {
 
 
 	$(saveResourceModal).on('hidden.bs.modal', function (event) {
-		console.log("modal is hidden");
+		const selectElement = parentInstance.find('.inputFindPatient');
+	  	$(selectElement).val('Select an Option');
+		console.log("saveResourceModal is hidden.")
 
 	});
 
   });
+
+  Template.saveResourceModal.helpers({
+	fhirModalData() {
+		return Session.get("fhirModalData")
+	}
+  })
 
   
 Template.searchPatientFhirModal.events({
