@@ -56,7 +56,10 @@ Template.findPatient.events({
 		console.log("value", value);
 		console.log("click---", this);
 		Session.set("selectedPatientInfo", this);
+		Session.set("patientMrn", this.resource.id);
+		Session.set("fhirModalData", this.resource.text.div);
         // Handle based on entry and value
+
         if(value === 'View FHIR') {
 			const data = JSON.stringify(this, null, 2)
 			Session.set("fhirModalData", data);
@@ -65,12 +68,10 @@ Template.findPatient.events({
 		  $('#searchPatientFhirModal').modal('show');
         } else if(value === 'Save Patient') {
 			// const data = JSON.stringify(this.resource)
-			Session.set("showSaveModal", true);
 			console.log('Viewing details for:', this.resource);
 			
-		  	$('#searchPatientFhirModal').modal('show');
+		  	$('#savePatientModal').modal('show');
         } else if (value === 'Save Resource') {
-			Session.set("fhirModalData", this.resource.text.div);
 			$('#saveResourceModal').modal('show');
 		}
       },
@@ -235,23 +236,47 @@ Template.searchPatientModal.events({
 })
 
 Template.searchPatientFhirModal.helpers({
-	showSaveModal() {
-		return Session.get("showSaveModal");
+	fhirModalData() {
+		return Session.get("fhirModalData");
 	},
 })
 
 
-Template.searchPatientFhirModal.events({
-	async 'click .fhir-data-save'(event, instance) {
+
+
+
+Template.searchPatientFhirModal.onRendered(function() {
+	const searchFhirModal = this.find('#searchPatientFhirModal');
+	const instance = this;
+	const parentInstance = instance.view.parentView.templateInstance();
+
+	$(searchFhirModal).on('hidden.bs.modal', function (event) {
+    	const selectElement = parentInstance.find('.inputFindPatient');
+	  	$(selectElement).val('Select an Option');
+		console.log("searchFhirModal is hidden.")
+	});
+
+  });
+
+
+  Template.savePatientModal.events({
+	async 'click .btn-save-patient'(event, instance) {
         event.preventDefault();
-		const canSave = Session.get("showSaveModal");
-		if (!canSave) return;
+		const inputMrn = instance.find('#patientMRN').value;
+		const patientId = Session.get("selectedPatientInfo")?.resource?.id;
+		console.log("inputMrn", inputMrn)
+		console.log("patientId", patientId)
+		if (inputMrn != patientId) {
+			event.preventDefault();
+			
+			alert("Input patient's MRN again!");
+			$('#savePatientModal').modal('show');
+			return;
+		}
 		// const url = Session.get("coreURL").replace("30300", "30100") + "Patient";
 		const url = Session.get("coreURL") + "Patient";
-		const patientId = Session.get("currentPatientID");
 		// const patientId = generateUniqueId(5);
 		// const resourceId =  
-		const patientName = Session.get("selectedPatientInfo").resource.name[0].text;
 		const destSystemId = Session.get("practices")[0].systems[0].id;
 		// const srcSystemId = Session.get("facilities")[0].systems[0].id;
 		const srcResource = Session.get("selectedPatientInfo").resource;
@@ -264,49 +289,46 @@ Template.searchPatientFhirModal.events({
 			"SrcResource": srcResource
 		}
 
-		// const body = {
-		// 	"resourceType": "DiagnosticReport",
-		// 	"destPatientId": patientId,
-        //     "destPatientName": patientName,
-		// 	"destSystemId": destSystemId,
-        //     "srcResourceId": "197369077",
-		// 	"SrcResource": srcResource
-		// }
-
+		console.log("url", url);
 		console.log("payload", body);
 		const token = Session.get("headers");
-		if (canSave) {
-			console.log("save button is clicked.")
-			Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
-				if (error) {
-				  console.log("error", error);
-				  alert("ERROR !" + error?.reason.response?.data?.issue[0].details.text)
-				} else {
-					console.log("result: ", result)
-					alert("Success saving patient: " + result?.data?.issue[0].details.text)
-				}
-			  });
-		}
-    }
+		console.log("save button is clicked.")
+		Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
+			if (error) {
+				console.log("error", error);
+				alert("ERROR !" + error?.reason.response?.data?.issue[0].details.text)
+			} else {
+				console.log("result: ", result)
+				alert("Success saving patient: " + result?.data?.issue[0].details.text)
+			}
+		});
+    },
+
 });
 
+Template.savePatientModal.helpers({
+	patientMrn() {
+		return Session.get("patientMrn");
+	},
+	fhirModalData() {
+		return Session.get("fhirModalData");
+	},
+})
 
-
-Template.searchPatientFhirModal.onRendered(function() {
-	const searchFhirModal = this.find('#searchPatientFhirModal');
+Template.savePatientModal.onRendered(function() {
+	const savePatientModal = this.find('#savePatientModal');
 	const instance = this;
 	const parentInstance = instance.view.parentView.templateInstance();
 
-	$(searchFhirModal).on('hidden.bs.modal', function (event) {
-    	const selectElement = parentInstance.find('.inputFindPatient');
+	$(savePatientModal).on('hidden.bs.modal', function (event) {
+		const selectElement = parentInstance.find('.inputFindPatient');
 	  	$(selectElement).val('Select an Option');
-		Session.set("showSaveModal", false);
-		console.log("searchFhirModal is hidden.")
+		console.log("savePatientModal is hidden.")
+
+		event.preventDefault();
 	});
 
-  });
-
-
+})
 
 Template.saveResourceModal.onRendered(function() {
 	const saveResourceModal = this.find('#saveResourceModal');
@@ -326,12 +348,47 @@ Template.saveResourceModal.onRendered(function() {
   Template.saveResourceModal.helpers({
 	fhirModalData() {
 		return Session.get("fhirModalData")
+	},
+	patientMrn() {
+		return Session.get("patientMrn");
 	}
   })
 
   
 Template.searchPatientFhirModal.events({
 	async 'click .btn-save-resource'(event, instance) {
-		
+		// event.preventDefault();
+		// // const url = Session.get("coreURL").replace("30300", "30100") + "Patient";
+		// const url = Session.get("coreURL") + "Patient";
+		// const patientId = Session.get("currentPatientID");
+		// // const patientId = generateUniqueId(5);
+		// // const resourceId =  
+		// const patientName = Session.get("selectedPatientInfo").resource.name[0].text;
+		// const destSystemId = Session.get("practices")[0].systems[0].id;
+		// // const srcSystemId = Session.get("facilities")[0].systems[0].id;
+		// const srcResource = Session.get("selectedPatientInfo").resource;
+		// // const patientName = Session.get("selectedPatientInfo").resource?.name[0]?.text;
+
+		// const body = {
+		// 	"resourceType": "DiagnosticReport",
+		// 	"destPatientId": patientId,
+        //     "destPatientName": patientName,
+		// 	"destSystemId": destSystemId,
+        //     "srcResourceId": "197369077",
+		// 	"SrcResource": srcResource
+		// }
+
+		// console.log("payload", body);
+		// const token = Session.get("headers");
+		// 	console.log("save button is clicked.")
+		// 	Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
+		// 		if (error) {
+		// 		  console.log("error", error);
+		// 		  alert("ERROR !" + error?.reason.response?.data?.issue[0].details.text)
+		// 		} else {
+		// 			console.log("result: ", result)
+		// 			alert("Success saving patient: " + result?.data?.issue[0].details.text)
+		// 		}
+		// 	  });
 	}
 })

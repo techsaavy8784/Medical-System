@@ -11,7 +11,7 @@
 				<span class="visually-hidden">Loading...</span>
 			</div>
 		</div>
-		{{else}} 
+		{{else}}
         <!-- {{> searchResult findPatientHos}}  -->
         <!-- {{#if isActive}} -->
 	<section class="section">
@@ -95,9 +95,10 @@
 		</div>
 	</section>
         {{/if}}
-		{{> searchPatientFhirModal}}
-		{{> saveResourceModal}}
 		{{> searchPatientModal}}
+		{{> searchPatientFhirModal}}
+		{{> savePatientModal}}
+		{{> saveResourceModal}}
 	</div>
 </template>
 
@@ -222,32 +223,18 @@
 		  <div class="modal-content">
 			<div class="modal-header">
 			  <h1 class="modal-title fs-5" id="exampleModalLabel">
-				{{#if showSaveModal}}
-					Save Patient Modal
-				{{else}}
 					View FHIR
-				{{/if}}
 				</h1>
 			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				{{#if showSaveModal}}
-					
-                <div class="col-12">
-					<label for="patientMrn" class="form-label">Patient MRN</label>
-					<input type="text" class="form-control" id="patientMrn">
-				  </div>
-					<!-- {{{fhirModalData}}} -->
-
-				{{else }}
 					<pre>
 					{{fhirModalData}}
 					</pre>
-				{{/if}}
 			</div>
 			<div class="modal-footer">
 			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-			  <button type="button" class="btn btn-primary fhir-data-save" data-bs-dismiss="modal">Save</button>
+			  <!-- <button type="button" class="btn btn-primary fhir-data-save" data-bs-dismiss="modal">Save</button> -->
 			</div>
 		  </div>
 		</div>
@@ -255,16 +242,51 @@
 </template>
 
 
+<template name="savePatientModal">
+	<div class="modal fade" id="savePatientModal" tabindex="-1" aria-labelledby="savePatientModal" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h1 class="modal-title fs-5" id="saveResourceTitle">Save Patient Modal</h1>
+			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+                <!-- <div class="col-12 d-flex"> -->
+					
+					<div class="col-12 align-items-center d-flex">
+						<label for="patientMRN" class="form-label" ><b>Patient MRN: </b>{{patientMrn}}</label>
+					</div>
+					<div class="col-12">
+						<input type="text" class="form-control" id="patientMRN" placeholder="EMR Assigned">
+					</div>
+				<!-- </div> -->
+
+				<!-- <div class="col-12 align-items-center d-flex">
+					<label for="patientMRN" class="form-label" ><b>Patient MRN: </b>{{patientMrn}}</label>
+				</div> -->
+				{{{fhirModalData}}}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary btn-save-patient" data-bs-dismiss="modal">Save</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+</template>
+
 <template name="saveResourceModal">
 	<div class="modal fade" id="saveResourceModal" tabindex="-1" aria-labelledby="saveResourceModal" aria-hidden="true">
 		<div class="modal-dialog">
 		  <div class="modal-content">
 			<div class="modal-header">
-			  <h1 class="modal-title fs-5" id="saveResourceTitle">Save Resource Modal</h1>
+			  <h1 class="modal-title fs-5" id="saveResourceTitle">Save Patient Modal</h1>
 			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<!-- <div class="col-sm-12">
+                <label for="patientMRN" class="form-label" ><b>Patient MRN: </b>{{patientMrn}}</label>
+				{{{fhirModalData}}}
+				<div class="col-sm-12">
 
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" id="save-reference">
@@ -308,12 +330,7 @@
 						</label>
 					</div>
 
-                </div> -->
-				{{{fhirModalData}}}
-				<div class="col-12">
-					<label for="patientMRN" class="form-label">Patient MRN</label>
-					<input type="text" class="form-control" id="patientMRN">
-				</div>
+                </div>
 			</div>
 			<div class="modal-footer">
 			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
