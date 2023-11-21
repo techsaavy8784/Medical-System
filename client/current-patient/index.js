@@ -387,10 +387,12 @@ Template.pdfModal.onCreated(function pdfModalOnCreated() {
 			Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
 				if (error) {
 				  console.log("error", error);
-				  alert("ERROR !" + error?.reason.response?.data?.issue[0].details.text)
+                  const errorInfo = error?.reason.response?.data
+				  alert("ERROR !" + errorInfo.resourceType + "\n" + errorInfo.issue[0]?.details?.text)
 				} else {
 					console.log("result: ", result)
-					alert("Success saving Patient: " + result.data?.issue[0].details.text)
+                    const practiceName = Session.get("practices")[0]?.displayName
+					alert(`Resource successfully imported to your ${practiceName}`)
 				}
 			  });
 		}
@@ -414,10 +416,12 @@ Template.pdfModal.onCreated(function pdfModalOnCreated() {
     fhirDocModalData() {
         return Session.get("fhirDocModalData");
     },
-    
     docXMLModalData() {
         return Session.get("docXMLModalData");
     },
+    patientMrn() {
+        return Session.get("patientMrn")
+    }
   })
 
   Template.resourceDocModal.onRendered( function () {

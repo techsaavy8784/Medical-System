@@ -202,14 +202,8 @@
 			</div>
 			<div class="modal-body">
 				{{#if showDocSaveModal}}
-        <div class="row mb-3">
-          <label for="patientMRN" class="col-sm-4 col-form-label" ><b>Patient MRN: </b></label>
-  
-          <div class="col-sm-8">
-            <!-- <input type="text" class="form-control patient-mrn" id="patientMRN" placeholder="EMR Assigned"> -->
-          </div>
-        </div>
-        {{{saveDocModalData}}}
+          <label for="patientMRN" class="col-form-label" ><b>Patient MRN: </b>{{patientMrn}}</label>
+          {{{saveDocModalData}}}
 				{{else if showDocFhirModal }}
           <pre>
           {{fhirDocModalData}}
