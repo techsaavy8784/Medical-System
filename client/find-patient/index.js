@@ -301,7 +301,7 @@ Template.searchPatientFhirModal.onRendered(function() {
 				alert("ERROR !" + error?.reason.response?.data?.resourceType)
 			} else {
 				console.log("result: ", result)
-				alert("saving patient is Success")
+				alert("Saving patient is Success")
 			}
 		});
     },

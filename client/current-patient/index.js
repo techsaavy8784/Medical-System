@@ -106,6 +106,7 @@ const showPdfModal = async (data) => {
       };
       try {
         const response = await fetch(pdfUrl, requestOptions);
+        console.log("response", response);
         if (!response.ok) {
           throw new Error(`Failed to fetch PDF: ${response.status} ${response.statusText}`);
         }
