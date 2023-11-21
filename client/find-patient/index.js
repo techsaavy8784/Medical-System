@@ -292,18 +292,19 @@ Template.searchPatientFhirModal.onRendered(function() {
 		console.log("url", url);
 		console.log("payload", body);
 		const token = Session.get("headers");
+
 		console.log("save button is clicked.")
+
 		Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
 			if (error) {
 				console.log("error", error);
-				alert("ERROR !" + error?.reason.response?.data?.issue[0].details.text)
+				alert("ERROR !" + error?.reason.response?.data?.resourceType)
 			} else {
 				console.log("result: ", result)
-				alert("Success saving patient: " + result?.data?.issue[0].details.text)
+				alert("saving patient is Success")
 			}
 		});
     },
-
 });
 
 Template.savePatientModal.helpers({
