@@ -251,9 +251,11 @@ Template.searchPatientFhirModal.onRendered(function() {
 	const parentInstance = instance.view.parentView.templateInstance();
 
 	$(searchFhirModal).on('hidden.bs.modal', function (event) {
-    	const selectElement = parentInstance.find('.inputFindPatient');
-	  	$(selectElement).val('Select an Option');
-		console.log("searchFhirModal is hidden.")
+		
+		const selectElements = parentInstance.findAll('.inputFindPatient');
+		selectElements.forEach(function(selectElement) {
+		$(selectElement).val('Select an Option');
+		});
 	});
 
   });
@@ -293,15 +295,17 @@ Template.searchPatientFhirModal.onRendered(function() {
 		console.log("payload", body);
 		const token = Session.get("headers");
 
-		console.log("save button is clicked.")
+		console.log("save button is clicked.");
 
 		Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
 			if (error) {
 				console.log("error", error);
-				alert("ERROR !" + error?.reason.response?.data?.resourceType)
+				const errorInfo = error?.reason.response?.data
+				alert("ERROR !" + errorInfo.resourceType + "\n" + errorInfo.issue[0]?.details?.text)
 			} else {
+				const practiceName = Session.get("practices")[0]?.displayName
 				console.log("result: ", result)
-				alert("Saving patient is Success")
+				alert(`Patient successfully imported to you ${practiceName}`)
 			}
 		});
     },
@@ -320,11 +324,14 @@ Template.savePatientModal.onRendered(function() {
 	const savePatientModal = this.find('#savePatientModal');
 	const instance = this;
 	const parentInstance = instance.view.parentView.templateInstance();
-
+	
 	$(savePatientModal).on('hidden.bs.modal', function (event) {
-		const selectElement = parentInstance.find('.inputFindPatient');
-	  	$(selectElement).val('Select an Option');
-		console.log("savePatientModal is hidden.")
+		
+		const selectElements = parentInstance.findAll('.inputFindPatient');
+		selectElements.forEach(function(selectElement) {
+		$(selectElement).val('Select an Option');
+		});
+		instance.find("#patientMRN").value = "";
 
 		event.preventDefault();
 	});
@@ -338,10 +345,11 @@ Template.saveResourceModal.onRendered(function() {
 
 
 	$(saveResourceModal).on('hidden.bs.modal', function (event) {
-		const selectElement = parentInstance.find('.inputFindPatient');
-	  	$(selectElement).val('Select an Option');
-		console.log("saveResourceModal is hidden.")
-
+		
+		const selectElements = parentInstance.findAll('.inputFindPatient');
+		selectElements.forEach(function(selectElement) {
+		$(selectElement).val('Select an Option');
+		});
 	});
 
   });
@@ -353,7 +361,7 @@ Template.saveResourceModal.onRendered(function() {
 	patientMrn() {
 		return Session.get("patientMrn");
 	}
-  })
+  });
 
   
 Template.searchPatientFhirModal.events({
