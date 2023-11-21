@@ -51,9 +51,8 @@
                                                     <option>Print Patient Info</option>
                                                     <option>View FHIR</option>
 													<option>Save Patient</option>
-													<option>Save Resource</option>
+													<option>Show Resource</option>
                                                 </select>
-                                                
                                             </td>
                                         </tr>
                                     {{/each}}
@@ -77,7 +76,7 @@
 											</option>
 											<option>View details</option>
 											<option>Show Detail</option>
-											<option>Save in Practice</option>
+											<!-- <option>Save to MyEMR</option> -->
 											<option>Print Patient Info</option>
 											<option>View FHIR</option>
 										</select>
@@ -98,7 +97,8 @@
 		{{> searchPatientModal}}
 		{{> searchPatientFhirModal}}
 		{{> savePatientModal}}
-		{{> saveResourceModal}}
+		{{> showResourceModal}}
+		<!-- {{> saveResourceModal}} -->
 	</div>
 </template>
 
@@ -273,12 +273,12 @@
 	  </div>
 </template>
 
-<template name="saveResourceModal">
-	<div class="modal fade" id="saveResourceModal" tabindex="-1" aria-labelledby="saveResourceModal" aria-hidden="true">
+<template name="showResourceModal">
+	<div class="modal fade" id="showResourceModal" tabindex="-1" aria-labelledby="showResourceModal" aria-hidden="true">
 		<div class="modal-dialog">
 		  <div class="modal-content">
 			<div class="modal-header">
-			  <h1 class="modal-title fs-5" id="saveResourceTitle">Save Patient Modal</h1>
+			  <h1 class="modal-title fs-5" id="saveResourceTitle">Show Patient Modal</h1>
 			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -332,12 +332,33 @@
 			</div>
 			<div class="modal-footer">
 			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-			  <button type="button" class="btn btn-primary btn-save-resource" data-bs-dismiss="modal">Save</button>
+			  <!-- <button type="button" class="btn btn-primary btn-save-resource" data-bs-dismiss="modal">Save</button> -->
 			</div>
 		  </div>
 		</div>
 	  </div>
 </template>
+<!-- 
+<template name="saveResourceModal">
+	<div class="modal fade" id="saveResourceModal" tabindex="-1" aria-labelledby="saveResourceModal" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h1 class="modal-title fs-5" id="saveResourceTitle">Save Patient Modal</h1>
+			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+                <label for="patientMRN" class="form-label" ><b>Patient MRN: </b>{{patientMrn}}</label>
+				{{{fhirModalData}}}
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-primary btn-save-resource" data-bs-dismiss="modal">Save</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+</template> -->
 
 
 

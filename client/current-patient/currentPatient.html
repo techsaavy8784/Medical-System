@@ -81,7 +81,7 @@
                                   <option selected5>
                                       Select an Option
                                   </option>
-                                  <option>Save</option>
+                                  <option>Save to MyEMR</option>
                                   <option>Show PDF</option>
                                   <option>Show XML</option>
                                   <option>Print</option>
@@ -202,7 +202,14 @@
 			</div>
 			<div class="modal-body">
 				{{#if showDocSaveModal}}
-				{{{saveDocModalData}}}
+        <div class="row mb-3">
+          <label for="patientMRN" class="col-sm-4 col-form-label" ><b>Patient MRN: </b></label>
+  
+          <div class="col-sm-8">
+            <!-- <input type="text" class="form-control patient-mrn" id="patientMRN" placeholder="EMR Assigned"> -->
+          </div>
+        </div>
+        {{{saveDocModalData}}}
 				{{else if showDocFhirModal }}
           <pre>
           {{fhirDocModalData}}
@@ -212,14 +219,16 @@
             <h5>There is no to display</h5>
           {{else}}
           <pre style="white-space: pre-wrap; word-wrap: break-word;">
-          {{docXMLModalData}}
+            {{docXMLModalData}}
           </pre>
           {{/if}}
 				{{/if}}
 			</div>
 			<div class="modal-footer">
 			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-			  <button type="button" class="btn btn-primary save-doc-data" data-bs-dismiss="modal">Save</button>
+			  {{#if showDocSaveModal}}
+        <button type="button" class="btn btn-primary save-doc-data" data-bs-dismiss="modal">Save</button>
+        {{/if}}
 			</div>
 		  </div>
 		</div>

@@ -236,7 +236,7 @@ Template.currentPatient.events({
 			console.log('Viewing details for:', this);
 			
 		  $('#resourceDocModal').modal('show');
-        } else if(value === 'Save') {
+        } else if(value === 'Save to MyEMR') {
 			Session.set("showDocSaveModal", true);
 			Session.set("saveDocModalData", this.text.div);
 		  $('#resourceDocModal').modal('show');
@@ -371,13 +371,13 @@ Template.pdfModal.onCreated(function pdfModalOnCreated() {
 		const destSystemId = Session.get("practices")[0].systems[0].id;
 		// const srcSystemId = Session.get("facilities")[0].systems[0].id;
         const srcResource = Session.get("selectedDoc").resource;
-        // const srcResourceId = Session.get("selectedDoc").resource.id;
+        const srcResourceId = Session.get("selectedDoc").resource.id;
 		const body = {
 			"resourceType": resourceType,
 			"destPatientId": patientId,
             "destPatientName": patientName,
 			"destSystemId": destSystemId,
-            "srcResourceId": "197369077",
+            "srcResourceId": srcResourceId,
 			"SrcResource": srcResource
 		}
         console.log("payload", body);
