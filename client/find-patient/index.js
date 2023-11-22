@@ -359,10 +359,25 @@ Template.showResourceModal.onRendered(function() {
   });
 
   Template.showResourceModal.helpers({
-	fhirModalData() {
-		return Session.get("fhirModalData")
+	// fhirModalData() {
+	// 	return Session.get("fhirModalData")
+	// },
+	selectedPatientMRN() {
+		// return Session.get("selectedPatientInfo")?.resource?.id;
+		return Session.get("practices")[0].systems[0].id;
 	},
-	patientMrn() {
-		return Session.get("patientMrn");
+	selectedPatientID() {
+		// return Session.get("selectedPatientInfo")?.resource?.name[0]?.id;
+		return Session.get("selectedPatientInfo")?.resource?.id;
+	},
+	selectedPatientFamily() {
+		return Session.get("selectedPatientInfo")?.resource?.name[0]?.family;
+	},
+	selectedPatientGiven(){
+		return Session.get("selectedPatientInfo")?.resource?.name[0]?.given[0];
+	},
+	selectedPatientDOB() {
+		const date = Session.get("selectedPatientInfo")?.resource?.birthDate;
+		return date ? date : ""
 	}
   });

@@ -432,6 +432,7 @@ Template.pdfModal.onCreated(function pdfModalOnCreated() {
 	$(modalElement).on('hidden.bs.modal', function (event) {
     	const selectElement = parentInstance.find('.inputFindDoc');
 	    $(selectElement).val('Select an Option');
+
 		Session.set("showDocSaveModal", false);
         Session.set("showDocFhirModal", false);
         Session.set("showXMLModal", false);

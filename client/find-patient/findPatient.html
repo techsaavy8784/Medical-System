@@ -278,12 +278,27 @@
 		<div class="modal-dialog">
 		  <div class="modal-content">
 			<div class="modal-header">
-			  <h1 class="modal-title fs-5" id="saveResourceTitle">Show Patient Modal</h1>
+			  <h1 class="modal-title fs-5" id="saveResourceTitle">Resource Confirm Modal</h1>
 			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-                <label for="patientMRN" class="form-label" ><b>Patient MRN: </b>{{patientMrn}}</label>
-				{{{fhirModalData}}}
+				<!-- <div class="col-xs-12">
+					<label for="patientMRN" class="form-label" ><b>Patient MRN: </b></label>
+				</div> -->
+				<div class="col-xs-12">
+					<label for="patientMRN" class="form-label" ><b>Patient ID: </b>{{selectedPatientID}}</label>
+				</div>
+				<div class="col-xs-12">
+					<label for="patientMRN" class="form-label" ><b>Family: </b>{{selectedPatientFamily}}</label>
+				</div>
+				<div class="col-xs-12">
+					<label for="patientMRN" class="form-label" ><b>Given: </b>{{selectedPatientGiven}}</label>
+				</div>
+				<div class="col-xs-12">
+					<label for="patientMRN" class="form-label" ><b>DOB: </b>{{selectedPatientDOB}}</label>
+				</div>
+				
+				<!-- {{{fhirModalData}}} -->
 				<!-- <div class="col-sm-12">
 
                     <div class="form-check">
