@@ -363,12 +363,12 @@ Template.showResourceModal.onRendered(function() {
 	// 	return Session.get("fhirModalData")
 	// },
 	selectedPatientMRN() {
-		// return Session.get("selectedPatientInfo")?.resource?.id;
-		return Session.get("practices")[0].systems[0].id;
+		return Session.get("selectedPatientInfo")?.resource?.id;
+		// return Session.get("practices")[0].systems[0].id;
 	},
 	selectedPatientID() {
-		// return Session.get("selectedPatientInfo")?.resource?.name[0]?.id;
-		return Session.get("selectedPatientInfo")?.resource?.id;
+		return Session.get("selectedPatientInfo")?.resource?.name[0]?.id;
+		// return Session.get("selectedPatientInfo")?.resource?.id;
 	},
 	selectedPatientFamily() {
 		return Session.get("selectedPatientInfo")?.resource?.name[0]?.family;
