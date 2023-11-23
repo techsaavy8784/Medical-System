@@ -350,14 +350,13 @@ Template.pdfModal.helpers({
 Template.pdfModal.onCreated(function pdfModalOnCreated() {
     Session.set("emptyPdfData", false);
     Session.set("emptyXmlData", false);
-})
+});
 
   
   Template.resourceDocModal.onCreated(function resourceOnCreated(){
     Session.set("showDocSaveModal", false);
     Session.set("showDocFhirModal", false);
     Session.set("showXMLModal", false);
-    
   })
 
   Template.resourceDocModal.events({
@@ -420,7 +419,10 @@ Template.pdfModal.onCreated(function pdfModalOnCreated() {
         return Session.get("docXMLModalData");
     },
     patientMrn() {
-        return Session.get("patientMrn")
+        return Session.get("currentPatientID")
+    },
+    patientID() {
+        return Session.get("currentPatientData")?.resource?.name[0]?.id;
     }
   })
 

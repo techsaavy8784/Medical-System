@@ -6,7 +6,8 @@ Meteor.startup(() => {
 });
 
 const baseUrl = Meteor.settings.public.LOGIN_BASE_URL
-// const saveCoreUrl = Meteor.settings.public.SAVE_CORE_URL
+
+
 
 Meteor.methods({
   loginUser: function (username, password) {
@@ -52,7 +53,10 @@ Meteor.methods({
       const response = await HTTP.get(url, { headers });
       
       console.log("testResponse: ", response.data)
+
       const { data } = response;
+
+      if (!!data?.bundle?.entry) {
       data.bundle.entry = data.bundle?.entry.map(e => {
         let title = data.resourceType;
         if (data.resourceType === "DocumentReference") {
@@ -63,9 +67,9 @@ Meteor.methods({
           
         e.resource.text.div = e.resource.text.div.split(`<p><b>${title}</b></p>`).join("")
         return {...e, text: e.resource.text}
-        });
-        
-      return data;
+      });
+    }
+    return data;
     } catch (e) {
       console.log("ERROR ", e);
       throw new Meteor.Error(e)

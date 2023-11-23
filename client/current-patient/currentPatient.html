@@ -197,13 +197,18 @@
 		<div class="modal-dialog">
 		  <div class="modal-content">
 			<div class="modal-header">
-			  <h1 class="modal-title fs-5" id="exampleModalLabel">Show Modal</h1>
+			  <h1 class="modal-title fs-5" id="exampleModalLabel">Save Resource Modal</h1>
 			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				{{#if showDocSaveModal}}
-          <label for="patientMRN" class="col-form-label" ><b>Patient MRN: </b>{{patientMrn}}</label>
-          <!-- {{{saveDocModalData}}} -->
+        <div class="col-xs-12">
+          <label for="patientMrn" class="col-form-label" ><b>Patient MRN: </b>{{patientMrn}}</label>
+        </div>
+        <div class="col-xs-12">
+          <label for="patientMrn" class="col-form-label" ><b>Patient ID: </b>{{patientID}}</label>
+          </div>
+          {{{saveDocModalData}}}
 				{{else if showDocFhirModal }}
           <pre>
           {{fhirDocModalData}}

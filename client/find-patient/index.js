@@ -73,7 +73,7 @@ Template.findPatient.events({
 		  	$('#savePatientModal').modal('show');
         } else if (value === 'Show Resource') {
 			$('#showResourceModal').modal('show');
-		} 
+		}
 		// else if (value === 'Save to MyEMR') {
 		// 	console.log("show Save Resource Modal");
 		// 	$('#saveResourceModal').modal('show');
@@ -82,6 +82,7 @@ Template.findPatient.events({
 	'click .textRawPatient' (event, instance) {
 		const currentPatient = "Patient: " + this.resource?.name[0]?.text + " - MRN: " + this.resource?.id;
 		Session.set("currentPatientInfo", currentPatient);
+		Session.set("currentPatientData", this);
 		Session.set("currentPatientID", this.resource.id);
 		Session.set("currentPatientName", this.resource?.name[0]?.text);
 		const route = `/current-patient/${this.resource.id}`
@@ -92,11 +93,36 @@ Template.findPatient.events({
 	}
 });
 
+Template.searchPatientModal.onCreated( function searchModalOnCreated(){
+	this.patientMrn = new ReactiveVar("");
+	this.patientId = new ReactiveVar("");
+})
+
 Template.searchPatientModal.helpers({
 	isLastName() {
 		return Session.get("isLastName")
 	},
-})
+	// showPatientHos() {
+	// 	return Session.get("")
+	// },
+	searchOfHos() {
+		if (Session.get("isActive") === "practice") {
+			return true;
+		} else return false;
+	},
+	isUnique() {
+		const isUnique = !!Template.instance().patientMrn.get() || !!Template.instance().patientId.get()
+		return isUnique ? true : false;
+	},
+	isMrn() {
+		return !!Template.instance().patientMrn.get()
+	},
+	isId() {
+		return !!Template.instance().patientId.get()
+	}
+});
+
+
 
 Template.searchPatientModal.events({
 	
@@ -108,7 +134,7 @@ Template.searchPatientModal.events({
 		const lastName = target.lastName.value.toLowerCase()
 		const firstName = target.firstName.value.toLowerCase()
 		const birthday = target.birthday.value;
-
+		
 		if (!(lastName || firstName)) {
 			return
 		}
@@ -228,7 +254,7 @@ Template.searchPatientModal.events({
 		instance.find('[name="birthday"]').value = '';
 		instance.find('#recordNumber').value = '';
     },
-	'input #findLastName'(event, template) {
+	'input #findLastName'(event, instance) {
 		const lastName = event.target.value;
 		// Do something with the new value
 		if (!!lastName) {
@@ -237,6 +263,22 @@ Template.searchPatientModal.events({
 			Session.set("isLastName", false);
 		}
 	},
+	'input #patient-mrn'(event, instance) {
+		const patientMrn = event.target.value;
+		if (!!patientMrn) {
+			instance.patientMrn.set(patientMrn);
+		} else {
+			instance.patientMrn.set("");
+		}
+	},
+	'input #patient-id'(event, instance) {
+		const patientId = event.target.value;
+		if (!!patientId) {
+			instance.patientId.set(patientId);
+		} else {
+			instance.patientId.set("");
+		}
+	}
 })
 
 Template.searchPatientFhirModal.helpers({
@@ -245,6 +287,14 @@ Template.searchPatientFhirModal.helpers({
 	},
 })
 
+Template.searchPatientModal.onRendered(function () {
+	const searchPatientModal = this.find('#searchPatientModal');
+	const form = this.find('#formFindPatient');
+	$(searchPatientModal).on('hidden.bs.modal', function (event) {
+		// form.reset();
+		
+	});
+})
 
 
 
