@@ -5,7 +5,7 @@ Meteor.startup(() => {
   // code to run on server at startup
 });
 
-const baseUrl = Meteor.settings.public.LOGIN_BASE_URL
+const baseUrl = process.env.LOGIN_BASE_URL
 
 
 
