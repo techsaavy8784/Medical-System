@@ -3,6 +3,8 @@ import { Template } from "meteor/templating"
 import { Session } from "meteor/session"
 import { ReactiveVar } from "meteor/reactive-var"
 import { Meteor } from "meteor/meteor"
+import { Router } from "meteor/iron:router"
+
 
 const buildEndPoint = () => {
     let baseURL = Session.get("coreURL");
@@ -14,7 +16,8 @@ const buildEndPoint = () => {
     const filterCount = Session.get("filterCount");
     if (!!filterCount) {
         baseURL += `&_count=${filterCount}`
-    } else {
+    } 
+    else {
         baseURL += `&_count=10`;
     }
     if (!!startDate) {
@@ -45,6 +48,16 @@ const getPatientDocs = async (url, headers) => {
             (error, result) => {
                 if (error) {
                     console.log("errorFinding", error)
+                    if (error.error?.response?.statusCode === 401) {
+                        alert("Your session has expired, please login");
+                        // Session.set("isLogin", false)
+                        // Session.set("isFindLoading", false)
+                        // function refreshPage() {
+                            Router.go("/login");
+                            location.reload();
+                        //   }
+                        return
+                    }
                     reject(error)
                 } else {
                     if (result.status === 200) {
@@ -57,7 +70,7 @@ const getPatientDocs = async (url, headers) => {
         // show error on screen
         Session.set("getPatientDocs", null)
         Session.set("isFindingDoc", false)
-        alert("Error: " + "resourceType: " + error.error.response?.data?.resourceType)
+        // alert("Error: " + "resourceType: " + error.error.response?.data?.resourceType)
         // alert("Error: " + "There is no Search Result")
     })
 }
@@ -127,8 +140,7 @@ const showPdfModal = async (data) => {
 Template.currentPatient.onCreated(function currentPatientOnCreated() {
     Session.set("isFindingDoc", false);
     Session.set("filterCount", "10");
-
-})
+});
 
 Template.currentPatient.helpers({
     currentPatientInfo() {
@@ -156,66 +168,13 @@ Template.currentPatient.helpers({
     endDate() {
         return Session.get("endDate");
     },
-    documentType(value) {
-        const documentType = Session.get("documentType") ? Session.get("documentType") : "all"
-        return documentType === value ? "selected" : "";
-    },
-    filterCount(value) {
-        const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10"
-        return filterCount === value ? "selected" : "";
+    executeFinding() {
+        return Session.get("executeFinding");
     }
 });
 
 
 Template.currentPatient.events({
-    async 'change .filter-start-date'(event, instance) {
-        event.preventDefault()
-        if (Session.get("isFindingDoc")) return
-        Session.set("isFindingDoc", true);
-        const authToken = Session.get("headers")
-        const startDate = event.target.value;
-        Session.set("startDate", startDate)
-        
-        setTimeout(() => {
-            Session.set("isFindingDoc", false);
-          }, 2500);
-          console.log("requestURL---", buildEndPoint())
-    },
-    'change .filter-end-date'(event, instance) {
-        Session.set("isFindingDoc", true)
-        const endDate = event.target.value;
-        Session.set("endDate", endDate)
-        setTimeout(() => {
-            Session.set("isFindingDoc", false);
-          }, 2500);
-        console.log("requestURL---", buildEndPoint())
-    },
-    async 'change .filter-document-type'(event, instance) {
-        event.preventDefault()
-        if (Session.get("isFindingDoc")) return
-        Session.set("isFindingDoc", true);
-        const documentType = event.target.value;
-        Session.set("documentType", documentType)
-        
-        setTimeout(() => {
-            Session.set("isFindingDoc", false);
-          }, 2500);
-        console.log("requestURL---", buildEndPoint())
-    },
-    async 'change .filter-patient-count'(event, instance) {
-        event.preventDefault()
-        if (Session.get("isFindingDoc")) return
-        Session.set("isFindingDoc", true);
-        const filterCount = event.target.value;
-        Session.set("filterCount", filterCount)
-        const authToken = Session.get("headers")
-        
-        const res = await getPatientDocs(buildEndPoint(), {
-			Authorization: authToken,
-		});
-        setDocs(res);
-        console.log("resourceURL---", buildEndPoint())
-    },
     async 'click #textRawDoc' (event, instance) {
         await showPdfModal(this);
     },
@@ -289,9 +248,100 @@ Template.currentPatient.onRendered( function (){
     
 });
 
+Template.findDocModal.helpers({
+    // documentType(value) {
+    //     const documentType = Session.get("documentType") ? Session.get("documentType") : "all"
+    //     return documentType === value ? "selected" : "";
+    // },
+    filterCount(value) {
+        const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10"
+        return filterCount === value ? "selected" : "";
+    },
+})
+
+
+Template.findDocModal.events({
+    // async 'change .filter-start-date'(event, instance) {
+    //     event.preventDefault()
+    //     if (Session.get("isFindingDoc")) return
+    //     Session.set("isFindingDoc", true);
+    //     const authToken = Session.get("headers")
+    //     const startDate = event.target.value;
+    //     Session.set("startDate", startDate)
+        
+    //     setTimeout(() => {
+    //         Session.set("isFindingDoc", false);
+    //       }, 2500);
+    //       console.log("requestURL---", buildEndPoint())
+    // },
+    // 'change .filter-end-date'(event, instance) {
+    //     Session.set("isFindingDoc", true)
+    //     const endDate = event.target.value;
+    //     Session.set("endDate", endDate)
+    //     setTimeout(() => {
+    //         Session.set("isFindingDoc", false);
+    //       }, 2500);
+    //     console.log("requestURL---", buildEndPoint())
+    // },
+    // async 'change .filter-document-type'(event, instance) {
+    //     event.preventDefault()
+    //     if (Session.get("isFindingDoc")) return
+    //     Session.set("isFindingDoc", true);
+    //     const documentType = event.target.value;
+    //     Session.set("documentType", documentType)
+        
+    //     setTimeout(() => {
+    //         Session.set("isFindingDoc", false);
+    //       }, 2500);
+    //     console.log("requestURL---", buildEndPoint())
+    // },
+    // async 'change .filter-patient-count'(event, instance) {
+    //     event.preventDefault()
+    //     if (Session.get("isFindingDoc")) return
+    //     Session.set("isFindingDoc", true);
+    //     const filterCount = event.target.value;
+    //     Session.set("filterCount", filterCount)
+    //     const authToken = Session.get("headers").toUpperCase()
+        
+    //     const res = await getPatientDocs(buildEndPoint(), {
+	// 		Authorization: authToken,
+	// 	});
+    //     setDocs(res);
+    //     console.log("resourceURL---", buildEndPoint())
+    // },
+    async 'submit .search-doc-form' (event, instance) {
+        event.preventDefault()
+		$('#findDocModal').modal('hide');
+
+		const target = event.target
+
+		const startDate = target.startDate.value
+        Session.set("startDate", startDate)
+		const endDate = target.endDate.value
+        Session.set("endDate", endDate)
+		const filterCount = target.filterCount.value;
+        Session.set("filterCount", filterCount);
+        
+        console.log("isFindingDoc", Session.get("isFindingDoc"));
+        if (Session.get("isFindingDoc")) return
+        Session.set("isFindingDoc", true);
+        const authToken = Session.get("headers");
+        
+        console.log("resourceURL---", buildEndPoint());
+        const res = await getPatientDocs(buildEndPoint(), {
+			Authorization: authToken,
+		});
+        setDocs(res);
+        console.log('res---', res);
+    }
+
+})
+
+
 Template.sidebar.onCreated(function sidebarOnCreated() {
     this.selectedResourceItem = new ReactiveVar("")
 });
+
 
 Template.sidebar.helpers({
     referenceStyle() {
@@ -314,26 +364,24 @@ Template.sidebar.helpers({
     }
 })
 
+
 Template.sidebar.events({
     async 'click .resource-item'(event, instance) {
-        console.log("isFindingDoc", Session.get("isFindingDoc"));
-        if (Session.get("isFindingDoc")) return
-        Session.set("isFindingDoc", true);
-        const authToken = Session.get("headers")
+        Session.set("executeFinding", true)
         const clickedItem = event.currentTarget.id;
         instance.selectedResourceItem.set(clickedItem)
         clearQuery();
+
         Session.set("resourceType", clickedItem)
 
-        console.log("resourceURL---", buildEndPoint());
 
-        const res = await getPatientDocs(buildEndPoint(), {
-			Authorization: authToken,
-		});
-        setDocs(res);
-        console.log('res---', res);
+        $("#findDocModal").modal("show");
     }
-})
+});
+
+// Template.findDocModal.events({
+
+// })
 
 Template.pdfModal.helpers({
     pdfDataUrl() {
@@ -357,6 +405,7 @@ Template.pdfModal.onCreated(function pdfModalOnCreated() {
     Session.set("showDocSaveModal", false);
     Session.set("showDocFhirModal", false);
     Session.set("showXMLModal", false);
+    Session.set("executeFinding", false)
   })
 
   Template.resourceDocModal.events({
@@ -444,3 +493,4 @@ Template.pdfModal.onCreated(function pdfModalOnCreated() {
 	});
     console.log("currentDocPdf", this.data.currentDocPdf);
   })
+

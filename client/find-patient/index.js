@@ -96,22 +96,17 @@ Template.findPatient.events({
 Template.searchPatientModal.onCreated( function searchModalOnCreated(){
 	this.patientMrn = new ReactiveVar("");
 	this.patientId = new ReactiveVar("");
+	this.isValue = new ReactiveVar("");
+	this.isPrimaryKey = new ReactiveVar("");
+
 })
 
 Template.searchPatientModal.helpers({
 	isLastName() {
 		return Session.get("isLastName")
 	},
-	// showPatientHos() {
-	// 	return Session.get("")
-	// },
-	searchOfHos() {
-		if (Session.get("isActive") === "practice") {
-			return true;
-		} else return false;
-	},
 	isUnique() {
-		const isUnique = !!Template.instance().patientMrn.get() || !!Template.instance().patientId.get()
+		const isUnique = !!Template.instance().patientMrn.get() || !!Template.instance().patientId.get() || !!Template.instance().isPrimaryKey.get()
 		return isUnique ? true : false;
 	},
 	isMrn() {
@@ -119,9 +114,20 @@ Template.searchPatientModal.helpers({
 	},
 	isId() {
 		return !!Template.instance().patientId.get()
+	},
+	canInputPrimary() {
+		const inputValid = !!Template.instance().patientMrn.get() || !!Template.instance().patientId.get() || !!Session.get("isLastName")
+		return !inputValid;
+	},
+	canInputMrn() {
+		const inputValid = !!Template.instance().isPrimaryKey.get() || !!Template.instance().patientId.get() || !!Session.get("isLastName")
+		return !inputValid;
+	},
+	canInputId() {
+		const inputValid = !!Template.instance().isPrimaryKey.get() || !!Template.instance().patientMrn.get() || !!Session.get("isLastName")
+		return !inputValid;
 	}
 });
-
 
 
 Template.searchPatientModal.events({
@@ -186,8 +192,17 @@ Template.searchPatientModal.events({
 					(error, result) => {
 						if (error) {
 							console.log("errorFinding", error)
-							reject(error)
+							if (error.error?.response?.statusCode === 401) {
+								alert("Your session has expired, please login");
+								Session.set("isLogin", false)
+								Session.set("isFindLoading", false)
+
+								Router.go("/login");
+							}
+							// reject(error)
+							return error;
 						} else {
+							console.log("success: ", result)
 							if (result.status === 200) {
 								resolver(result)
 							}
@@ -195,10 +210,12 @@ Template.searchPatientModal.events({
 					}
 				)
 			}).catch((error) => {
-				// show error on screen
-                Session.set("findPatientPra", null)                
+				console.log("errorFinding", error)
+                Session.set("findPatientPra", null)
 			})
 		}
+
+
 		const res = await getFindPatients(coreUrl(), buildQuery(), {
 			Authorization: authToken,
 		})
@@ -253,6 +270,7 @@ Template.searchPatientModal.events({
 		instance.find('#findFirstName').value = '';
 		instance.find('[name="birthday"]').value = '';
 		instance.find('#recordNumber').value = '';
+		instance.find('#primary-key').value = '';
     },
 	'input #findLastName'(event, instance) {
 		const lastName = event.target.value;
@@ -278,18 +296,50 @@ Template.searchPatientModal.events({
 		} else {
 			instance.patientId.set("");
 		}
+	},
+	'input #primary-key'(event, instance) {
+		const primaryKey = event.target.value;
+		if (!!primaryKey) {
+			instance.isPrimaryKey.set(primaryKey);
+		} else {
+			instance.isPrimaryKey.set("");
+		}
+	},
+	'input #findFirstName'(event, instance) {
+		const firstName = event.target.value;
+		
+		if (!!firstName) {
+			instance.isValue.set(firstName);
+		} else {
+			instance.isValue.set("");
+		}
+	},
+	'input #birthday'(event, instance) {
+		const birthDay = event.target.value;
+		if (!!birthDay) {
+			instance.isValue.set(birthDay);
+		} else {
+			instance.isValue.set("");
+		}
 	}
+
 })
 
-Template.searchPatientFhirModal.helpers({
-	fhirModalData() {
-		return Session.get("fhirModalData");
-	},
-})
 
 Template.searchPatientModal.onRendered(function () {
+	
+	// const inputField = this.find('#primary-key');
+	// console.log("inputField", inputField);
+	// inputField.focus();
+	// $('input').focus()
+	$('#primary-key').focus();	
+
 	const searchPatientModal = this.find('#searchPatientModal');
-	const form = this.find('#formFindPatient');
+
+  $(searchPatientModal).on('shown.bs.modal', function (event) {
+    $('#primary-key').focus();
+  });
+
 	$(searchPatientModal).on('hidden.bs.modal', function (event) {
 		// form.reset();
 		
@@ -297,6 +347,11 @@ Template.searchPatientModal.onRendered(function () {
 })
 
 
+Template.searchPatientFhirModal.helpers({
+	fhirModalData() {
+		return Session.get("fhirModalData");
+	},
+})
 
 
 Template.searchPatientFhirModal.onRendered(function() {
@@ -354,12 +409,25 @@ Template.searchPatientFhirModal.onRendered(function() {
 		Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
 			if (error) {
 				console.log("error", error);
-				const errorInfo = error?.reason.response?.data
-				alert("ERROR !" + errorInfo.resourceType + "\n" + errorInfo.issue[0]?.details?.text)
+				if (error.reason?.statusCode === "406" || error.reason?.code === "ECONNRESET") {
+					alert("Your session has expired, please login");
+					Session.set("isLogin", false)
+					Session.set("isFindLoading", false)
+
+					Router.go("/login");
+					return ;
+				}
+				const errorInfo = error?.reason?.response?.data
+				alert("ERROR !" + errorInfo?.resourceType + "\n" + errorInfo?.issue[0]?.details?.text)
 			} else {
-				const practiceName = Session.get("practices")[0]?.displayName
-				console.log("result: ", result)
-				alert(`Patient successfully imported to your ${practiceName}`)
+				if (result.status === 200) {
+					const practiceName = Session.get("practices")[0]?.displayName
+					console.log("result: ", result)
+					alert(`Patient successfully imported to your ${practiceName}`)
+				} else if (result.statusCode === 401) {
+					alert("Your session has expired, please login");
+					Router.go("/login")
+				}
 			}
 		});
     },
@@ -392,42 +460,42 @@ Template.savePatientModal.onRendered(function() {
 
 })
 
-Template.showResourceModal.onRendered(function() {
-	const showResourceModal = this.find('#showResourceModal');
-	const instance = this;
-	const parentInstance = instance.view.parentView.templateInstance();
+// Template.showResourceModal.onRendered(function() {
+// 	const showResourceModal = this.find('#showResourceModal');
+// 	const instance = this;
+// 	const parentInstance = instance.view.parentView.templateInstance();
 
 
-	$(showResourceModal).on('hidden.bs.modal', function (event) {
+// 	$(showResourceModal).on('hidden.bs.modal', function (event) {
 		
-		const selectElements = parentInstance.findAll('.inputFindPatient');
-		selectElements.forEach(function(selectElement) {
-		$(selectElement).val('Select an Option');
-		});
-	});
+// 		const selectElements = parentInstance.findAll('.inputFindPatient');
+// 		selectElements.forEach(function(selectElement) {
+// 		$(selectElement).val('Select an Option');
+// 		});
+// 	});
 
-  });
+//   });
 
-  Template.showResourceModal.helpers({
-	// fhirModalData() {
-	// 	return Session.get("fhirModalData")
-	// },
-	selectedPatientMRN() {
-		return Session.get("selectedPatientInfo")?.resource?.id;
-		// return Session.get("practices")[0].systems[0].id;
-	},
-	selectedPatientID() {
-		return Session.get("selectedPatientInfo")?.resource?.name[0]?.id;
-		// return Session.get("selectedPatientInfo")?.resource?.id;
-	},
-	selectedPatientFamily() {
-		return Session.get("selectedPatientInfo")?.resource?.name[0]?.family;
-	},
-	selectedPatientGiven(){
-		return Session.get("selectedPatientInfo")?.resource?.name[0]?.given[0];
-	},
-	selectedPatientDOB() {
-		const date = Session.get("selectedPatientInfo")?.resource?.birthDate;
-		return date ? date : ""
-	}
-  });
+//   Template.showResourceModal.helpers({
+// 	// fhirModalData() {
+// 	// 	return Session.get("fhirModalData")
+// 	// },
+// 	selectedPatientMRN() {
+// 		return Session.get("selectedPatientInfo")?.resource?.id;
+// 		// return Session.get("practices")[0].systems[0].id;
+// 	},
+// 	selectedPatientID() {
+// 		return Session.get("selectedPatientInfo")?.resource?.name[0]?.id;
+// 		// return Session.get("selectedPatientInfo")?.resource?.id;
+// 	},
+// 	selectedPatientFamily() {
+// 		return Session.get("selectedPatientInfo")?.resource?.name[0]?.family;
+// 	},
+// 	selectedPatientGiven(){
+// 		return Session.get("selectedPatientInfo")?.resource?.name[0]?.given[0];
+// 	},
+// 	selectedPatientDOB() {
+// 		const date = Session.get("selectedPatientInfo")?.resource?.birthDate;
+// 		return date ? date : ""
+// 	}
+//   });

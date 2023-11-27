@@ -61,6 +61,7 @@ Router.route("/current-patient/:_id", function () {
 	// Perform actions or render templates based on the dynamic parameter
 	// For example:
 	if (!isLogin) {
+		Router.go("/login")
 	} else {
 		this.render("currentPatient", {
 			data: function () {
