@@ -12,7 +12,10 @@ const buildEndPoint = () => {
     baseURL += `?patient=${Session.get("currentPatientID")}`;
     const startDate = Session.get("startDate");
     const endDate = Session.get("endDate");
-    const documentType = Session.get("documentType");
+    const category = Session.get("category");
+    const encounter = Session.get("encounter");
+
+    // const documentType = Session.get("documentType");
     const filterCount = Session.get("filterCount");
     if (!!filterCount) {
         baseURL += `&_count=${filterCount}`
@@ -26,9 +29,15 @@ const buildEndPoint = () => {
     if (!!endDate) {
         baseURL += `&period=le${endDate}`;
     }
-    if (!!documentType) {
-        baseURL += `&type=${documentType}`;
+    if (!!category) {
+        baseURL += `&http://loinc.org|${category}`;
     }
+    if (!!encounter) {
+        baseURL += `&encounter=${encounter}`;
+    }
+    // if (!!documentType) {
+    //     baseURL += `&type=${documentType}`;
+    // }
     return baseURL;
 }
 
@@ -40,6 +49,7 @@ const clearQuery = () => {
 }
 
 const getPatientDocs = async (url, headers) => {
+
     return new Promise(function (resolver, reject) {
         Meteor.call(
             "patientTestQuery",
@@ -53,8 +63,9 @@ const getPatientDocs = async (url, headers) => {
                         // Session.set("isLogin", false)
                         // Session.set("isFindLoading", false)
                         // function refreshPage() {
+                            Session.clear();
                             Router.go("/login");
-                            location.reload();
+                            // location.reload();
                         //   }
                         return
                     }
@@ -242,10 +253,17 @@ Template.currentPatient.events({
           fetchAndShowXML();
         }
       },
+    'click .btn-show-search-doc-modal' (event, instance) {
+        $("#findDocModal").modal("show");
+    }
 });
 
 Template.currentPatient.onRendered( function (){
     
+});
+
+Template.findDocModal.onCreated(function findDocModalOnCreated() {
+
 });
 
 Template.findDocModal.helpers({
@@ -316,12 +334,17 @@ Template.findDocModal.events({
 		const target = event.target
 
 		const startDate = target.startDate.value
-        Session.set("startDate", startDate)
 		const endDate = target.endDate.value
-        Session.set("endDate", endDate)
 		const filterCount = target.filterCount.value;
+        const category = target.category.value;
+        const encounter = target.encounter.value;
+
+        Session.set("startDate", startDate)
+        Session.set("endDate", endDate)
         Session.set("filterCount", filterCount);
-        
+        Session.set("category", category);
+        Session.set("encounter", encounter);
+
         console.log("isFindingDoc", Session.get("isFindingDoc"));
         if (Session.get("isFindingDoc")) return
         Session.set("isFindingDoc", true);
@@ -362,7 +385,7 @@ Template.sidebar.helpers({
     questionnaireStyle() {
         return (Session.get("resourceType") === "QuestionnaireResponse") ? "background: #c0c7d4;" : null
     }
-})
+});
 
 
 Template.sidebar.events({
@@ -371,11 +394,21 @@ Template.sidebar.events({
         const clickedItem = event.currentTarget.id;
         instance.selectedResourceItem.set(clickedItem)
         clearQuery();
-
         Session.set("resourceType", clickedItem)
+        
+        if (Session.get("isFindingDoc")) return
+        Session.set("isFindingDoc", true);
+        const authToken = Session.get("headers");
+        
+        console.log("resourceURL---", buildEndPoint());
+        const res = await getPatientDocs(buildEndPoint(), {
+			Authorization: authToken,
+		});
+        Session.set("isFindingDoc", false);
 
+        setDocs(res);
+        console.log('res---', res);
 
-        $("#findDocModal").modal("show");
     }
 });
 
@@ -446,7 +479,6 @@ Template.pdfModal.onCreated(function pdfModalOnCreated() {
 		}
     }
 })
-
 
   Template.resourceDocModal.helpers({
     showDocSaveModal() {

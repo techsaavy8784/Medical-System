@@ -7,6 +7,42 @@ import { Session } from "meteor/session"
 import { Router } from "meteor/iron:router"
 import {generateUniqueId} from "../utils/patientID"
 
+
+const getFindPatients = async (coreUrl, query, headers) => {
+	return new Promise(function (resolver, reject) {
+		console.log("find-patientURL", `${coreUrl}${query}`);
+		Meteor.call(
+			"patientTestQuery",
+			`${coreUrl}/${query}`,
+			headers,
+			(error, result) => {
+				if (error) {
+					console.log("errorFinding", error)
+					if (error.error?.response?.statusCode === 401) {
+						alert("Your session has expired, please login");
+						Session.set("isLogin", false)
+						Session.set("isFindLoading", false)
+
+						Router.go("/login");
+					}
+					Session.set("isFindLoading", false)
+					// reject(error)
+					return error;
+				} else {
+					console.log("success: ", result)
+					if (result.status === 200) {
+						resolver(result)
+					}
+				}
+			}
+		)
+	}).catch((error) => {
+		console.log("errorFinding", error)
+		Session.set("findPatientPra", null)
+	})
+}
+
+
 Template.findPatient.onCreated(function findPatientOnCreated() {
 	this.searchLastName = new ReactiveVar("")
 	this.searchFirstName = new ReactiveVar("")
@@ -182,39 +218,6 @@ Template.searchPatientModal.events({
 			}
 		}
 
-		const getFindPatients = async (coreUrl, query, headers) => {
-			return new Promise(function (resolver, reject) {
-				console.log("find-patientURL", `${coreUrl}${query}`);
-				Meteor.call(
-					"patientTestQuery",
-					`${coreUrl}/${query}`,
-					headers,
-					(error, result) => {
-						if (error) {
-							console.log("errorFinding", error)
-							if (error.error?.response?.statusCode === 401) {
-								alert("Your session has expired, please login");
-								Session.set("isLogin", false)
-								Session.set("isFindLoading", false)
-
-								Router.go("/login");
-							}
-							// reject(error)
-							return error;
-						} else {
-							console.log("success: ", result)
-							if (result.status === 200) {
-								resolver(result)
-							}
-						}
-					}
-				)
-			}).catch((error) => {
-				console.log("errorFinding", error)
-                Session.set("findPatientPra", null)
-			})
-		}
-
 
 		const res = await getFindPatients(coreUrl(), buildQuery(), {
 			Authorization: authToken,
@@ -342,7 +345,6 @@ Template.searchPatientModal.onRendered(function () {
 
 	$(searchPatientModal).on('hidden.bs.modal', function (event) {
 		// form.reset();
-		
 	});
 })
 

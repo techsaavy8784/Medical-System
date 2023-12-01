@@ -86,7 +86,8 @@ Template.header.helpers({
         }
         
     },
-    'click .click-Hospital': function(event) {
+    'click .click-Hospital': function(event, instance) {
+        // $('#loginRemote').modal('show');
         Session.set("isActive", "hospital")
         const facility = Session.get("facilities")[0]
         Session.set("coreURL", facility.systems[0].coreUrl)

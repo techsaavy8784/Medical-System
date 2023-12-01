@@ -14,17 +14,15 @@
       {{else}}
 
         <main id="main" class="main mt-5" >
-    
           <!-- Table with stripped rows -->
-          
-
           <section class="section">
           <div class="row">
           <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Select Resource Type on  Left</h5>
+              <h5 class="card-title">Select Resource Type on Left</h5>
 
+              <button class="btn btn-secondary btn-show-search-doc-modal">Search</button>
               {{#if emptySearchDocs}}
                 {{#if executeFinding}}
                 <h5>No result to display</h5>
@@ -219,13 +217,13 @@
 			<div class="modal-body">
         <form id="formFindDoc" class="row g-3 search-doc-form">
           <div class="row g-3">
-            <div class="col-12">
+            <div class="col-6">
               <label for="filter-start-date" class="form-label"  >Start Date</label>
               <!-- <input type="text" data-bind="value: first"/> -->
               <input type="date" name="startDate" id="filter-start-date" class="form-control filter-start-date" value="{{startDate}}">
               
             </div>
-            <div class="col-12">
+            <div class="col-6">
               <label for="filter-end-date" class="form-label">End Date</label>
               <input type="date" name="endDate" id="filter-end-date" class="form-control filter-end-date" value="{{endDate}}">
             </div>
@@ -239,8 +237,30 @@
                 <option value="neurology" {{documentType "neurology"}}>Neurology Progress Note</option>
               </select>
             </div> -->
-            <div class="col-12">
-              <label for="filter-patient-count" class="form-label">Resource Per Page</label>
+            <div class="col-6">
+              <label for="document-category" class="form-label"
+                >Category</label>
+                <input
+                  type="text"
+                  name="category"
+                  class="form-control filter-category"
+                  id="document-category"
+                  placeholder="11488-4"
+                />
+            </div>
+            <div class="col-6">
+              <label for="document-encounter" class="form-label"
+                >Encounter</label>
+                <input
+                  type="text"
+                  name="encounter"
+                  class="form-control filter-encounter"
+                  id="document-encounter"
+                  placeholder=""
+                />
+            </div>
+            <div class="col-6">
+              <label for="filter-patient-count" class="form-label">The number of document</label>
               <select name="filterCount" id="filter-patient-count" class="form-select filter-patient-count" value="{{filterCount}}">
                 <option value="5" {{filterCount "5"}}>5</option>
                 <option value="10" {{filterCount "10"}}>10</option>
