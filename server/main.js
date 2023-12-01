@@ -22,11 +22,11 @@ Meteor.methods({
         }
       });
       console.log("loginResponse: ", response.data);
-      return response.data;
+      return response?.data;
 
     } catch (error) {
       console.error("Error fetching tagline:", error);
-      throw new Meteor.Error('login', 'Network connection Error!');
+      return error;
     }
   },
   getTagLine: function() {

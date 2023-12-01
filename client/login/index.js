@@ -43,12 +43,13 @@ Template.login.onCreated(function loginOnCreated() {
           Meteor.call('loginUser', username, password, (error, result) => {
   
               if (error) {
-                console.error(error);
+                console.log("loginError", result);
+                
                 alert(error)
                 isLogin.set(false);
                 instance.isLogging.set(false);
-                
               } else {
+                console.log("loginResult", result);
                   if (result.status == 200) {
                   console.log("loginResponse: ", result);
                   isLogin.set(true);
@@ -64,7 +65,11 @@ Template.login.onCreated(function loginOnCreated() {
                   Session.set("coreURL", result?.facilities[0].systems[0].coreUrl)
                   
                   Router.go('/');
+                } else if (result.response?.statusCode === 401) {
+                  instance.isLogging.set(false);
+                  alert("Not Authorized")
                 } else {
+                  alert("Internet Connection error!")
                   isLogin.set(false);
                   instance.isLogging.set(false);
                 }
