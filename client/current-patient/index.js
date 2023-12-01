@@ -15,7 +15,6 @@ const buildEndPoint = () => {
     const category = Session.get("category");
     const encounter = Session.get("encounter");
 
-    // const documentType = Session.get("documentType");
     const filterCount = Session.get("filterCount");
     if (!!filterCount) {
         baseURL += `&_count=${filterCount}`
@@ -35,16 +34,12 @@ const buildEndPoint = () => {
     if (!!encounter) {
         baseURL += `&encounter=${encounter}`;
     }
-    // if (!!documentType) {
-    //     baseURL += `&type=${documentType}`;
-    // }
     return baseURL;
 }
 
 const clearQuery = () => {
     Session.set("startDate", null)
     Session.set("endDate", null)
-    Session.set("documentType", null)
     Session.set("filterCount", null)
 }
 
@@ -181,6 +176,9 @@ Template.currentPatient.helpers({
     },
     executeFinding() {
         return Session.get("executeFinding");
+    },
+    resourceType() {
+        return  Session.get("resourceType");
     }
 });
 
@@ -259,7 +257,7 @@ Template.currentPatient.events({
 });
 
 Template.currentPatient.onRendered( function (){
-    
+    Session.set("executeFinding", false);
 });
 
 Template.findDocModal.onCreated(function findDocModalOnCreated() {
@@ -267,14 +265,13 @@ Template.findDocModal.onCreated(function findDocModalOnCreated() {
 });
 
 Template.findDocModal.helpers({
-    // documentType(value) {
-    //     const documentType = Session.get("documentType") ? Session.get("documentType") : "all"
-    //     return documentType === value ? "selected" : "";
-    // },
     filterCount(value) {
         const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10"
         return filterCount === value ? "selected" : "";
     },
+    resourceType() {
+        return Session.get("resourceType");
+    }
 })
 
 
@@ -305,8 +302,6 @@ Template.findDocModal.events({
     //     event.preventDefault()
     //     if (Session.get("isFindingDoc")) return
     //     Session.set("isFindingDoc", true);
-    //     const documentType = event.target.value;
-    //     Session.set("documentType", documentType)
         
     //     setTimeout(() => {
     //         Session.set("isFindingDoc", false);
@@ -434,12 +429,12 @@ Template.pdfModal.onCreated(function pdfModalOnCreated() {
 });
 
   
-  Template.resourceDocModal.onCreated(function resourceOnCreated(){
-    Session.set("showDocSaveModal", false);
-    Session.set("showDocFhirModal", false);
-    Session.set("showXMLModal", false);
-    Session.set("executeFinding", false)
-  })
+Template.resourceDocModal.onCreated(function resourceOnCreated(){
+Session.set("showDocSaveModal", false);
+Session.set("showDocFhirModal", false);
+Session.set("showXMLModal", false);
+Session.set("executeFinding", false)
+})
 
   Template.resourceDocModal.events({
     async 'click .save-doc-data'(event, instance) {

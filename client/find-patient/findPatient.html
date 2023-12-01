@@ -121,32 +121,31 @@
 				
 				<!-- {{#if searchOfHos}} -->
 				
+
 				<div class="col-xs-12">
 					<div class="form-floating">
-						{{#if canInputPrimary}}
+						{{#if canInputId}}
 						<input
 							type="text"
-							name="patientMrn"
+							name="patientId"
 							class="form-control"
-							id="primary-key"
-							placeholder="Primary Key"
+							id="patient-id"
+							placeholder="Patient ID"
 						/>
 						{{else}}
-						
 						<input
-						type="text"
-						name="patient-key"
-						class="form-control"
-						id="primary-key"
-						placeholder="Primary Key"
-						disabled
-					/>
+							type="text"
+							name="patientId"
+							class="form-control"
+							id="patient-id"
+							placeholder="Patient ID"
+							disabled
+						/>
 						{{/if}}
-						<label for="patient-mrn"
-							>Primary Key</label>
+						<label for="patient-id"
+							>Patient ID</label>
 					</div>
 				</div>
-
 				<div class="col-xs-12">
 					<div class="form-floating">
 						{{#if canInputMrn}}
@@ -170,30 +169,6 @@
 						{{/if}}
 						<label for="patient-mrn"
 							>Medial Record Number</label>
-					</div>
-				</div>
-				<div class="col-xs-12">
-					<div class="form-floating">
-						{{#if canInputId}}
-						<input
-							type="text"
-							name="patientId"
-							class="form-control"
-							id="patient-id"
-							placeholder="Patient ID"
-						/>
-						{{else}}
-						<input
-							type="text"
-							name="patientId"
-							class="form-control"
-							id="patient-id"
-							placeholder="Patient ID"
-							disabled
-						/>
-						{{/if}}
-						<label for="patient-id"
-							>Patient ID</label>
 					</div>
 				</div>
 				<div class="col-xs-12">

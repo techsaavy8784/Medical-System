@@ -30,15 +30,28 @@ const getFindPatients = async (coreUrl, query, headers) => {
 					return error;
 				} else {
 					console.log("success: ", result)
-					if (result.status === 200) {
-						resolver(result)
+					if (Session.get("isActive") === "hospital") {
+						if (result.status === 200 && result.message === " No resources found") {
+							
+							resolver(result)
+						} else {
+							resolver(result)
+						}
+					} else {
+						if (result.statusCode === 404) {
+							resolver(result)
+
+						} else {
+							resolver(result)
+						}
 					}
+					Session.set("isFindLoading", false)
 				}
 			}
 		)
 	}).catch((error) => {
 		console.log("errorFinding", error)
-		Session.set("findPatientPra", null)
+		// Session.set("findPatientPra", null)
 	})
 }
 
@@ -133,7 +146,6 @@ Template.searchPatientModal.onCreated( function searchModalOnCreated(){
 	this.patientMrn = new ReactiveVar("");
 	this.patientId = new ReactiveVar("");
 	this.isValue = new ReactiveVar("");
-	this.isPrimaryKey = new ReactiveVar("");
 
 })
 
@@ -142,7 +154,7 @@ Template.searchPatientModal.helpers({
 		return Session.get("isLastName")
 	},
 	isUnique() {
-		const isUnique = !!Template.instance().patientMrn.get() || !!Template.instance().patientId.get() || !!Template.instance().isPrimaryKey.get()
+		const isUnique = !!Template.instance().patientMrn.get() || !!Template.instance().patientId.get();
 		return isUnique ? true : false;
 	},
 	isMrn() {
@@ -151,16 +163,12 @@ Template.searchPatientModal.helpers({
 	isId() {
 		return !!Template.instance().patientId.get()
 	},
-	canInputPrimary() {
-		const inputValid = !!Template.instance().patientMrn.get() || !!Template.instance().patientId.get() || !!Session.get("isLastName")
-		return !inputValid;
-	},
 	canInputMrn() {
-		const inputValid = !!Template.instance().isPrimaryKey.get() || !!Template.instance().patientId.get() || !!Session.get("isLastName")
+		const inputValid = !!Template.instance().patientId.get() || !!Session.get("isLastName")
 		return !inputValid;
 	},
 	canInputId() {
-		const inputValid = !!Template.instance().isPrimaryKey.get() || !!Template.instance().patientMrn.get() || !!Session.get("isLastName")
+		const inputValid = !!Template.instance().patientMrn.get() || !!Session.get("isLastName")
 		return !inputValid;
 	}
 });
@@ -226,14 +234,14 @@ Template.searchPatientModal.events({
         
 		Session.set("isFindLoading", false)
 
-		if (!res === true) {
+		if (!res.bundle?.entry?.length === true) {
 			$('#searchPatientModal').modal('show');
 		}
 
 		if (isActive === "hospital") {
-            if (res) {
+            if (res.bundle) {
                 Session.set("findPatientHos", {
-                    patients: res.bundle.entry,
+                    patients: res.bundle?.entry,
                     cache: {
                         id: res.queryId,
                         pageNumber: res.pageNumber,
@@ -246,9 +254,9 @@ Template.searchPatientModal.events({
             }
 		}  else {
             
-            if (res) {
+            if (res.bundle) {
             Session.set("findPatientPra", {
-                patients: res.bundle.entry,
+                patients: res.bundle?.entry,
                 cache: {
                     id: res.queryId,
     
@@ -261,7 +269,6 @@ Template.searchPatientModal.events({
                 Session.set("findPatientPra", null)
             }
 		}
-        
 		return false
 	},
     'click .reset': function (event, instance) {
@@ -272,8 +279,7 @@ Template.searchPatientModal.events({
 		instance.find('#findLastName').value = '';
 		instance.find('#findFirstName').value = '';
 		instance.find('[name="birthday"]').value = '';
-		instance.find('#recordNumber').value = '';
-		instance.find('#primary-key').value = '';
+		instance.find('#patient-mrn').value = '';
     },
 	'input #findLastName'(event, instance) {
 		const lastName = event.target.value;
@@ -300,14 +306,6 @@ Template.searchPatientModal.events({
 			instance.patientId.set("");
 		}
 	},
-	'input #primary-key'(event, instance) {
-		const primaryKey = event.target.value;
-		if (!!primaryKey) {
-			instance.isPrimaryKey.set(primaryKey);
-		} else {
-			instance.isPrimaryKey.set("");
-		}
-	},
 	'input #findFirstName'(event, instance) {
 		const firstName = event.target.value;
 		
@@ -325,7 +323,6 @@ Template.searchPatientModal.events({
 			instance.isValue.set("");
 		}
 	}
-
 })
 
 
@@ -420,11 +417,11 @@ Template.searchPatientFhirModal.onRendered(function() {
 					return ;
 				}
 				const errorInfo = error?.reason?.response?.data
-				alert("ERROR !" + errorInfo?.resourceType + "\n" + errorInfo?.issue[0]?.details?.text)
+				alert(errorInfo?.issue[0]?.details?.text)
 			} else {
-				if (result.status === 200) {
+				console.log("result: ", result)
+				if (result.statusCode === 201) {
 					const practiceName = Session.get("practices")[0]?.displayName
-					console.log("result: ", result)
 					alert(`Patient successfully imported to your ${practiceName}`)
 				} else if (result.statusCode === 401) {
 					alert("Your session has expired, please login");

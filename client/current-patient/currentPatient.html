@@ -25,7 +25,7 @@
               <button class="btn btn-secondary btn-show-search-doc-modal">Search</button>
               {{#if emptySearchDocs}}
                 {{#if executeFinding}}
-                <h5>No result to display</h5>
+                <h5>{{resourceType}}</h5>
                 {{/if}}
               {{else}}
               <table class="table datatable">
@@ -210,7 +210,7 @@
 		  <div class="modal-content">
 			<div class="modal-header">
 			  <h1 class="modal-title fs-5" id="exampleModalLabel">
-					Search Patient Reference
+					Search {{resourceType}}
 				</h1>
 			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
@@ -269,6 +269,17 @@
                 <option value="100" {{filterCount "100"}}>100</option>
               </select>
             </div>
+            <!-- <div class="col-6">
+              <label for="document-encounter" class="form-label"
+                >{{resourceType}} Id</label>
+                <input
+                  type="text"
+                  name="encounter"
+                  class="form-control filter-encounter"
+                  id="document-encounter"
+                  placeholder=""
+                />
+            </div> -->
           </div>
           
 				  <div class="col-xs-12">
