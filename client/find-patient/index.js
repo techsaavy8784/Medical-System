@@ -175,7 +175,6 @@ Template.searchPatientModal.helpers({
 
 
 Template.searchPatientModal.events({
-	
 	async "submit .search-patient-form"(event, instance) {
 		event.preventDefault()
 		$('#searchPatientModal').modal('hide');
@@ -184,6 +183,7 @@ Template.searchPatientModal.events({
 		const lastName = target.lastName.value.toLowerCase()
 		const firstName = target.firstName.value.toLowerCase()
 		const birthday = target.birthday.value;
+		const id = target.patientId.value;
 		
 		if (!(lastName || firstName)) {
 			return
@@ -203,29 +203,32 @@ Template.searchPatientModal.events({
 		}
 
 		const buildQuery = () => {
-			if (lastName && firstName) {
-				if (!!birthday) {
-					const searchPatientQuery = `family=${lastName}&given=${firstName}&birthdate=${birthday}`;
-					Session.set("searchPatientQuery", searchPatientQuery)
-					return `Patient?${searchPatientQuery}`
-				} else {
-					const searchPatientQuery = `family=${lastName}&given=${firstName}`;
-					Session.set("searchPatientQuery", searchPatientQuery)
-					return `Patient?${searchPatientQuery}`
-				}
+			if (id) {
+				return `Patient?_id=${id}`
 			} else {
-				if (!!birthday) {
-					const searchPatientQuery = `Patient?family=${lastName}&birthdate=${birthday}`
-					Session.set("searchPatientQuery", searchPatientQuery)
-					return `Patient?${searchPatientQuery}`
-				} else {
-					const searchPatientQuery = `family=${lastName}`
-					Session.set("searchPatientQuery", searchPatientQuery)
-					return `Patient?${searchPatientQuery}`
-				}
+				if (lastName && firstName) {
+				   if (!!birthday) {
+					   const searchPatientQuery = `family=${lastName}&given=${firstName}&birthdate=${birthday}`;
+					   Session.set("searchPatientQuery", searchPatientQuery)
+					   return `Patient?${searchPatientQuery}`
+				   } else {
+					   const searchPatientQuery = `family=${lastName}&given=${firstName}`;
+					   Session.set("searchPatientQuery", searchPatientQuery)
+					   return `Patient?${searchPatientQuery}`
+				   }
+			   } else {
+				   if (!!birthday) {
+					   const searchPatientQuery = `Patient?family=${lastName}&birthdate=${birthday}`
+					   Session.set("searchPatientQuery", searchPatientQuery)
+					   return `Patient?${searchPatientQuery}`
+				   } else {
+					   const searchPatientQuery = `family=${lastName}`
+					   Session.set("searchPatientQuery", searchPatientQuery)
+					   return `Patient?${searchPatientQuery}`
+				   }
+			   }
 			}
 		}
-
 
 		const res = await getFindPatients(coreUrl(), buildQuery(), {
 			Authorization: authToken,
@@ -328,16 +331,16 @@ Template.searchPatientModal.events({
 
 Template.searchPatientModal.onRendered(function () {
 	
-	// const inputField = this.find('#primary-key');
+	// const inputField = this.find('#patient-id');
 	// console.log("inputField", inputField);
 	// inputField.focus();
 	// $('input').focus()
-	$('#primary-key').focus();	
+	$('#patient-id').focus();
 
 	const searchPatientModal = this.find('#searchPatientModal');
 
   $(searchPatientModal).on('shown.bs.modal', function (event) {
-    $('#primary-key').focus();
+    $('#patient-id').focus();
   });
 
 	$(searchPatientModal).on('hidden.bs.modal', function (event) {
@@ -422,7 +425,7 @@ Template.searchPatientFhirModal.onRendered(function() {
 				console.log("result: ", result)
 				if (result.statusCode === 201) {
 					const practiceName = Session.get("practices")[0]?.displayName
-					alert(`Patient successfully imported to your ${practiceName}`)
+					alert(`Patient successfully imported to ${practiceName}`)
 				} else if (result.statusCode === 401) {
 					alert("Your session has expired, please login");
 					Router.go("/login")

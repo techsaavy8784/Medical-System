@@ -179,6 +179,9 @@ Template.currentPatient.helpers({
     },
     resourceType() {
         return  Session.get("resourceType");
+    },
+    isSelectedResource() {
+        return !!Session.get("resourceType");
     }
 });
 

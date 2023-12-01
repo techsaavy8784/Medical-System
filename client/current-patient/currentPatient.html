@@ -21,8 +21,9 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Select Resource Type on Left</h5>
-
+              {{#if isSelectedResource}}
               <button class="btn btn-secondary btn-show-search-doc-modal">Search</button>
+              {{/if}}
               {{#if emptySearchDocs}}
                 {{#if executeFinding}}
                 <h5>{{resourceType}}</h5>
@@ -245,7 +246,7 @@
                   name="category"
                   class="form-control filter-category"
                   id="document-category"
-                  placeholder="11488-4"
+                  placeholder=""
                 />
             </div>
             <div class="col-6">
