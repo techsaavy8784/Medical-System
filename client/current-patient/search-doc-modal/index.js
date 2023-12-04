@@ -10,6 +10,11 @@ import { Router } from "meteor/iron:router"
 const buildEndPoint = () => {
     let baseURL = Session.get("coreURL");
     baseURL += Session.get("resourceType");
+    const resourceId = Session.get("resourceId");
+    if (resourceId) {
+        baseURL += `?_id=${resourceId}`;
+        return baseURL;
+    }
     baseURL += `?patient=${Session.get("currentPatientID")}`;
     const startDate = Session.get("startDate");
     const endDate = Session.get("endDate");
@@ -162,7 +167,7 @@ Template.findDocModal.events({
 		$('#findDocModal').modal('hide');
 
 		const target = event.target
-
+        const resourceId = target.resourceId.value;
 		const startDate = target.startDate.value
 		const endDate = target.endDate.value
 		const filterCount = target.filterCount.value;
@@ -174,6 +179,7 @@ Template.findDocModal.events({
         Session.set("filterCount", filterCount);
         Session.set("category", category);
         Session.set("encounter", encounter);
+        Session.set("resourceId", resourceId);
 
         console.log("isFindingDoc", Session.get("isFindingDoc"));
         if (Session.get("isFindingDoc")) return
@@ -196,8 +202,4 @@ Template.findDocModal.events({
             instance.resourceId.set(false);
         }
     }
-})
-
-Template.findDocModal.events({
-
 })

@@ -26,6 +26,7 @@
               </div>
               <div class="col-6">
                 <label for="filter-patient-count" class="form-label">{{resourceType}} Per Page</label>
+                
                 <select name="filterCount" id="filter-patient-count" class="form-select filter-patient-count" value="{{filterCount}}">
                   <option value="5" {{filterCount "5"}}>5</option>
                   <option value="10" {{filterCount "10"}}>10</option>
@@ -37,26 +38,35 @@
               <div class="col-6">
                 <label for="filter-start-date" class="form-label"  >Start Date</label>
                 <!-- <input type="text" data-bind="value: first"/> -->
+                {{#if isResourceId}}
+                <input type="date" name="startDate" id="filter-start-date" class="form-control filter-start-date" disabled value="{{startDate}}">
+                {{else}}
                 <input type="date" name="startDate" id="filter-start-date" class="form-control filter-start-date" value="{{startDate}}">
+                {{/if}}
                 
               </div>
               <div class="col-6">
                 <label for="filter-end-date" class="form-label">End Date</label>
+                {{#if isResourceId}}
+                <input type="date" name="endDate" id="filter-end-date" class="form-control filter-end-date" disabled value="{{endDate}}">
+                {{else}}
                 <input type="date" name="endDate" id="filter-end-date" class="form-control filter-end-date" value="{{endDate}}">
+                {{/if}}
               </div>
-              <!-- <div class="col-12">
-                <label for="filter-document-type" class="form-label">Document Type</label>
-                <select id="filter-document-type" class="form-select filter-document-type">
-                  <option value="all" {{documentType "all"}}>All</option>
-                  <option value="rheumatology" {{documentType "rheumatology"}}>Rheumatology Consultation</option>
-                  <option value="progress" {{documentType "progress"}}>Progress Note Generic</option>
-                  <option value="admission" {{documentType "admission"}}>Admission Note Physician</option>
-                  <option value="neurology" {{documentType "neurology"}}>Neurology Progress Note</option>
-                </select>
-              </div> -->
               <div class="col-6">
                 <label for="document-category" class="form-label"
                   >Category</label>
+                  {{#if isResourceId}}
+                  <input
+                    type="text"
+                    name="category"
+                    class="form-control filter-category"
+                    id="document-category"
+                    placeholder=""
+                    disabled
+                  />
+                  {{else}}
+                  
                   <input
                     type="text"
                     name="category"
@@ -64,10 +74,21 @@
                     id="document-category"
                     placeholder=""
                   />
+                  {{/if}}
               </div>
               <div class="col-6">
                 <label for="document-encounter" class="form-label"
                   >Encounter</label>
+                  {{#if isResourceId}}
+                  <input
+                    type="text"
+                    name="encounter"
+                    class="form-control filter-encounter"
+                    id="document-encounter"
+                    placeholder=""
+                    disabled
+                  />
+                  {{else}}
                   <input
                     type="text"
                     name="encounter"
@@ -75,6 +96,7 @@
                     id="document-encounter"
                     placeholder=""
                   />
+                  {{/if}}
               </div>
               <!-- <div class="col-6">
                 <label for="document-encounter" class="form-label"
@@ -89,12 +111,11 @@
               </div> -->
             </div>
             
-                    <div class="col-xs-12">
               <div class="col-xs-6 text-end">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary find-resource" data-bs-dismiss="modal">Search</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary find-resource" data-bs-dismiss="modal">Search</button>
               </div>
-            </div>
+            
           </form>
               </div>
             </div>
