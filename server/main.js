@@ -76,9 +76,6 @@ Meteor.methods({
     }
   },
   async savePatientResource (url, body, headers) {
-    // Make an HTTP GET request to the getTagLine API endpoint
-    
-    // const requestUrl = saveCoreUrl + url;
     console.log("requestUrl", url);
     console.log("body and headers ", {data: body, headers: headers})
 
@@ -91,6 +88,17 @@ Meteor.methods({
     } catch (error) {
       console.error("Error saving patient in practice!", error);
       throw new Meteor.Error('Error saving patient in practice!', error);
+    }
+  },
+  async getPdfXml (url, headers) {
+    try {
+      console.log("pdfUrl", url);
+      console.log("pdfUrl", headers);
+      const res = await HTTP.get(url, { headers });
+      console.log("pdfResponse", res);
+      return res;
+    } catch (error) {
+
     }
   },
 });

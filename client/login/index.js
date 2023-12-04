@@ -67,7 +67,8 @@ Template.login.onCreated(function loginOnCreated() {
                   Router.go('/');
                 } else if (result.response?.statusCode === 401) {
                   instance.isLogging.set(false);
-                  alert("Not Authorized")
+                  const errorMessage = result.response?.data?.message;
+                  alert("Not Authorized: " + `${errorMessage}`)
                 } else {
                   alert("Internet Connection error!")
                   isLogin.set(false);

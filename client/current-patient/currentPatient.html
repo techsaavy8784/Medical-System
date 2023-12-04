@@ -21,49 +21,50 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Select Resource Type on Left</h5>
-              {{#if isSelectedResource}}
-              <button class="btn btn-secondary btn-show-search-doc-modal">Search</button>
-              {{/if}}
-              {{#if emptySearchDocs}}
-                {{#if executeFinding}}
-                <h5>{{resourceType}}</h5>
-                {{/if}}
-              {{else}}
-              <table class="table datatable">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">text</th>
-                    <th scope="col">Options</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {{#each currentPatientDocs}}
-                      <tr>
-                          <th scope="row">{{@index}}</th>
-                          <td>
-                              <div id="textRawDoc" class="docDiv textRawDocs" >
-                                  {{{text.div}}}
-                              </div>
-                          </td>
-                          <td style="width: 185px">
-                              <select  id="inputFindDoc_{{@index}}" class="form-select inputFindDoc" >
-                                  <option selected5>
-                                      Select an Option
-                                  </option>
-                                  <option>Save to MyEMR</option>
-                                  <option>Show PDF</option>
-                                  <option>Show XML</option>
-                                  <option>Print</option>
-                                  <option>FHIR</option>
-                              </select>
-                              
-                          </td>
-                      </tr>
-                  {{/each}}
+              {{#if searchResult}}
+                <button class="btn btn-secondary btn-show-search-doc-modal">Search</button>
+                
+                {{#if emptySearchDocs}}
+                  <!-- {{#if executeFinding}} -->
+                  <h5>No results found for {{resourceType}}</h5>
+                  <!-- {{/if}} -->
+                {{else}}
+                <table class="table datatable">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">text</th>
+                      <th scope="col">Options</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#each currentPatientDocs}}
+                        <tr>
+                            <th scope="row">{{@index}}</th>
+                            <td>
+                                <div id="textRawDoc" class="docDiv textRawDocs" >
+                                    {{{text.div}}}
+                                </div>
+                            </td>
+                            <td style="width: 185px">
+                                <select  id="inputFindDoc_{{@index}}" class="form-select inputFindDoc" >
+                                    <option selected5>
+                                        Select an Option
+                                    </option>
+                                    <option>Save to MyEMR</option>
+                                    <option>Show PDF</option>
+                                    <option>Show XML</option>
+                                    <option>Print</option>
+                                    <option>FHIR</option>
+                                </select>
+                                
+                            </td>
+                        </tr>
+                    {{/each}}
 
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+                {{/if}}
               {{/if}}
             </div>
           </div>
@@ -78,225 +79,3 @@
     {{> pdfModal}}
     {{> resourceDocModal}}
 </template>
-
-<template name="sidebar">
-    <aside id="sidebar" class="sidebar mt-5">
-        <ul class="sidebar-nav " id="sidebar-nav-patient">
-          
-          <li id="Resource Type">
-              <i class="bi bi-grid"></i>
-              <span>Resource Type</span>
-          </li><!-- End Dashboard Nav -->
-          
-          <li id="DocumentReference" class="resource-item" style="{{referenceStyle}} cursor: pointer;">
-            <a class=" resource-type nav-link">
-              <!-- href="./{{resourceId}}/reference" -->
-              <i class="bi bi-menu-button-wide"></i><span>Document Reference</span>
-            </a>
-          </li><!-- End Components Nav -->
-          
-          <li id="DiagnosticReport" class="resource-item" style="{{reportStyle}} cursor: pointer;">
-            <a class=" resource-type nav-link" >
-              <!-- href="./{{resourceId}}/diagnostic" -->
-              <i class="bi bi-journal-text"></i><span>Diagnostic Report</span>
-            </a>
-          </li><!-- End Forms Nav -->
-    
-          <li id="Observation" class="resource-item" style="{{observationStyle}} cursor: pointer;">
-            <a class=" resource-type nav-link ">
-              <!-- href="./{{resourceId}}/observation" -->
-              <i class="bi bi-layout-text-window-reverse"></i><span>Observation</span>
-            </a>
-          </li><!-- End Tables Nav -->
-
-          <li id="Condition" class="resource-item" style="{{conditionStyle}} cursor: pointer;">
-            <a class=" resource-type nav-link " >
-              <!-- href="./{{resourceId}}/condition" -->
-              <i class="bi bi-layout-text-window-reverse"></i><span>Condition</span>
-            </a>
-          </li><!-- End Tables Nav -->
-
-          <li id="Immunization" class="resource-item" style="{{immunizationStyle}} cursor: pointer;">
-            <a class=" resource-type nav-link ">
-              <!-- href="./{{resourceId}}/immunization" -->
-              <i class="bi bi-bar-chart"></i><span>Immunization</span>
-            </a>
-    
-          </li><!-- End Charts Nav -->
-          
-          <li id="QuestionnaireResponse" class="resource-item" style="{{questionnaireStyle}} cursor: pointer;">
-            <a class=" resource-type nav-link ">
-              <!-- href="./{{resourceId}}/questionnaire" -->
-              <i class="bi bi-bar-chart"></i><span>Questionnaire Response</span>
-            </a>
-          </li><!-- End Charts Nav -->
-          
-        </ul>
-    </aside>
-</template>
-
-<template name="pdfModal">
-  <div class="modal fade" id="docPdfModal" tabindex="-1" aria-hidden="true">
-		<div class="modal-dialog">
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <h1 class="modal-title fs-5" id="exampleModalLabel">Show PDF</h1>
-			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-        {{#if emptyPdfData}}
-        <h5>There is no to display pdf</h5>
-        {{else}}
-        <iframe
-                src="{{pdfDataUrl}}"
-                width="100%"
-                height="700"
-                frameborder="0"
-              ></iframe>
-        {{/if}}
-			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-			</div>
-		  </div>
-		</div>
-	  </div>
-</template>
-
-<template name="resourceDocModal">
-	<div class="modal fade" id="resourceDocModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <h1 class="modal-title fs-5" id="exampleModalLabel">Save Resource Modal</h1>
-			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				{{#if showDocSaveModal}}
-        <div class="col-xs-12">
-          <label for="patientMrn" class="col-form-label" ><b>Patient MRN: </b>{{patientMrn}}</label>
-        </div>
-        <div class="col-xs-12">
-          <label for="patientMrn" class="col-form-label" ><b>Patient ID: </b>{{patientID}}</label>
-          </div>
-          {{{saveDocModalData}}}
-				{{else if showDocFhirModal }}
-          <pre>
-          {{fhirDocModalData}}
-          </pre>
-          {{else if showXMLModal}}
-          {{#if emptyXmlData}}
-            <h5>There is no to display</h5>
-          {{else}}
-          <pre style="white-space: pre-wrap; word-wrap: break-word;">
-            {{docXMLModalData}}
-          </pre>
-          {{/if}}
-				{{/if}}
-			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-			  {{#if showDocSaveModal}}
-        <button type="button" class="btn btn-primary save-doc-data" data-bs-dismiss="modal">Save</button>
-        {{/if}}
-			</div>
-		  </div>
-		</div>
-	  </div>
-</template>
-
-<template name="findDocModal">
-  <div class="modal fade" id="findDocModal" tabindex="-1" aria-labelledby="findDocModal" aria-hidden="true">
-		<div class="modal-dialog">
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <h1 class="modal-title fs-5" id="exampleModalLabel">
-					Search {{resourceType}}
-				</h1>
-			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-        <form id="formFindDoc" class="row g-3 search-doc-form">
-          <div class="row g-3">
-            <div class="col-6">
-              <label for="filter-start-date" class="form-label"  >Start Date</label>
-              <!-- <input type="text" data-bind="value: first"/> -->
-              <input type="date" name="startDate" id="filter-start-date" class="form-control filter-start-date" value="{{startDate}}">
-              
-            </div>
-            <div class="col-6">
-              <label for="filter-end-date" class="form-label">End Date</label>
-              <input type="date" name="endDate" id="filter-end-date" class="form-control filter-end-date" value="{{endDate}}">
-            </div>
-            <!-- <div class="col-12">
-              <label for="filter-document-type" class="form-label">Document Type</label>
-              <select id="filter-document-type" class="form-select filter-document-type">
-                <option value="all" {{documentType "all"}}>All</option>
-                <option value="rheumatology" {{documentType "rheumatology"}}>Rheumatology Consultation</option>
-                <option value="progress" {{documentType "progress"}}>Progress Note Generic</option>
-                <option value="admission" {{documentType "admission"}}>Admission Note Physician</option>
-                <option value="neurology" {{documentType "neurology"}}>Neurology Progress Note</option>
-              </select>
-            </div> -->
-            <div class="col-6">
-              <label for="document-category" class="form-label"
-                >Category</label>
-                <input
-                  type="text"
-                  name="category"
-                  class="form-control filter-category"
-                  id="document-category"
-                  placeholder=""
-                />
-            </div>
-            <div class="col-6">
-              <label for="document-encounter" class="form-label"
-                >Encounter</label>
-                <input
-                  type="text"
-                  name="encounter"
-                  class="form-control filter-encounter"
-                  id="document-encounter"
-                  placeholder=""
-                />
-            </div>
-            <div class="col-6">
-              <label for="filter-patient-count" class="form-label">The number of document</label>
-              <select name="filterCount" id="filter-patient-count" class="form-select filter-patient-count" value="{{filterCount}}">
-                <option value="5" {{filterCount "5"}}>5</option>
-                <option value="10" {{filterCount "10"}}>10</option>
-                <option value="20" {{filterCount "20"}}>20</option>
-                <option value="50" {{filterCount "50"}}>50</option>
-                <option value="100" {{filterCount "100"}}>100</option>
-              </select>
-            </div>
-            <!-- <div class="col-6">
-              <label for="document-encounter" class="form-label"
-                >{{resourceType}} Id</label>
-                <input
-                  type="text"
-                  name="encounter"
-                  class="form-control filter-encounter"
-                  id="document-encounter"
-                  placeholder=""
-                />
-            </div> -->
-          </div>
-          
-				  <div class="col-xs-12">
-            <div class="col-xs-6 text-end">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary find-resource" data-bs-dismiss="modal">Search</button>
-            </div>
-          </div>
-        </form>
-			</div>
-		  </div>
-		</div>
-	</div>
-</template>
-
-<template name="searchPatientResource">
-</template>
-
-
