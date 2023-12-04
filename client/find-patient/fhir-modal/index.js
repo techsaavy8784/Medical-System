@@ -23,7 +23,7 @@ Template.searchPatientFhirModal.onRendered(function() {
 		
 		const selectElements = parentInstance.findAll('.inputFindPatient');
 		selectElements.forEach(function(selectElement) {
-		$(selectElement).val('Select an Option');
+		    $(selectElement).val('Select an Option');
 		});
 	});
 

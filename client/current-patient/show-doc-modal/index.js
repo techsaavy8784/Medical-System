@@ -7,7 +7,6 @@ import { Meteor } from "meteor/meteor"
 import { Router } from "meteor/iron:router"
 
 
-
 Template.resourceDocModal.onCreated(function resourceOnCreated(){
     Session.set("showDocSaveModal", false);
     Session.set("showDocFhirModal", false);
