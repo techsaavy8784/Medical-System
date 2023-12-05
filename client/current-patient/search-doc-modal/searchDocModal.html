@@ -13,10 +13,10 @@
               <div class="modal-body">
           <form id="formFindDoc" class="row g-3 search-doc-form">
             <div class="row g-3">
-              <div class="col-6">
+              {{#if isAdmin}}
+                <div class="col-6">
                 <label for="document-id" class="form-label"
                   >Resource ID</label>
-                  {{#if isAdmin}}
                   <input
                     type="text"
                     name="resourceId"
@@ -24,39 +24,8 @@
                     id="document-id"
                     placeholder=""
                   />
-                  {{else}}
-                  <input
-                    type="text"
-                    name="resourceId"
-                    class="form-control filter-id"
-                    id="document-id"
-                    placeholder=""
-                    disabled
-                  />
-                  {{/if}}
-              </div>
-              <div class="col-6">
-                <label for="document-id" class="form-label"
-                  >Provenance</label>
-                  <input
-                    type="text"
-                    name="provenance"
-                    class="form-control filter-provenance"
-                    id="document-provenance"
-                    placeholder=""
-                  />
-              </div>
-              <div class="col-6">
-                <label for="filter-patient-count" class="form-label">{{resourceType}} Per Page</label>
-                
-                <select name="filterCount" id="filter-patient-count" class="form-select filter-patient-count" value="{{filterCount}}">
-                  <option value="5" {{filterCount "5"}}>5</option>
-                  <option value="10" {{filterCount "10"}}>10</option>
-                  <option value="20" {{filterCount "20"}}>20</option>
-                  <option value="50" {{filterCount "50"}}>50</option>
-                  <option value="100" {{filterCount "100"}}>100</option>
-                </select>
-              </div>
+                </div>
+                {{/if}}
               <div class="col-6">
                 <label for="document-category" class="form-label"
                   >Category</label>
@@ -119,6 +88,28 @@
                     placeholder=""
                   />
                   {{/if}}
+              </div>
+              <div class="col-6">
+                <label for="document-id" class="form-label"
+                  >Provenance</label>
+                  <input
+                    type="text"
+                    name="provenance"
+                    class="form-control filter-provenance"
+                    id="document-provenance"
+                    placeholder=""
+                  />
+              </div>
+              <div class="col-6">
+                <label for="filter-patient-count" class="form-label">{{resourceType}} Per Page</label>
+                
+                <select name="filterCount" id="filter-patient-count" class="form-select filter-patient-count" value="{{filterCount}}">
+                  <option value="5" {{filterCount "5"}}>5</option>
+                  <option value="10" {{filterCount "10"}}>10</option>
+                  <option value="20" {{filterCount "20"}}>20</option>
+                  <option value="50" {{filterCount "50"}}>50</option>
+                  <option value="100" {{filterCount "100"}}>100</option>
+                </select>
               </div>
               <!-- <div class="col-6">
                 <label for="document-encounter" class="form-label"

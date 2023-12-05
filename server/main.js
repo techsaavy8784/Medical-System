@@ -57,22 +57,22 @@ Meteor.methods({
       const { data } = response;
 
       if (!!data?.bundle?.entry) {
-      data.bundle.entry = data.bundle?.entry.map(e => {
-        let title = data.resourceType;
-        if (data.resourceType === "DocumentReference") {
-          title = "Document Reference"
-        } else if (data.resourceType === "DiagnosticReport") {
-          title = "Diagnostic Report"
-        }
-          
-        e.resource.text.div = e.resource.text.div.split(`<p><b>${title}</b></p>`).join("")
-        return {...e, text: e.resource.text}
-      });
-    }
+        data.bundle.entry = data.bundle?.entry.map(e => {
+          let title = data.resourceType;
+          if (data.resourceType === "DocumentReference") {
+            title = "Document Reference"
+          } else if (data.resourceType === "DiagnosticReport") {
+            title = "Diagnostic Report"
+          }
+            
+          e.resource.text.div = e.resource.text.div.split(`<p><b>${title}</b></p>`).join("")
+          return {...e, text: e.resource.text}
+        });
+      }
     return data;
     } catch (e) {
       console.log("ERROR ", e);
-      throw new Meteor.Error(e)
+      return e;
     }
   },
   async savePatientResource (url, body, headers) {

@@ -39,7 +39,11 @@ Template.findPatient.helpers({
         return Session.get("isActive") === "hospital";
     },
 	searchPatientQuery() {
-		return Session.get("searchPatientQuery");
+		if (Session.get("isActive") === "hospital") {
+			return Session.get("findPatientHos")?.query;
+		} else {
+			return Session.get("findPatientPra")?.query;
+		}
 	},
 	// patientsEmpty() {
 	// 	if (Session.get("isActive") === "hospital") {
