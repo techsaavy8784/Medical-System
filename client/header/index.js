@@ -63,6 +63,10 @@ Template.header.helpers({
         if (Session.get("isActive") === "practice") {
             return "color: blue"
         }
+    },
+    adminRole() {
+        const isAdmin = Session.get("userRole") === "Admin"
+        return isAdmin ? true : false;
     }
   });
 

@@ -16,11 +16,33 @@
               <div class="col-6">
                 <label for="document-id" class="form-label"
                   >Resource ID</label>
+                  {{#if isAdmin}}
                   <input
                     type="text"
                     name="resourceId"
                     class="form-control filter-id"
                     id="document-id"
+                    placeholder=""
+                  />
+                  {{else}}
+                  <input
+                    type="text"
+                    name="resourceId"
+                    class="form-control filter-id"
+                    id="document-id"
+                    placeholder=""
+                    disabled
+                  />
+                  {{/if}}
+              </div>
+              <div class="col-6">
+                <label for="document-id" class="form-label"
+                  >Provenance</label>
+                  <input
+                    type="text"
+                    name="provenance"
+                    class="form-control filter-provenance"
+                    id="document-provenance"
                     placeholder=""
                   />
               </div>
@@ -34,24 +56,6 @@
                   <option value="50" {{filterCount "50"}}>50</option>
                   <option value="100" {{filterCount "100"}}>100</option>
                 </select>
-              </div>
-              <div class="col-6">
-                <label for="filter-start-date" class="form-label"  >Start Date</label>
-                <!-- <input type="text" data-bind="value: first"/> -->
-                {{#if isResourceId}}
-                <input type="date" name="startDate" id="filter-start-date" class="form-control filter-start-date" disabled value="{{startDate}}">
-                {{else}}
-                <input type="date" name="startDate" id="filter-start-date" class="form-control filter-start-date" value="{{startDate}}">
-                {{/if}}
-                
-              </div>
-              <div class="col-6">
-                <label for="filter-end-date" class="form-label">End Date</label>
-                {{#if isResourceId}}
-                <input type="date" name="endDate" id="filter-end-date" class="form-control filter-end-date" disabled value="{{endDate}}">
-                {{else}}
-                <input type="date" name="endDate" id="filter-end-date" class="form-control filter-end-date" value="{{endDate}}">
-                {{/if}}
               </div>
               <div class="col-6">
                 <label for="document-category" class="form-label"
@@ -75,6 +79,24 @@
                     placeholder=""
                   />
                   {{/if}}
+              </div>
+              <div class="col-6">
+                <label for="filter-start-date" class="form-label"  >Start Date</label>
+                <!-- <input type="text" data-bind="value: first"/> -->
+                {{#if isResourceId}}
+                <input type="date" name="startDate" id="filter-start-date" class="form-control filter-start-date" disabled value="{{startDate}}">
+                {{else}}
+                <input type="date" name="startDate" id="filter-start-date" class="form-control filter-start-date" value="{{startDate}}">
+                {{/if}}
+                
+              </div>
+              <div class="col-6">
+                <label for="filter-end-date" class="form-label">End Date</label>
+                {{#if isResourceId}}
+                <input type="date" name="endDate" id="filter-end-date" class="form-control filter-end-date" disabled value="{{endDate}}">
+                {{else}}
+                <input type="date" name="endDate" id="filter-end-date" class="form-control filter-end-date" value="{{endDate}}">
+                {{/if}}
               </div>
               <div class="col-6">
                 <label for="document-encounter" class="form-label"

@@ -6,7 +6,7 @@
 				data-bs-theme="dark"
 			>
 				<div class="container-fluid">
-					<a class="navbar-brand" href="/">20231204.2 UniversalChart</a>
+					<a class="navbar-brand" href="/">20231205.0 UniversalChart</a>
                     {{#if isLogin}}
 					<a class="navbar-brand" >{{activeHosPra}}</a>
                     {{/if}}
@@ -39,35 +39,41 @@
 							<li class="nav-item">
 								<a class="nav-link" href="/current-patient">CurrentPatient</a>
 							</li>
-							<li class="nav-item dropdown">
-								<a
-									class="nav-link dropdown-toggle"
-									href="#"
-									role="button"
-									data-bs-toggle="dropdown"
-									aria-expanded="false"
-								>
-									CreatePatient
-								</a>
-								<ul class="dropdown-menu">
-									<li>
-										<a class="dropdown-item" href="#"
-											>Action</a
-										>
-									</li>
-									<li>
-										<a class="dropdown-item" href="#"
-											>Another action</a
-										>
-									</li>
-									<li><hr class="dropdown-divider" /></li>
-									<li>
-										<a class="dropdown-item" href="#"
-											>Something else here</a
-										>
-									</li>
-								</ul>
-							</li>
+							{{#if adminRole}}
+								<li class="nav-item">
+									<a class="nav-link" href="">Admin</a>
+								</li>
+							{{else }}
+								<li class="nav-item dropdown">
+									<a
+										class="nav-link dropdown-toggle"
+										href="#"
+										role="button"
+										data-bs-toggle="dropdown"
+										aria-expanded="false"
+									>
+										CreatePatient
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="dropdown-item" href="#"
+												>Action</a
+											>
+										</li>
+										<li>
+											<a class="dropdown-item" href="#"
+												>Another action</a
+											>
+										</li>
+										<li><hr class="dropdown-divider" /></li>
+										<li>
+											<a class="dropdown-item" href="#"
+												>Something else here</a
+											>
+										</li>
+									</ul>
+								</li>
+							{{/if}}
 						</ul>
 
 						{{/if}} 

@@ -95,6 +95,4 @@ Template.resourceDocModal.onCreated(function resourceOnCreated(){
         Session.set("emptyPdfData", false);
         Session.set("emptyXmlData", false);
 	});
-    console.log("currentDocPdf", this.data.currentDocPdf);
-  })
-
+  });

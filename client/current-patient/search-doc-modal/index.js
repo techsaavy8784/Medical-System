@@ -11,8 +11,11 @@ const buildEndPoint = () => {
     let baseURL = Session.get("coreURL");
     baseURL += Session.get("resourceType");
     const resourceId = Session.get("resourceId");
+    const provenance = Session.get("provenance");
     if (resourceId) {
         baseURL += `?_id=${resourceId}`;
+        if (provenance)
+        baseURL += `&_revinclude=${provenance}`;
         return baseURL;
     }
     baseURL += `?patient=${Session.get("currentPatientID")}`;
@@ -39,6 +42,9 @@ const buildEndPoint = () => {
     }
     if (!!encounter) {
         baseURL += `&encounter=${encounter}`;
+    }
+    if (provenance) {
+        baseURL += `&_revinclude=${provenance}`;
     }
     return baseURL;
 }
@@ -111,6 +117,10 @@ Template.findDocModal.helpers({
     },
     isResourceId() {
         return Template.instance().resourceId.get();
+    },
+    isAdmin() {
+        const isAdmin = Session.get("userRole") === "Admin";
+        return isAdmin ? true : false;
     }
 })
 
@@ -173,6 +183,7 @@ Template.findDocModal.events({
 		const filterCount = target.filterCount.value;
         const category = target.category.value;
         const encounter = target.encounter.value;
+        const provenance = target.provenance.value;
 
         Session.set("startDate", startDate)
         Session.set("endDate", endDate)
@@ -180,6 +191,7 @@ Template.findDocModal.events({
         Session.set("category", category);
         Session.set("encounter", encounter);
         Session.set("resourceId", resourceId);
+        Session.set("provenance", provenance);
 
         console.log("isFindingDoc", Session.get("isFindingDoc"));
         if (Session.get("isFindingDoc")) return
@@ -191,7 +203,8 @@ Template.findDocModal.events({
 			Authorization: authToken,
 		});
         setDocs(res);
-        
+
+        Session.set("executeFinding", true);
         console.log('res---', res);
     },
     'input #document-id' (event, instance) {

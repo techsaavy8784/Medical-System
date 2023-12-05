@@ -217,6 +217,9 @@ Template.currentPatient.helpers({
     },
     searchResult() {
         return Session.get("searchResult");
+    },
+    executeFinding() {
+        return Session.get("executeFinding");
     }
 });
 
@@ -261,5 +264,5 @@ Template.currentPatient.events({
 });
 
 Template.currentPatient.onRendered( function (){
-    
+    Session.set("executeFinding", false);
 });

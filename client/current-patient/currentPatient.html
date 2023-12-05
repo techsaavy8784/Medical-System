@@ -2,7 +2,7 @@
 
     {{> sidebar}}
     {{#if currentPatientInfo}}
-    
+      
       {{#if isFindingDoc}}
         <div
           class="d-flex fixed-center justify-content-center align-items-center h-100" 
@@ -24,9 +24,9 @@
                 <button class="btn btn-secondary btn-show-search-doc-modal">Search</button>
                 
                 {{#if emptySearchDocs}}
-                  <!-- {{#if executeFinding}} -->
+                  {{#if executeFinding}}
                   <h5>No results found for {{resourceType}}</h5>
-                  <!-- {{/if}} -->
+                  {{/if}}
                 {{else}}
                 <table class="table datatable">
                   <thead>
