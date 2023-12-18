@@ -2,7 +2,7 @@ version: "3"
 
 services:
   blaze_3000:
-    image: lovelygru/uc_blaze:T231121.0
+    image: lovelygru/uc_blaze:231218.0
     ports:
       - 3000:3000
     deploy:
