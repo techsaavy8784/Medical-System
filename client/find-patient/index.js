@@ -88,15 +88,23 @@ Template.findPatient.events({
 		// }
       },
 	'click .textRawPatient' (event, instance) {
-		const currentPatient = "Patient: " + this.resource?.name[0]?.text + " - MRN: " + this.resource?.id;
+		const currentPatient = "Patient: " + this.resource?.name[0]?.text + " - DOB: " + this.resource?.birthDate;
 		Session.set("currentPatientInfo", currentPatient);
 		Session.set("currentPatientData", this);
-		Session.set("currentPatientID", this.resource.id);
+		// Session.set("currentPatientID", this.resource.id);
+		Session.set("currentPatienDOB", this.resource?.DOB);
 		Session.set("currentPatientName", this.resource?.name[0]?.text);
-		const route = `/current-patient/${this.resource.id}`
-    	Router.go(route)
+		// const route = `/current-patient/${this.resource.id}`
+    	// Router.go(route)
+		Session.set("selectedPatientInfo", this);
+		Session.set("patientMrn", this.resource.id);
+		Session.set("fhirModalData", this.resource.text.div);
+		$('#savePatientModal').modal('show');
 	},
 	'click .btn-show-search-modal' (event, instance) {
 		$('#searchPatientModal').modal('show');
-	}
+	},
+	// 'click .savePatient' (event, instance) {
+	// $('#savePatientModal').modal('show');
+	// }
 });
