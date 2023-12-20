@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';
 
 
-const baseUrl = process.env.LOGIN_BASE_URL
-// const baseUrl = Meteor.settings.public.LOGIN_BASE_URL
+// const baseUrl = process.env.LOGIN_BASE_URL
+const baseUrl = Meteor.settings.public.LOGIN_BASE_URL
 
 Meteor.methods({
   loginUser: function (username, password) {

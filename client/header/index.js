@@ -59,6 +59,11 @@ Template.header.helpers({
             return "color: blue"
         }
     },
+    positionStyle() {
+    if (Session.get("isActive") === "hospital") {
+        return "justify-content: start"
+    } else return "justify-content: end"
+    },
     practiceStyle() {
         if (Session.get("isActive") === "practice") {
             return "color: blue"
