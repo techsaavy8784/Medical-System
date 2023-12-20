@@ -88,7 +88,7 @@ Template.findPatient.events({
 		// }
       },
 	  async 'click .textRawPatient' (event, instance) {
-		const currentPatient = "Patient: " + this.resource?.name[0]?.text + " - DOB: " + this.resource?.birthDate;
+		const currentPatient = "Patient: ID: "+ this.resource.id + " " + this.resource?.name[0]?.text + " - DOB: " + this.resource?.birthDate;
 		Session.set("currentPatientInfo", currentPatient);
 		Session.set("currentPatientData", this);
 		Session.set("currentPatientID", this.resource.id);
