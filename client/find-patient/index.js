@@ -87,7 +87,7 @@ Template.findPatient.events({
 		// 	$('#saveResourceModal').modal('show');
 		// }
       },
-	  async 'click .textRawPatient' (event, instance) {
+	  'click .textRawPatient' (event, instance) {
 		const currentPatient = "Patient: ID: "+ this.resource.id + " " + this.resource?.name[0]?.text + " - DOB: " + this.resource?.birthDate;
 		Session.set("currentPatientInfo", currentPatient);
 		Session.set("currentPatientData", this);
@@ -100,60 +100,32 @@ Template.findPatient.events({
 		Session.set("patientMrn", this.resource.id);
 		Session.set("fhirModalData", this.resource.text.div);
 		
-		event.preventDefault();
-		const inputMrn = instance.find('#patientMRN').value;
+		// event.preventDefault();
+		// const inputMrn = instance.find('#patientMRN').value;
 			
-		const url = Session.get("coreURL") + "Patient";
+		// const url = Session.get("coreURL") + "Patient";
 		 
-		const destSystemId = Session.get("practices")[0].systems[0].id;
-		// const srcSystemId = Session.get("facilities")[0].systems[0].id;
-		const srcResource = Session.get("selectedPatientInfo").resource;
-		// const patientName = Session.get("selectedPatientInfo").resource?.name[0]?.text;
+		// const destSystemId = Session.get("practices")[0].systems[0].id;
+		// // const srcSystemId = Session.get("facilities")[0].systems[0].id;
+		// const srcResource = Session.get("selectedPatientInfo").resource;
+		// // const patientName = Session.get("selectedPatientInfo").resource?.name[0]?.text;
 	
-		const body = {
-			"ResourceType": "Patient",
-			"DestPatientId": inputMrn,
-			"destSystemId": destSystemId,
-			"SrcResource": srcResource
-		}
+		// const body = {
+		// 	"ResourceType": "Patient",
+		// 	"DestPatientId": inputMrn,
+		// 	"destSystemId": destSystemId,
+		// 	"SrcResource": srcResource
+		// }
 	
-			console.log("url", url);
-			console.log("payload", body);
-			const token = Session.get("headers");
+		// 	console.log("url", url);
+		// 	console.log("payload", body);
+		// 	const token = Session.get("headers");
 	
-			console.log("save button is clicked.");
-	
-			Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
-				if (error) {
-					console.log("error", error);
-					if (error.reason?.statusCode === "406" || error.reason?.code === "ECONNRESET") {
-						alert("Your session has expired, please login");
-						Session.set("isLogin", false)
-						Session.set("isFindLoading", false)
-	
-						Router.go("/login");
-						return ;
-					}
-					const errorInfo = error?.reason?.response?.data
-					alert(errorInfo?.issue[0]?.details?.text)
-				} else {
-					console.log("result: ", result)
-					if (result.statusCode === 201) {
-						const practiceName = Session.get("practices")[0]?.displayName
-						alert(`Patient successfully imported to ${practiceName}`)
-					} else if (result.statusCode === 401) {
-						alert("Your session has expired, please login");
-						Router.go("/login")
-					}
-				}
-			});
+		// 	console.log("save button is clicked.");
 		},
 		
 	
 	'click .btn-show-search-modal' (event, instance) {
 		$('#searchPatientModal').modal('show');
 	},
-	// 'click .savePatient' (event, instance) {
-	// $('#savePatientModal').modal('show');
-	// }
 });
