@@ -177,7 +177,6 @@ Template.findDocModal.events({
 		$('#findDocModal').modal('hide');
 
 		const target = event.target
-        const resourceId = target.resourceId.value;
 		const startDate = target.startDate.value
 		const endDate = target.endDate.value
 		const filterCount = target.filterCount.value;
@@ -190,7 +189,6 @@ Template.findDocModal.events({
         Session.set("filterCount", filterCount);
         Session.set("category", category);
         Session.set("encounter", encounter);
-        Session.set("resourceId", resourceId);
         Session.set("provenance", provenance);
 
         console.log("isFindingDoc", Session.get("isFindingDoc"));
