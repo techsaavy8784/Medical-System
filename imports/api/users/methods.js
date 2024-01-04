@@ -1,6 +1,6 @@
-import {Meteor} from "meteor/meteor";
-import {baseUrl} from "/imports/utils/constants";
-import {HTTP} from "meteor/http";
+import { Meteor } from "meteor/meteor";
+import { baseUrl } from "/imports/utils/constants";
+import { HTTP } from "meteor/http";
 
 Meteor.methods({
     loginUser: function (username, password) {

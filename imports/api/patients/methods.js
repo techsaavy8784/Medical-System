@@ -1,5 +1,5 @@
-import {Meteor} from "meteor/meteor";
-import {HTTP} from "meteor/http";
+import { Meteor } from "meteor/meteor";
+import { HTTP } from "meteor/http";
 
 Meteor.methods({
     async patientTestQuery(url, headers) {

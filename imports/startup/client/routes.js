@@ -1,15 +1,14 @@
-import "bootstrap/dist/js/bootstrap.bundle"
-import "bootstrap/dist/css/bootstrap.css"
+import "bootstrap/dist/js/bootstrap.bundle";
+import "bootstrap/dist/css/bootstrap.css";
 
-import { Template } from "meteor/templating"
-import { Router } from "meteor/iron:router"
-import { Session } from "meteor/session"
-import "../../../client/main.html"
-import "../../ui/login"
-import "../../ui/home"
-import "../../ui/header"
-import "../../ui/find-patient"
-import "../../ui/current-patient"
+import { Router } from "meteor/iron:router";
+import { Session } from "meteor/session";
+import "../../../client/main.html";
+import "/imports/ui/login";
+import "/imports/ui/home";
+import "/imports/ui/header";
+import "/imports/ui/find-patient";
+import "/imports/ui/current-patient";
 
 // Template.layout.onCreated(function () {
 //   this.layout = new IronLayout({ template: 'layout' });
