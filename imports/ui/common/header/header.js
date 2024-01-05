@@ -40,10 +40,6 @@ Template.header.helpers({
         return Template.instance().versionId.get();
     },
 
-    isLogin() {
-      return Session.get("isLogin");
-    },
-
     activeHosPra() {
         if (Session.get("isActive") === "hospital") {
             return activeHopital();
@@ -86,10 +82,6 @@ Template.header.helpers({
         if (Session.get("isActive") === "practice") {
             return "color: blue";
         }
-    },
-
-    adminRole() {
-        return Session.get("userRole") === "Admin";
     }
 });
 

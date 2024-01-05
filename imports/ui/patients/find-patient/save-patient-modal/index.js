@@ -1,10 +1,36 @@
-import "./saveModal.html"
+import "./saveModal.html";
 
-import { Template } from "meteor/templating"
-import { Meteor } from "meteor/meteor"
-import { Session } from "meteor/session"
-import { Router } from "meteor/iron:router"
+import { Template } from "meteor/templating";
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
+import { Router } from "meteor/iron:router";
 
+Template.savePatientModal.onRendered(function() {
+	const savePatientModal = this.find('#savePatientModal');
+	const instance = this;
+	const parentInstance = instance.view.parentView.templateInstance();
+
+	$(savePatientModal).on('hidden.bs.modal', function (event) {
+
+		const selectElements = parentInstance.findAll('.inputFindPatient');
+		selectElements.forEach(function(selectElement) {
+			$(selectElement).val('Select an Option');
+		});
+		instance.find("#patientMRN").value = "";
+
+		event.preventDefault();
+	});
+
+})
+
+Template.savePatientModal.helpers({
+	patientMrn() {
+		return Session.get("patientMrn");
+	},
+	fhirModalData() {
+		return Session.get("fhirModalData");
+	},
+})
 
 Template.savePatientModal.events({
 	async 'click .btn-save-patient'(event, instance) {
@@ -54,29 +80,3 @@ Template.savePatientModal.events({
     },
 });
 
-Template.savePatientModal.helpers({
-	patientMrn() {
-		return Session.get("patientMrn");
-	},
-	fhirModalData() {
-		return Session.get("fhirModalData");
-	},
-})
-
-Template.savePatientModal.onRendered(function() {
-	const savePatientModal = this.find('#savePatientModal');
-	const instance = this;
-	const parentInstance = instance.view.parentView.templateInstance();
-	
-	$(savePatientModal).on('hidden.bs.modal', function (event) {
-		
-		const selectElements = parentInstance.findAll('.inputFindPatient');
-		selectElements.forEach(function(selectElement) {
-		$(selectElement).val('Select an Option');
-		});
-		instance.find("#patientMRN").value = "";
-
-		event.preventDefault();
-	});
-
-})

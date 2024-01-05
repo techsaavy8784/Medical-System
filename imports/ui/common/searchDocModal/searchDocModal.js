@@ -118,10 +118,6 @@ Template.findDocModal.helpers({
     isResourceId() {
         return Template.instance().resourceId.get();
     },
-    isAdmin() {
-        const isAdmin = Session.get("userRole") === "Admin";
-        return isAdmin;
-    }
 })
 
 

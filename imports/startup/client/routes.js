@@ -3,12 +3,13 @@ import "bootstrap/dist/css/bootstrap.css";
 
 import { Router } from "meteor/iron:router";
 import { Session } from "meteor/session";
-import "../../../client/main.html";
+
+import "/client/main.html";
 import "/imports/ui/login";
 import "/imports/ui/home";
-import "/imports/ui/header/header";
+import "/imports/ui/common/header/header";
 import "/imports/ui/patients/find-patient";
-import "/imports/ui/patients/current-patient";
+import "/imports/ui/patients/current-patient/currentPatient";
 
 Router.configure({
     layoutTemplate: "mainContainer",
@@ -17,10 +18,6 @@ Router.configure({
 Router.route("/", function () {
     this.render("home")
 })
-
-// Router.route('/newNav', function () {
-//   this.render('newNav');
-// });
 
 Router.route("/login", function () {
     this.render("login")
@@ -35,7 +32,6 @@ Router.route("/find-patient", function () {
         Router.go("/login")
     } else {
     }
-    // this.render('notFound');
 })
 
 Router.route("/current-patient", function () {
@@ -49,9 +45,9 @@ Router.route("/current-patient", function () {
 
 Router.route("/current-patient/:_id", function () {
     // This function will be called when the route is accessed
-    const isLogin = Session.get("isLogin")
+    const isLogin = Session.get("isLogin");
     // Access the dynamic parameter using this.params._id
-    const resourceId = this.params._id
+    const resourceId = this.params._id;
 
     // Perform actions or render templates based on the dynamic parameter
     // For example:
