@@ -1,6 +1,5 @@
 /***** Application Constants will be added here *****/
-//below line should be uncommented for production (Docker)
-export const baseUrl = process.env.LOGIN_BASE_URL;
 
-//below line should be uncommented for local meteor development
-// export const baseUrl = Meteor.settings.public.LOGIN_BASE_URL;
+// these will dynamically return values for local and docker
+export const baseUrl = Meteor.isDevelopment ? Meteor.settings.public.LOGIN_BASE_URL : process.env.LOGIN_BASE_URL;
+export const versionId = Meteor.isDevelopment ? Meteor.settings.public.VERSION_ID : process.env.VERSION_ID;

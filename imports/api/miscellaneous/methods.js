@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';
-import { baseUrl } from "/imports/utils/constants";
+import { baseUrl, versionId } from "/imports/utils/constants";
 
 Meteor.methods({
     getTagLine: function() {
@@ -18,6 +18,9 @@ Meteor.methods({
             console.error("Error fetching tagline:", error);
             throw new Meteor.Error('tagline-fetch-failed', 'Failed to fetch tagline');
         }
+    },
+    getVersionId: function() {
+        return versionId
     },
 });
 

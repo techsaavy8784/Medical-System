@@ -24,6 +24,9 @@ const activePractice = () => {
 }
 
 Template.header.helpers({
+    versionId() {
+        return Template.instance().versionId.get();
+    },
     isLogin() {
       return Session.get("isLogin");
     },
@@ -82,6 +85,15 @@ Template.header.helpers({
     this.visitHopital = new ReactiveVar("");
     this.visitPractice = new ReactiveVar("");
     this.isActiveHos = new ReactiveVar(true);
+    this.versionId = new ReactiveVar("");
+      //get the versionId on initial render
+      Meteor.call('getVersionId', (error, result) => {
+          if (error) {
+              console.log('application version not found with error', error)
+          } else {
+              this.versionId.set(result);
+          }
+      });
 });
 
 
