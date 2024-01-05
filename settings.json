@@ -4,6 +4,7 @@
 		"LOGIN_BASE_URL": "http://dev.vertisoft.com:30300/api/rest/v1/",
 		"SAVE_CORE_URL": "http://dev.vertisoft.com:30100",
 		"CORE_URL": "http://dev.vertisoft.com:30300",
+		"VERSION_ID": "240105.0",
 		"METEOR_DISABLE_OPTIMISTIC_CACHING": "1",
 		"METEOR_PROFILE": "100",
 		"METEOR_ALLOW_SUPERUSER": "1"

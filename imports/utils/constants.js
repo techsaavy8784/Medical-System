@@ -1,3 +1,4 @@
+/***** Application Constants will be added here *****/
 //below line should be uncommented for production (Docker)
 export const baseUrl = process.env.LOGIN_BASE_URL;
 
