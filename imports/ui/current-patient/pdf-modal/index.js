@@ -2,11 +2,6 @@ import './pdfModal.html'
 
 import { Template } from "meteor/templating"
 import { Session } from "meteor/session"
-import { ReactiveVar } from "meteor/reactive-var"
-import { Meteor } from "meteor/meteor"
-import { Router } from "meteor/iron:router"
-
-
 
 Template.pdfModal.helpers({
     pdfDataUrl() {

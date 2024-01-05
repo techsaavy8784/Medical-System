@@ -126,52 +126,6 @@ Template.findDocModal.helpers({
 
 
 Template.findDocModal.events({
-    // async 'change .filter-start-date'(event, instance) {
-    //     event.preventDefault()
-    //     if (Session.get("isFindingDoc")) return
-    //     Session.set("isFindingDoc", true);
-    //     const authToken = Session.get("headers")
-    //     const startDate = event.target.value;
-    //     Session.set("startDate", startDate)
-        
-    //     setTimeout(() => {
-    //         Session.set("isFindingDoc", false);
-    //       }, 2500);
-    //       console.log("requestURL---", buildEndPoint())
-    // },
-    // 'change .filter-end-date'(event, instance) {
-    //     Session.set("isFindingDoc", true)
-    //     const endDate = event.target.value;
-    //     Session.set("endDate", endDate)
-    //     setTimeout(() => {
-    //         Session.set("isFindingDoc", false);
-    //       }, 2500);
-    //     console.log("requestURL---", buildEndPoint())
-    // },
-    // async 'change .filter-document-type'(event, instance) {
-    //     event.preventDefault()
-    //     if (Session.get("isFindingDoc")) return
-    //     Session.set("isFindingDoc", true);
-        
-    //     setTimeout(() => {
-    //         Session.set("isFindingDoc", false);
-    //       }, 2500);
-    //     console.log("requestURL---", buildEndPoint())
-    // },
-    // async 'change .filter-patient-count'(event, instance) {
-    //     event.preventDefault()
-    //     if (Session.get("isFindingDoc")) return
-    //     Session.set("isFindingDoc", true);
-    //     const filterCount = event.target.value;
-    //     Session.set("filterCount", filterCount)
-    //     const authToken = Session.get("headers").toUpperCase()
-        
-    //     const res = await getPatientDocs(buildEndPoint(), {
-	// 		Authorization: authToken,
-	// 	});
-    //     setDocs(res);
-    //     console.log("resourceURL---", buildEndPoint())
-    // },
     async 'submit .search-doc-form' (event, instance) {
         event.preventDefault()
 		$('#findDocModal').modal('hide');

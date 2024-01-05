@@ -2,7 +2,6 @@ import './sidebar.html'
 import { Template } from "meteor/templating"
 import { Session } from "meteor/session"
 import { ReactiveVar } from "meteor/reactive-var"
-import { Router } from "meteor/iron:router"
 
 
 const clearQuery = () => {
@@ -45,22 +44,7 @@ Template.sidebar.events({
         instance.selectedResourceItem.set(clickedItem)
         clearQuery();
         Session.set("resourceType", clickedItem)
-        
-        // if (Session.get("isFindingDoc")) return
-        // Session.set("isFindingDoc", true);
-        // const authToken = Session.get("headers");
-        
-        // console.log("resourceURL---", buildEndPoint());
-        // const res = await getPatientDocs(buildEndPoint(), {
-		// 	Authorization: authToken,
-		// });
-        // Session.set("isFindingDoc", false);
-
-        // setDocs(res);
-        // console.log('res---', res);
-
         $("#findDocModal").modal("show");
-
     }
 });
 

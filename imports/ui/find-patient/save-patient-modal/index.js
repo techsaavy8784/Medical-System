@@ -2,7 +2,6 @@ import "./saveModal.html"
 
 import { Template } from "meteor/templating"
 import { Meteor } from "meteor/meteor"
-import { ReactiveVar } from "meteor/reactive-var"
 import { Session } from "meteor/session"
 import { Router } from "meteor/iron:router"
 
@@ -11,24 +10,9 @@ Template.savePatientModal.events({
 	async 'click .btn-save-patient'(event, instance) {
         event.preventDefault();
 		const inputMrn = instance.find('#patientMRN').value;
-		// const patientId = Session.get("selectedPatientInfo")?.resource?.id;
-		// console.log("inputMrn", inputMrn)
-		// console.log("patientId", patientId)
-		// if (inputMrn != patientId) {
-		// 	event.preventDefault();
-			
-		// 	alert("Input patient's MRN again!");
-		// 	$('#savePatientModal').modal('show');
-		// 	return;
-		// }
-		// const url = Session.get("coreURL").replace("30300", "30100") + "Patient";
 		const url = Session.get("coreURL") + "Patient";
-		// const patientId = generateUniqueId(5);
-		// const resourceId =  
 		const destSystemId = Session.get("practices")[0].systems[0].id;
-		// const srcSystemId = Session.get("facilities")[0].systems[0].id;
 		const srcResource = Session.get("selectedPatientInfo").resource;
-		// const patientName = Session.get("selectedPatientInfo").resource?.name[0]?.text;
 
 		const body = {
 			"ResourceType": "Patient",

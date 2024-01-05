@@ -10,10 +10,6 @@ import "/imports/ui/header";
 import "/imports/ui/find-patient";
 import "/imports/ui/current-patient";
 
-// Template.layout.onCreated(function () {
-//   this.layout = new IronLayout({ template: 'layout' });
-// });
-
 Router.configure({
     layoutTemplate: "mainContainer",
 })
@@ -72,21 +68,3 @@ Router.route("/current-patient/:_id", function () {
         })
     }
 })
-
-// Router.route('/:resourceId/reference', function () {
-//   // This function will be called when the route is accessed
-
-//   // Access the dynamic parameter using this.params.resourceId
-//   const resourceId = this.params.resourceId;
-
-//   // Perform actions or render templates based on the dynamic parameter
-//   // For example:
-//   this.render('currentPatient', {
-//     data: function () {
-//       // Here you can pass any data to the template based on the resource ID
-//       return {
-//         resourceId: resourceId
-//       };
-//     }
-//   });
-// });

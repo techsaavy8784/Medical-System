@@ -50,7 +50,6 @@ const getFindPatients = async (coreUrl, query, headers) => {
 		)
 	}).catch((error) => {
 		console.log("errorFinding", error)
-		// Session.set("findPatientPra", null)
 	})
 }
 

@@ -2,9 +2,7 @@ import './showDocModal.html'
 
 import { Template } from "meteor/templating"
 import { Session } from "meteor/session"
-import { ReactiveVar } from "meteor/reactive-var"
 import { Meteor } from "meteor/meteor"
-import { Router } from "meteor/iron:router"
 
 
 Template.resourceDocModal.onCreated(function resourceOnCreated(){
@@ -22,7 +20,6 @@ Template.resourceDocModal.onCreated(function resourceOnCreated(){
         const patientName = Session.get("currentPatientName");
         const resourceType = Session.get("resourceType");
 		const destSystemId = Session.get("practices")[0].systems[0].id;
-		// const srcSystemId = Session.get("facilities")[0].systems[0].id;
         const srcResource = Session.get("selectedDoc").resource;
         const srcResourceId = Session.get("selectedDoc").resource.id;
 		const body = {
