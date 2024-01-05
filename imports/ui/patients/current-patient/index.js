@@ -4,11 +4,9 @@ import './pdf-modal'
 import './show-doc-modal'
 import './search-doc-modal'
 
-import { Template } from "meteor/templating"
-import { Session } from "meteor/session"
-import { ReactiveVar } from "meteor/reactive-var"
+import { Template } from "meteor/templating";
+import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor"
-import { Router } from "meteor/iron:router"
 
 
 const showPdfModal = async (data) => {
@@ -33,7 +31,6 @@ const showPdfModal = async (data) => {
         if (Session.get("resourceType") === "DocumentReference") {
             const corePdf = data.resource?.content[0]?.attachment?.url.split("/")
             pdfUrl = coreUrl() + "Binary/" + corePdf[corePdf.length - 1];
-            // pdfUrl = data.resource?.content[0]?.attachment?.url
         } else if (Session.get("resourceType") === "DiagnosticReport") {
             const corePdf = data.resource?.presentedForm[0]?.url.split("/");
             pdfUrl = coreUrl() + "Binary/" + corePdf[corePdf.length - 1];
@@ -44,8 +41,7 @@ const showPdfModal = async (data) => {
         return;
     }
     Session.set("isFindingDoc", true);
-    // console.log("isFindingDoc", Session.get("isFindingDoc"))
-    
+
     console.log("pdfUrl", pdfUrl);
     
     const requestOption  = { Authorization: authToken };
@@ -84,26 +80,6 @@ const showPdfModal = async (data) => {
     }).catch((error) => {
 
     });
-    //   try {
-    //     const response = await fetch(pdfUrl, requestOptions);
-    //         console.log("response", response);
-    //         if (!response.ok) {
-    //         throw new Error(`Failed to fetch PDF: ${response.status} ${response.statusText}`);
-    //         }
-        
-    //     const blob = await response.blob();
-    //     const pdfDataUrl = URL.createObjectURL(blob);
-        
-    //     Session.set("isFindingDoc", false);
-    //     Session.set("emptyPdfData", false);
-    //     Session.set("pdfDataUrl", pdfDataUrl);
-    //     $('#docPdfModal').modal('show');
-    //   } catch (error) {
-    //     console.log('fetchPDF', error);
-    //     // Handle the error as needed
-    //   }
-
-    
 }
 
 const showXmlModal = async (data) => {
@@ -197,11 +173,7 @@ Template.currentPatient.helpers({
         return Session.get("getPatientDocs")?.patients;
     },
     emptySearchDocs() {
-        if (Session.get("getPatientDocs")?.patients?.length) {
-            return false
-        } else {
-            return true
-        }
+        return !Session.get("getPatientDocs")?.patients?.length;
     },
     resourceId() {
         return Template.instance().data.resourceId;

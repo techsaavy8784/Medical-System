@@ -1,39 +1,31 @@
-import "./findPatient.html"
-import './fhir-modal'
-import './save-patient-modal'
-import './search-patient-modal'
+import "./findPatient.html";
+import './fhir-modal';
+import './save-patient-modal';
+import './search-patient-modal';
 
-import { Template } from "meteor/templating"
-import { Meteor } from "meteor/meteor"
-import { ReactiveVar } from "meteor/reactive-var"
-import { Session } from "meteor/session"
-import { Router } from "meteor/iron:router"
-import {generateUniqueId} from "../utils/patientID"
+import { Template } from "meteor/templating";
+import { ReactiveVar } from "meteor/reactive-var";
+import { Session } from "meteor/session";
+import { Router } from "meteor/iron:router";
 
 
 Template.findPatient.onCreated(function findPatientOnCreated() {
-	this.searchLastName = new ReactiveVar("")
-	this.searchFirstName = new ReactiveVar("")
-	this.searchDate = new ReactiveVar("")
-	this.searchEncounter = new ReactiveVar("")
-	this.headers = new ReactiveVar("")
-	this.resultPatients = new ReactiveVar("")
-	Session.set("isLastName", false)
+	this.headers = new ReactiveVar("");
+	Session.set("isLastName", false);
 });
 
 Template.findPatient.helpers({
 	headers() {
-		return Session.get("headers")
+		return Session.get("headers");
 	},
 	findPatientHos() {
-		// console.log("findPatientHos Patients", Session.get("findPatientHos")?.patients);
-		return Session.get("findPatientHos")?.patients
+		return Session.get("findPatientHos")?.patients;
 	},
 	findPatientPra() {
-		return Session.get("findPatientPra")?.patients
+		return Session.get("findPatientPra")?.patients;
 	},
 	isFindLoading() {
-		return Session.get("isFindLoading")
+		return Session.get("isFindLoading");
 	},
     isActive() {
         return Session.get("isActive") === "hospital";
@@ -45,13 +37,6 @@ Template.findPatient.helpers({
 			return Session.get("findPatientPra")?.query;
 		}
 	},
-	// patientsEmpty() {
-	// 	if (Session.get("isActive") === "hospital") {
-	// 		return (!!Session.get("findPatientHos")?.patients);
-	// 	} else if (Session.get("isActive") === "hospital") {
-	// 		return (!!Session.get("findPatientPra")?.patients);
-	// 	}
-	// }
 })
 
 
@@ -75,17 +60,12 @@ Template.findPatient.events({
 			
 		  $('#searchPatientFhirModal').modal('show');
         } else if(value === 'Save Patient') {
-			// const data = JSON.stringify(this.resource)
 			console.log('Viewing details for:', this.resource);
 			
 		  	$('#savePatientModal').modal('show');
         } else if (value === 'Show Resource') {
 			$('#showResourceModal').modal('show');
 		}
-		// else if (value === 'Save to MyEMR') {
-		// 	console.log("show Save Resource Modal");
-		// 	$('#saveResourceModal').modal('show');
-		// }
       },
 	  'click .textRawPatient' (event, instance) {
 		const currentPatient = "Patient: ID: "+ this.resource.id + " " + this.resource?.name[0]?.text + " - DOB: " + this.resource?.birthDate;
@@ -99,29 +79,6 @@ Template.findPatient.events({
 		Session.set("selectedPatientInfo", this);
 		Session.set("patientMrn", this.resource.id);
 		Session.set("fhirModalData", this.resource.text.div);
-		
-		// event.preventDefault();
-		// const inputMrn = instance.find('#patientMRN').value;
-			
-		// const url = Session.get("coreURL") + "Patient";
-		 
-		// const destSystemId = Session.get("practices")[0].systems[0].id;
-		// // const srcSystemId = Session.get("facilities")[0].systems[0].id;
-		// const srcResource = Session.get("selectedPatientInfo").resource;
-		// // const patientName = Session.get("selectedPatientInfo").resource?.name[0]?.text;
-	
-		// const body = {
-		// 	"ResourceType": "Patient",
-		// 	"DestPatientId": inputMrn,
-		// 	"destSystemId": destSystemId,
-		// 	"SrcResource": srcResource
-		// }
-	
-		// 	console.log("url", url);
-		// 	console.log("payload", body);
-		// 	const token = Session.get("headers");
-	
-		// 	console.log("save button is clicked.");
 		},
 		
 	

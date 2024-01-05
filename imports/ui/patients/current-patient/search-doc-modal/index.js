@@ -120,7 +120,7 @@ Template.findDocModal.helpers({
     },
     isAdmin() {
         const isAdmin = Session.get("userRole") === "Admin";
-        return isAdmin ? true : false;
+        return isAdmin;
     }
 })
 

@@ -66,7 +66,7 @@ Template.searchPatientModal.helpers({
 	},
 	isUnique() {
 		const isUnique = !!Template.instance().patientMrn.get() || !!Template.instance().patientId.get();
-		return isUnique ? true : false;
+		return isUnique;
 	},
 	isMrn() {
 		return !!Template.instance().patientMrn.get()

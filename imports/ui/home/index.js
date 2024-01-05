@@ -11,7 +11,7 @@ Template.home.onCreated(function tagLineOnCreated() {
         if (error) {
           this.tagLineText.set("Network Error!");
         } else {
-          if (result.statusCode == 200) {
+          if (result.statusCode === 200) {
             this.tagLineText.set(result.content);
           } else {
             this.tagLineText.set("Network Error!");

@@ -6,9 +6,9 @@ import { Session } from "meteor/session";
 import "../../../client/main.html";
 import "/imports/ui/login";
 import "/imports/ui/home";
-import "/imports/ui/header";
-import "/imports/ui/find-patient";
-import "/imports/ui/current-patient";
+import "/imports/ui/header/header";
+import "/imports/ui/patients/find-patient";
+import "/imports/ui/patients/current-patient";
 
 Router.configure({
     layoutTemplate: "mainContainer",
