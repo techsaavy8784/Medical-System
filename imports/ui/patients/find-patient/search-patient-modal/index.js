@@ -1,57 +1,9 @@
-import "./searchModal.html"
+import "./searchModal.html";
 
-import { Template } from "meteor/templating"
-import { Meteor } from "meteor/meteor"
-import { ReactiveVar } from "meteor/reactive-var"
-import { Session } from "meteor/session"
-import { Router } from "meteor/iron:router"
-
-
-const getFindPatients = async (coreUrl, query, headers) => {
-	return new Promise(function (resolver, reject) {
-		console.log("find-patientURL", `${coreUrl}${query}`);
-		Meteor.call(
-			"patientTestQuery",
-			`${coreUrl}/${query}`,
-			headers,
-			(error, result) => {
-				if (error) {
-					console.log("errorFinding", error)
-					if (error.error?.response?.statusCode === 401) {
-						alert("Your session has expired, please login");
-						Session.set("isLogin", false)
-						Session.set("isFindLoading", false)
-
-						Router.go("/login");
-					}
-					Session.set("isFindLoading", false)
-					reject(error)
-					// return error;
-				} else {
-					console.log("success: ", result)
-					if (Session.get("isActive") === "hospital") {
-						if (result.status === 200 && result.message === " No resources found") {
-							
-							resolver(result)
-						} else {
-							resolver(result)
-						}
-					} else {
-						if (result.statusCode === 404) {
-							resolver(result)
-
-						} else {
-							resolver(result)
-						}
-					}
-					Session.set("isFindLoading", false)
-				}
-			}
-		)
-	}).catch((error) => {
-		console.log("errorFinding", error)
-	})
-}
+import { Template } from "meteor/templating";
+import { ReactiveVar } from "meteor/reactive-var";
+import { Session } from "meteor/session";
+import { patientHelpers } from '/imports/helpers/patientHelpers';
 
 Template.searchPatientModal.onCreated( function searchModalOnCreated(){
 	this.patientMrn = new ReactiveVar("");
@@ -62,17 +14,16 @@ Template.searchPatientModal.onCreated( function searchModalOnCreated(){
 
 Template.searchPatientModal.helpers({
 	isLastName() {
-		return Session.get("isLastName")
+		return Session.get("isLastName");
 	},
 	isUnique() {
-		const isUnique = !!Template.instance().patientMrn.get() || !!Template.instance().patientId.get();
-		return isUnique;
+		return (!!Template.instance().patientMrn.get() || !!Template.instance().patientId.get());
 	},
 	isMrn() {
-		return !!Template.instance().patientMrn.get()
+		return (!!Template.instance().patientMrn.get());
 	},
 	isId() {
-		return !!Template.instance().patientId.get()
+		return (!!Template.instance().patientId.get());
 	},
 	canInputMrn() {
 		const inputValid = !!Template.instance().patientId.get() || !!Session.get("isLastName")
@@ -90,58 +41,59 @@ Template.searchPatientModal.events({
 		event.preventDefault()
 		$('#searchPatientModal').modal('hide');
 
-		const target = event.target
-		const lastName = target.lastName.value.toLowerCase()
-		const firstName = target.firstName.value.toLowerCase()
-		const birthday = target.birthday.value;
-		const id = target.patientId.value;
+		const target = event.target;
+		const lastName = target?.lastName?.value?.toLowerCase();
+		const firstName = target?.firstName?.value?.toLowerCase();
+		const birthday = target?.birthday?.value;
+		const id = target?.patientId?.value;
 		
 		if (!(lastName || firstName)) {
-			return
+			return;
 		}
 
-		Session.set("isFindLoading", true)
-		const isActive = Session.get("isActive")
-		const authToken = Session.get("headers")
-		const facility = Session.get("facilities")[0]
-		const practice = Session.get("practices")[0]
+		Session.set("isFindLoading", true);
+		const isActive = Session.get("isActive");
+		const authToken = Session.get("headers");
+		const facility = Session.get("facilities")[0];
+		const practice = Session.get("practices")[0];
+
 		const coreUrl = () => {
 			if (isActive === "hospital") {
-				return facility.systems[0].coreUrl
+				return facility?.systems[0]?.coreUrl;
 			} else {
-				return practice.systems[0].coreUrl
+				return practice?.systems[0]?.coreUrl;
 			}
 		}
 		let searchPatientQuery = "";
 		const buildQuery = () => {
 			if (id) {
-				return `Patient?_id=${id}`
+				return `Patient?_id=${id}`;
 			} else {
 				if (lastName && firstName) {
 				   if (!!birthday) {
 					   searchPatientQuery = `family=${lastName}&given=${firstName}&birthdate=${birthday}`;
 					   
-					   return `Patient?${searchPatientQuery}`
+					   return `Patient?${searchPatientQuery}`;
 				   } else {
 					   searchPatientQuery = `family=${lastName}&given=${firstName}`;
 					   
-					   return `Patient?${searchPatientQuery}`
+					   return `Patient?${searchPatientQuery}`;
 				   }
 			   } else {
 				   if (!!birthday) {
-					   searchPatientQuery = `Patient?family=${lastName}&birthdate=${birthday}`
+					   searchPatientQuery = `Patient?family=${lastName}&birthdate=${birthday}`;
 					   
-					   return `Patient?${searchPatientQuery}`
+					   return `Patient?${searchPatientQuery}`;
 				   } else {
-					   searchPatientQuery = `family=${lastName}`
+					   searchPatientQuery = `family=${lastName}`;
 					   
-					   return `Patient?${searchPatientQuery}`
+					   return `Patient?${searchPatientQuery}`;
 				   }
 			   }
 			}
 		}
 
-		const res = await getFindPatients(coreUrl(), buildQuery(), {
+		const res = await patientHelpers.getPatients(coreUrl(), buildQuery(), {
 			Authorization: authToken,
 		})
 		console.log("res", res)
@@ -156,12 +108,12 @@ Template.searchPatientModal.events({
 		if (isActive === "hospital") {
             if (res.bundle) {
                 Session.set("findPatientHos", {
-                    patients: res.bundle?.entry,
+                    patients: res?.bundle?.entry,
                     cache: {
-                        id: res.queryId,
-                        pageNumber: res.pageNumber,
-                        totalPages: res.pageNumber,
-                        countInPage: res.countInPage,
+                        id: res?.queryId,
+                        pageNumber: res?.pageNumber,
+                        totalPages: res?.pageNumber,
+                        countInPage: res?.countInPage,
                     },
 					query: searchPatientQuery
                 })
@@ -170,14 +122,14 @@ Template.searchPatientModal.events({
             }
 		}  else {
             
-            if (res.bundle) {
+            if (res?.bundle) {
             Session.set("findPatientPra", {
-                patients: res.bundle?.entry,
+                patients: res?.bundle?.entry,
                 cache: {
-                    id: res.queryId,
-                    pageNumber: res.pageNumber,
-                    totalPages: res.pageNumber,
-                    countInPage: res.countInPage,
+                    id: res?.queryId,
+                    pageNumber: res?.pageNumber,
+                    totalPages: res?.pageNumber,
+                    countInPage: res?.countInPage,
                 },
 				query: searchPatientQuery,
             })

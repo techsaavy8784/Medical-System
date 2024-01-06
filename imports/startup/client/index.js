@@ -2,3 +2,4 @@
 
 import './routes';
 import '/imports/ui/utils/globalHelpers';
+import '/imports/helpers/patientHelpers';

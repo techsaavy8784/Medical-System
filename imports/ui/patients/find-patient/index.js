@@ -1,5 +1,5 @@
 import "./findPatient.html";
-import '../../common/fhir-modal/fhirModal';
+import '/imports/ui/common/fhir-modal/fhirModal';
 import './save-patient-modal';
 import './search-patient-modal';
 
