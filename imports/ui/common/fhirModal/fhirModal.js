@@ -3,8 +3,8 @@ import "./fhirModal.html";
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
 
-Template.searchPatientFhirModal.onRendered(function() {
-	const searchFhirModal = this.find('#searchPatientFhirModal');
+Template.fhirModal.onRendered(function() {
+	const searchFhirModal = this.find('#fhirModal');
 	const instance = this;
 	const parentInstance = instance.view.parentView.templateInstance();
 
@@ -18,7 +18,7 @@ Template.searchPatientFhirModal.onRendered(function() {
 
 });
 
-Template.searchPatientFhirModal.helpers({
+Template.fhirModal.helpers({
 	fhirModalData() {
 		return Session.get("fhirModalData");
 	},

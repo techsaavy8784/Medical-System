@@ -1,5 +1,5 @@
 import "./findPatient.html";
-import '/imports/ui/common/fhir-modal/fhirModal';
+import '/imports/ui/common/fhirModal/fhirModal';
 import './save-patient-modal';
 import './search-patient-modal';
 
@@ -58,7 +58,7 @@ Template.findPatient.events({
 			Session.set("fhirModalData", data);
 			console.log('Viewing details for:', this);
 			
-		  $('#searchPatientFhirModal').modal('show');
+		  $('#fhirModal').modal('show');
         } else if(value === 'Save Patient') {
 			console.log('Viewing details for:', this.resource);
 			

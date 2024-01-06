@@ -1,8 +1,8 @@
 import './currentPatient.html'
 import '/imports/ui/common/sidebar/sidebar'
 import '/imports/ui/common/pdfModal/pdfModal'
-import '/imports/ui/common/show-doc-modal/showDocModal'
-import '/imports/ui/common/searchDocModal/searchDocModal'
+import '/imports/ui/common/show-doc-modal/displayResourceModal'
+import '/imports/ui/common/searchResourceModal/SearchResourceModal'
 
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";

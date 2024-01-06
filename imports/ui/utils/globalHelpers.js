@@ -8,15 +8,18 @@ Template.registerHelper('isAdmin', function () {
     return Session.get("userRole") === "Admin";
 });
 
+
 //global isLogin helper for whole application usage
 Template.registerHelper('isLogin', function () {
     return Session.get("isLogin")
 });
 
+
 //get any session singular values just by name param
 Template.registerHelper('getSessionValue', function (name) {
     return Session.get[name] || '';
 });
+
 
 //get resource style based on given resourceType params
 Template.registerHelper('getResourceStyle', function (resourceType) {
