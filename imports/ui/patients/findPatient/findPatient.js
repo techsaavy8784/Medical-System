@@ -1,7 +1,7 @@
 import "./findPatient.html";
 import '/imports/ui/common/fhirModal/fhirModal';
-import './save-patient-modal';
-import './search-patient-modal';
+import './savePatientModal/savePatientModal';
+import './searchPatientModal/searchPatientModal';
 
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";

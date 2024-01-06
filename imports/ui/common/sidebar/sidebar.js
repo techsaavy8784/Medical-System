@@ -14,11 +14,13 @@ Template.sidebar.onCreated(function sidebarOnCreated() {
     this.selectedResourceItem = new ReactiveVar("")
 });
 
+Template.sidebar.onRendered(function () {
+    Session.set("resourceType", null);
+});
 
 Template.sidebar.helpers({
 
 });
-
 
 Template.sidebar.events({
     async 'click .resource-item'(event, instance) {
@@ -30,7 +32,3 @@ Template.sidebar.events({
         $("#SearchResourceModal").modal("show");
     }
 });
-
-Template.sidebar.onRendered(function () {
-    Session.set("resourceType", null);
-})

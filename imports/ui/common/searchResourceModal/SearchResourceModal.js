@@ -113,7 +113,7 @@ Template.SearchResourceModal.helpers({
     isResourceId() {
         return Template.instance().resourceId.get();
     },
-})
+});
 
 
 Template.SearchResourceModal.events({
@@ -158,4 +158,4 @@ Template.SearchResourceModal.events({
             instance.resourceId.set(false);
         }
     }
-})
+});

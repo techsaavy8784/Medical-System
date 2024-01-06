@@ -1,4 +1,4 @@
-import "./searchModal.html";
+import "./searchPatientModal.html";
 
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
@@ -10,6 +10,25 @@ Template.searchPatientModal.onCreated( function searchModalOnCreated(){
 	this.patientId = new ReactiveVar("");
 	this.isValue = new ReactiveVar("");
 
+})
+
+Template.searchPatientModal.onRendered(function () {
+
+	// const inputField = this.find('#patient-id');
+	// console.log("inputField", inputField);
+	// inputField.focus();
+	// $('input').focus()
+	$('#patient-id').focus();
+
+	const searchPatientModal = this.find('#searchPatientModal');
+
+	$(searchPatientModal).on('shown.bs.modal', function (event) {
+		$('#patient-id').focus();
+	});
+
+	$(searchPatientModal).on('hidden.bs.modal', function (event) {
+		// form.reset();
+	});
 })
 
 Template.searchPatientModal.helpers({
@@ -34,7 +53,6 @@ Template.searchPatientModal.helpers({
 		return !inputValid;
 	}
 });
-
 
 Template.searchPatientModal.events({
 	async "submit .search-patient-form"(event, instance) {
@@ -191,24 +209,4 @@ Template.searchPatientModal.events({
 			instance.isValue.set("");
 		}
 	}
-})
-
-
-Template.searchPatientModal.onRendered(function () {
-	
-	// const inputField = this.find('#patient-id');
-	// console.log("inputField", inputField);
-	// inputField.focus();
-	// $('input').focus()
-	$('#patient-id').focus();
-
-	const searchPatientModal = this.find('#searchPatientModal');
-
-  $(searchPatientModal).on('shown.bs.modal', function (event) {
-    $('#patient-id').focus();
-  });
-
-	$(searchPatientModal).on('hidden.bs.modal', function (event) {
-		// form.reset();
-	});
 })

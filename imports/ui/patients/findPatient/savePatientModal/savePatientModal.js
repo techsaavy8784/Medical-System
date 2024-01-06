@@ -1,4 +1,4 @@
-import "./saveModal.html";
+import "./savePatientModal.html";
 
 import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";

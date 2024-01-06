@@ -50,7 +50,7 @@ Template.login.onCreated(function loginOnCreated() {
                 instance.isLogging.set(false);
               } else {
                 console.log("loginResult", result);
-                  if (result.status == 200) {
+                  if (result.status === 200) {
                   console.log("loginResponse: ", result);
                   isLogin.set(true);
                   instance.userInfo.set(result);

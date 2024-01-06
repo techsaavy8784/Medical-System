@@ -1,12 +1,12 @@
-import './currentPatient.html'
-import '/imports/ui/common/sidebar/sidebar'
-import '/imports/ui/common/pdfModal/pdfModal'
-import '/imports/ui/common/saveResourceModal/saveResourceModal'
-import '/imports/ui/common/searchResourceModal/SearchResourceModal'
+import './currentPatient.html';
+import '/imports/ui/common/sidebar/sidebar';
+import '/imports/ui/common/pdfModal/pdfModal';
+import '/imports/ui/common/saveResourceModal/saveResourceModal';
+import '/imports/ui/common/searchResourceModal/SearchResourceModal';
 
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
-import { Meteor } from "meteor/meteor"
+import { Meteor } from "meteor/meteor";
 
 
 const showPdfModal = async (data) => {
@@ -16,15 +16,15 @@ const showPdfModal = async (data) => {
     if (Session.get("isFindingDoc")) return
     let pdfUrl = "";
     
-	const isActive = Session.get("isActive")
-    const facility = Session.get("facilities")[0]
-    const practice = Session.get("practices")[0]
+	const isActive = Session.get("isActive");
+    const facility = Session.get("facilities")[0];
+    const practice = Session.get("practices")[0];
     const authToken = Session.get("headers");
     const coreUrl = () => {
         if (isActive === "hospital") {
-            return facility.systems[0].coreUrl
+            return facility?.systems[0]?.coreUrl;
         } else {
-            return practice.systems[0].coreUrl
+            return practice?.systems[0]?.coreUrl;
         }
     }
     if (!!data.resource.content || !!data.resource?.presentedForm) {

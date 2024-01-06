@@ -18,8 +18,7 @@ Template.home.onCreated(function tagLineOnCreated() {
           }
         }
       });
-})
-
+});
 
 Template.home.helpers({
     tagLineText() {

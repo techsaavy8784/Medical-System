@@ -5,11 +5,11 @@ import { Router } from "meteor/iron:router";
 import { Session } from "meteor/session";
 
 import "/client/main.html";
-import "/imports/ui/login";
-import "/imports/ui/home";
+import "/imports/ui/login/login";
+import "/imports/ui/home/home";
 import "/imports/ui/common/header/header";
-import "/imports/ui/patients/find-patient";
-import "/imports/ui/patients/current-patient/currentPatient";
+import "/imports/ui/patients/findPatient/findPatient";
+import "/imports/ui/patients/currentPatient/currentPatient";
 
 Router.configure({
     layoutTemplate: "mainContainer",
