@@ -5,50 +5,44 @@
           <li id="Resource Type">
               <i class="bi bi-grid"></i>
               <span>Resource Type</span>
-          </li><!-- End Dashboard Nav -->
+          </li>
           
-          <li id="DocumentReference" class="resource-item" style="{{referenceStyle}} cursor: pointer;">
+          <li id="DocumentReference" class="resource-item" style="{{getResourceStyle 'DocumentReference'}} cursor: pointer;">
             <a class=" resource-type nav-link">
-              <!-- href="./{{resourceId}}/reference" -->
               <i class="bi bi-menu-button-wide"></i><span>Document Reference</span>
             </a>
-          </li><!-- End Components Nav -->
+          </li>
           
-          <li id="DiagnosticReport" class="resource-item" style="{{reportStyle}} cursor: pointer;">
+          <li id="DiagnosticReport" class="resource-item" style="{{getResourceStyle 'DiagnosticReport'}} cursor: pointer;">
             <a class=" resource-type nav-link" >
-              <!-- href="./{{resourceId}}/diagnostic" -->
               <i class="bi bi-journal-text"></i><span>Diagnostic Report</span>
             </a>
-          </li><!-- End Forms Nav -->
+          </li>
     
-          <li id="Observation" class="resource-item" style="{{observationStyle}} cursor: pointer;">
+          <li id="Observation" class="resource-item" style="{{getResourceStyle 'Observation'}} cursor: pointer;">
             <a class=" resource-type nav-link ">
-              <!-- href="./{{resourceId}}/observation" -->
               <i class="bi bi-layout-text-window-reverse"></i><span>Observation</span>
             </a>
-          </li><!-- End Tables Nav -->
+          </li>
 
-          <li id="Condition" class="resource-item" style="{{conditionStyle}} cursor: pointer;">
+          <li id="Condition" class="resource-item" style="{{getResourceStyle 'Condition'}} cursor: pointer;">
             <a class=" resource-type nav-link " >
-              <!-- href="./{{resourceId}}/condition" -->
               <i class="bi bi-layout-text-window-reverse"></i><span>Condition</span>
             </a>
-          </li><!-- End Tables Nav -->
+          </li>
 
-          <li id="Immunization" class="resource-item" style="{{immunizationStyle}} cursor: pointer;">
+          <li id="Immunization" class="resource-item" style="{{getResourceStyle 'Immunization'}} cursor: pointer;">
             <a class=" resource-type nav-link ">
-              <!-- href="./{{resourceId}}/immunization" -->
               <i class="bi bi-bar-chart"></i><span>Immunization</span>
             </a>
     
-          </li><!-- End Charts Nav -->
+          </li>
           
-          <li id="QuestionnaireResponse" class="resource-item" style="{{questionnaireStyle}} cursor: pointer;">
+          <li id="QuestionnaireResponse" class="resource-item" style="{{getResourceStyle 'QuestionnaireResponse'}} cursor: pointer;">
             <a class=" resource-type nav-link ">
-              <!-- href="./{{resourceId}}/questionnaire" -->
               <i class="bi bi-bar-chart"></i><span>Questionnaire Response</span>
             </a>
-          </li><!-- End Charts Nav -->
+          </li>
           
         </ul>
     </aside>

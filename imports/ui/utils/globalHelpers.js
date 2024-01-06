@@ -17,3 +17,8 @@ Template.registerHelper('isLogin', function () {
 Template.registerHelper('getSessionValue', function (name) {
     return Session.get[name] || '';
 });
+
+//get resource style based on given resourceType params
+Template.registerHelper('getResourceStyle', function (resourceType) {
+    return (Session.get("resourceType") === resourceType) ? "background: #c0c7d4;" : null
+});

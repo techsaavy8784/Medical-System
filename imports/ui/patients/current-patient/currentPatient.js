@@ -1,6 +1,6 @@
 import './currentPatient.html'
 import '/imports/ui/common/sidebar/sidebar'
-import '/imports/ui/common/pdf-modal/pdfModal'
+import '/imports/ui/common/pdfModal/pdfModal'
 import '/imports/ui/common/show-doc-modal/showDocModal'
 import '/imports/ui/common/searchDocModal/searchDocModal'
 
