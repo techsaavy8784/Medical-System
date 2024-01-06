@@ -1,17 +1,17 @@
-import './displayResourceModal.html'
+import './saveResourceModal.html'
 
 import { Template } from "meteor/templating"
 import { Session } from "meteor/session"
 import { Meteor } from "meteor/meteor"
 
 
-Template.resourceDocModal.onCreated(function resourceOnCreated(){
+Template.saveResourceModal.onCreated(function resourceOnCreated(){
     Session.set("showDocSaveModal", false);
     Session.set("showDocFhirModal", false);
     Session.set("showXMLModal", false);
 })
 
-  Template.resourceDocModal.events({
+  Template.saveResourceModal.events({
     async 'click .save-doc-data'(event, instance) {
         event.preventDefault();
         const canSave = Session.get("showDocSaveModal");
@@ -19,9 +19,9 @@ Template.resourceDocModal.onCreated(function resourceOnCreated(){
         const patientId = Session.get("currentPatientID");
         const patientName = Session.get("currentPatientName");
         const resourceType = Session.get("resourceType");
-		const destSystemId = Session.get("practices")[0].systems[0].id;
-        const srcResource = Session.get("selectedDoc").resource;
-        const srcResourceId = Session.get("selectedDoc").resource.id;
+		const destSystemId = Session.get("practices")[0]?.systems[0].id;
+        const srcResource = Session.get("selectedDoc")?.resource;
+        const srcResourceId = Session.get("selectedDoc")?.resource.id;
 		const body = {
 			"resourceType": resourceType,
 			"destPatientId": patientId,
@@ -49,7 +49,7 @@ Template.resourceDocModal.onCreated(function resourceOnCreated(){
     }
 })
 
-  Template.resourceDocModal.helpers({
+  Template.saveResourceModal.helpers({
     showDocSaveModal() {
         return Session.get("showDocSaveModal")
     },
@@ -76,8 +76,8 @@ Template.resourceDocModal.onCreated(function resourceOnCreated(){
     }
   })
 
-  Template.resourceDocModal.onRendered( function () {
-	const modalElement = this.find('#resourceDocModal');
+  Template.saveResourceModal.onRendered( function () {
+	const modalElement = this.find('#saveResourceModal');
 	
 	const instance = this;
 	const parentInstance = instance.view.parentView.templateInstance();

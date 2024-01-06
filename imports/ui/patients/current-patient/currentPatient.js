@@ -1,7 +1,7 @@
 import './currentPatient.html'
 import '/imports/ui/common/sidebar/sidebar'
 import '/imports/ui/common/pdfModal/pdfModal'
-import '/imports/ui/common/show-doc-modal/displayResourceModal'
+import '/imports/ui/common/saveResourceModal/saveResourceModal'
 import '/imports/ui/common/searchResourceModal/SearchResourceModal'
 
 import { Template } from "meteor/templating";
@@ -109,7 +109,7 @@ const showXmlModal = async (data) => {
         }
     } else {
         Session.set("emptyXmlData", true);
-        $('#resourceDocModal').modal('show');
+        $('#saveResourceModal').modal('show');
         return;
     }
     Session.set("isFindingDoc", true);
@@ -141,13 +141,13 @@ const showXmlModal = async (data) => {
                       Session.set("docXMLModalData", xmlStringify);
                       Session.set("isFindingDoc", false);
                       Session.set("showXMLModal", true);
-                      $('#resourceDocModal').modal('show');
+                      $('#saveResourceModal').modal('show');
                       return xmlStringify
                     }
                 } else {
                     Session.set("isFindingDoc", false);
                     Session.set("emptyXmlData", true);
-                    $('#resourceDocModal').modal('show');
+                    $('#saveResourceModal').modal('show');
                 }
             }
         )
@@ -216,11 +216,11 @@ Template.currentPatient.events({
             Session.set("showDocFhirModal", true);
 			console.log('Viewing details for:', this);
 			
-		  $('#resourceDocModal').modal('show');
+		  $('#saveResourceModal').modal('show');
         } else if(value === 'Save to MyEMR') {
 			Session.set("showDocSaveModal", true);
 			Session.set("saveDocModalData", this.text.div);
-		  $('#resourceDocModal').modal('show');
+		  $('#saveResourceModal').modal('show');
         } else if (value === "Show PDF") {
             showPdfModal(this);
         } else if (value === "Show XML") {
