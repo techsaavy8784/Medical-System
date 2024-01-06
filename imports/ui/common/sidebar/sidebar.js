@@ -23,11 +23,11 @@ Template.sidebar.helpers({
 Template.sidebar.events({
     async 'click .resource-item'(event, instance) {
         Session.set("searchResult", false);
-        const clickedItem = event.currentTarget.id;
-        instance.selectedResourceItem.set(clickedItem);
+        const resourceType = event.currentTarget.id;
+        instance.selectedResourceItem.set(resourceType);
         clearQuery();
-        Session.set("resourceType", clickedItem)
-        $("#findDocModal").modal("show");
+        Session.set("resourceType", resourceType)
+        $("#SearchResourceModal").modal("show");
     }
 });
 

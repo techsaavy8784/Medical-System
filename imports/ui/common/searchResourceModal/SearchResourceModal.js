@@ -62,13 +62,8 @@ const getPatientDocs = async (url, headers) => {
                     console.log("errorFinding", error)
                     if (error.error?.response?.statusCode === 401) {
                         alert("Your session has expired, please login");
-                        // Session.set("isLogin", false)
-                        // Session.set("isFindLoading", false)
-                        // function refreshPage() {
                             Session.clear();
                             Router.go("/login");
-                            // location.reload();
-                        //   }
                         return
                     }
                     reject(error)
@@ -103,11 +98,11 @@ const setDocs = (res) => {
 }
 
 
-Template.findDocModal.onCreated(function findDocModalOnCreated() {
+Template.SearchResourceModal.onCreated(function SearchResourceModalOnCreated() {
     this.resourceId = new ReactiveVar("");
 });
 
-Template.findDocModal.helpers({
+Template.SearchResourceModal.helpers({
     filterCount(value) {
         const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10"
         return filterCount === value ? "selected" : "";
@@ -121,10 +116,10 @@ Template.findDocModal.helpers({
 })
 
 
-Template.findDocModal.events({
+Template.SearchResourceModal.events({
     async 'submit .search-doc-form' (event, instance) {
         event.preventDefault()
-		$('#findDocModal').modal('hide');
+		$('#SearchResourceModal').modal('hide');
 
 		const target = event.target
 		const startDate = target.startDate.value

@@ -231,7 +231,7 @@ Template.currentPatient.events({
     
     },
     'click .btn-show-search-doc-modal' (event, instance) {
-        $("#findDocModal").modal("show");
+        $("#SearchResourceModal").modal("show");
     }
 });
 
