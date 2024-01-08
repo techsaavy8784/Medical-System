@@ -10,20 +10,19 @@ import { localsHelpers } from "/imports/helpers/localsHelpers";
 const activeHopital = () => {
     const facilities = Session.get("facilities");
     if (facilities?.length) {
-        return (facilities[0].name + "/" + facilities[0].systems[0].name);
+        return (facilities[0]?.name + "/" + facilities[0]?.systems[0]?.name);
     }
 }
 
-const activePractice = () => {
-    const practices = localsHelpers.getLocals();
-    if (practices?.length) {
-        return (practices[0].displayName + "/" + practices[0].systems[0].displayName);
+const activeLocal = () => {
+    const locals = localsHelpers.getLocals();
+    if (locals?.length) {
+        return (locals[0].displayName + "/" + locals[0].systems[0].displayName);
     }
 }
 
 Template.header.onCreated(function headerOnCreated() {
-    this.practices = new ReactiveVar(localsHelpers.getLocals());
-    this.isLogin = new ReactiveVar(Session.get("isLogin"));
+    this.locals = new ReactiveVar(localsHelpers.getLocals());
     this.versionId = new ReactiveVar("");
 
     //get the versionId on initial render
@@ -44,8 +43,8 @@ Template.header.helpers({
     activeHosPra() {
         if (Session.get("isActive") === "hospital") {
             return activeHopital();
-        } else if (Session.get("isActive") === "practice") {
-            return activePractice();
+        } else if (Session.get("isActive") === "local") {
+            return activeLocal();
         }
     },
 
@@ -53,8 +52,8 @@ Template.header.helpers({
         return activeHopital();
     },
 
-    visitPractice() {
-        return activePractice();
+    visitLocal() {
+        return activeLocal();
     },
 
     isActiveHos() {
@@ -79,8 +78,8 @@ Template.header.helpers({
         }
     },
 
-    practiceStyle() {
-        if (Session.get("isActive") === "practice") {
+    localStyle() {
+        if (Session.get("isActive") === "local") {
             return "color: blue";
         }
     }
@@ -100,10 +99,9 @@ Template.header.events({
         const facility = Session.get("facilities")[0];
         Session.set("coreURL", facility.systems[0].coreUrl);
     },
-    'click .click-Practice': function(event) {
-        Session.set("isActive", "practice");
-        const practice = localsHelpers.getLocals()[0];
-        Session.set("coreURL", practice.systems[0].coreUrl);
+    'click .click-Local': function(event) {
+        Session.set("isActive", "local");
+        const local = localsHelpers.getLocals()[0];
+        Session.set("coreURL", local.systems[0].coreUrl);
     }
 });
-
