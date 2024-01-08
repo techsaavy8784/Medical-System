@@ -1,4 +1,4 @@
-/***** example file how helpers can be added in future *****/
+/***** all common helpers related to Users will be added here *****/
 
 export const userHelpers = {
     userRole() {

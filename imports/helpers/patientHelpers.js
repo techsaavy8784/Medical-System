@@ -1,8 +1,8 @@
+/***** all patients related helpers can be added here *****/
+
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Router } from "meteor/iron:router"
-
-/***** all patients related helpers can be added here *****/
 
 export const patientHelpers = {
     async getPatients(coreUrl, query, headers) {

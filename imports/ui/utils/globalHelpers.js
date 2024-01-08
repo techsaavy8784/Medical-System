@@ -1,4 +1,4 @@
-/***** Global Helpers which can be used in any template *****/
+/***** Global UI Helpers which can be used in any template *****/
 
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
@@ -28,5 +28,5 @@ Template.registerHelper('getSessionValue', function (name) {
 
 //get resource style based on given resourceType params
 Template.registerHelper('getResourceStyle', function (resourceType) {
-    return (Session.get("resourceType") === resourceType) ? "background: #c0c7d4;" : null
+    return (Session.get("resourceType") === resourceType) ? "background: #c0c7d4;" : null;
 });

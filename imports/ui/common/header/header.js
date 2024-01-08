@@ -1,4 +1,4 @@
-import './header.html'
+import './header.html';
 
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';

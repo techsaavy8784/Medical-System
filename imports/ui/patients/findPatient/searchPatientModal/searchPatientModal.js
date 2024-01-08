@@ -12,7 +12,7 @@ Template.searchPatientModal.onCreated( function searchModalOnCreated(){
 	this.patientId = new ReactiveVar("");
 	this.isValue = new ReactiveVar("");
 
-})
+});
 
 Template.searchPatientModal.onRendered(function () {
 
@@ -31,7 +31,7 @@ Template.searchPatientModal.onRendered(function () {
 	$(searchPatientModal).on('hidden.bs.modal', function (event) {
 		// form.reset();
 	});
-})
+});
 
 Template.searchPatientModal.helpers({
 	isLastName() {
@@ -211,4 +211,4 @@ Template.searchPatientModal.events({
 			instance.isValue.set("");
 		}
 	}
-})
+});

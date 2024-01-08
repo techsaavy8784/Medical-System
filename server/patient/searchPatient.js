@@ -1,3 +1,4 @@
+//TODO unused file but as added by Don directly so ask the usage
 Meteor.methods({
     async patientQuery(url, headers) {
         console.log("patientQuery")

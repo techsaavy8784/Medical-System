@@ -9,19 +9,19 @@ Template.home.onCreated(function tagLineOnCreated() {
 
     Meteor.call('getTagLine', (error, result) => {
         if (error) {
-          this.tagLineText.set("Network Error!");
-        } else {
-          if (result.statusCode === 200) {
-            this.tagLineText.set(result.content);
-          } else {
             this.tagLineText.set("Network Error!");
-          }
+        } else {
+            if (result.statusCode === 200) {
+                this.tagLineText.set(result.content);
+            } else {
+                this.tagLineText.set("Network Error!");
+            }
         }
-      });
+    });
 });
 
 Template.home.helpers({
     tagLineText() {
-      return Template.instance().tagLineText.get();
+        return Template.instance().tagLineText.get();
     },
-  });
+});

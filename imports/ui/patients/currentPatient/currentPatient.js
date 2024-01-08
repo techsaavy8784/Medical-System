@@ -164,12 +164,16 @@ Template.currentPatient.onCreated(function currentPatientOnCreated() {
     Session.set("filterCount", "10");
 });
 
+Template.currentPatient.onRendered( function (){
+    Session.set("executeFinding", false);
+});
+
 Template.currentPatient.helpers({
     currentPatientInfo() {
-        return Session.get("currentPatientInfo")
+        return Session.get("currentPatientInfo");
     },
     isFindingDoc() {
-        return Session.get("isFindingDoc")
+        return Session.get("isFindingDoc");
     },
     currentPatientDocs() {
         return Session.get("getPatientDocs")?.patients;
@@ -197,7 +201,6 @@ Template.currentPatient.helpers({
     }
 });
 
-
 Template.currentPatient.events({
     async 'click #textRawDoc' (event, instance) {
         await showPdfModal(this);
@@ -206,7 +209,7 @@ Template.currentPatient.events({
         // Get select element
         const select = event.target;
         // Get selected value
-        const value = select.value;
+        const value = select?.value;
 		console.log("value", value);
         console.log("selectedDoc", this);
 		Session.set("selectedDoc", this);
@@ -235,8 +238,4 @@ Template.currentPatient.events({
     'click .btn-show-search-doc-modal' (event, instance) {
         $("#SearchResourceModal").modal("show");
     }
-});
-
-Template.currentPatient.onRendered( function (){
-    Session.set("executeFinding", false);
 });

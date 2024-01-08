@@ -1,10 +1,10 @@
-import './SearchResourceModal.html'
+import './SearchResourceModal.html';
 
-import { Template } from "meteor/templating"
-import { Session } from "meteor/session"
-import { ReactiveVar } from "meteor/reactive-var"
-import { Meteor } from "meteor/meteor"
-import { Router } from "meteor/iron:router"
+import { Template } from "meteor/templating";
+import { Session } from "meteor/session";
+import { ReactiveVar } from "meteor/reactive-var";
+import { Meteor } from "meteor/meteor";
+import { Router } from "meteor/iron:router";
 
 
 const buildEndPoint = () => {
@@ -59,25 +59,25 @@ const getPatientDocs = async (url, headers) => {
             headers,
             (error, result) => {
                 if (error) {
-                    console.log("errorFinding", error)
+                    console.log("errorFinding", error);
                     if (error.error?.response?.statusCode === 401) {
                         alert("Your session has expired, please login");
                             Session.clear();
                             Router.go("/login");
                         return
                     }
-                    reject(error)
+                    reject(error);
                 } else {
                     if (result.status === 200) {
-                        resolver(result)
+                        resolver(result);
                     }
                 }
             }
         )
     }).catch((error) => {
         // show error on screen
-        Session.set("getPatientDocs", null)
-        Session.set("isFindingDoc", false)
+        Session.set("getPatientDocs", null);
+        Session.set("isFindingDoc", false);
         // alert("Error: " + "resourceType: " + error.error.response?.data?.resourceType)
         // alert("Error: " + "There is no Search Result")
     })
@@ -104,7 +104,7 @@ Template.SearchResourceModal.onCreated(function SearchResourceModalOnCreated() {
 
 Template.SearchResourceModal.helpers({
     filterCount(value) {
-        const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10"
+        const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10";
         return filterCount === value ? "selected" : "";
     },
     resourceType() {
@@ -115,29 +115,28 @@ Template.SearchResourceModal.helpers({
     },
 });
 
-
 Template.SearchResourceModal.events({
     async 'submit .search-doc-form' (event, instance) {
         event.preventDefault()
 		$('#SearchResourceModal').modal('hide');
 
 		const target = event.target
-		const startDate = target.startDate.value
-		const endDate = target.endDate.value
-		const filterCount = target.filterCount.value;
-        const category = target.category.value;
-        const encounter = target.encounter.value;
-        const provenance = target.provenance.value;
+		const startDate = target?.startDate?.value
+		const endDate = target?.endDate?.value
+		const filterCount = target?.filterCount?.value;
+        const category = target?.category?.value;
+        const encounter = target?.encounter?.value;
+        const provenance = target?.provenance?.value;
 
-        Session.set("startDate", startDate)
-        Session.set("endDate", endDate)
+        Session.set("startDate", startDate);
+        Session.set("endDate", endDate);
         Session.set("filterCount", filterCount);
         Session.set("category", category);
         Session.set("encounter", encounter);
         Session.set("provenance", provenance);
 
         console.log("isFindingDoc", Session.get("isFindingDoc"));
-        if (Session.get("isFindingDoc")) return
+        if (Session.get("isFindingDoc")) return;
         Session.set("isFindingDoc", true);
         const authToken = Session.get("headers");
         
