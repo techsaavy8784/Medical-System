@@ -3,6 +3,7 @@ import '/imports/ui/common/sidebar/sidebar';
 import '/imports/ui/common/pdfModal/pdfModal';
 import '/imports/ui/common/saveResourceModal/saveResourceModal';
 import '/imports/ui/common/searchResourceModal/SearchResourceModal';
+import { localsHelpers } from "/imports/helpers/localsHelpers";
 
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
@@ -18,7 +19,7 @@ const showPdfModal = async (data) => {
     
 	const isActive = Session.get("isActive");
     const facility = Session.get("facilities")[0];
-    const practice = Session.get("practices")[0];
+    const practice = localsHelpers.getLocals()[0];
     const authToken = Session.get("headers");
     const coreUrl = () => {
         if (isActive === "hospital") {
@@ -87,7 +88,7 @@ const showXmlModal = async (data) => {
     let xmlUrl = "";
 	const isActive = Session.get("isActive")
     const facility = Session.get("facilities")[0]
-    const practice = Session.get("practices")[0]
+    const practice = localsHelpers.getLocals()[0]
     const authToken = Session.get("headers");
     const coreUrl = () => {
         if (isActive === "hospital") {

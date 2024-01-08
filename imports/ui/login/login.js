@@ -41,16 +41,16 @@ Template.login.events({
                     console.log("loginResult", result);
                     if (result.status === 200) {
                         console.log("loginResponse: ", result);
+                        console.log("userRole", result.role)
                         instance.isLogging.set(false);
 
                         Session.set("userInfo", result);
                         Session.set("userRole", result.role);
-                        console.log("userRole", result.role)
-                        Session.set('practices', result?.locals);
-                        Session.set('facilities', result?.remotes);
-                        Session.set('isLogin', true);
-                        Session.set('isActive', "hospital");
-                        Session.set('headers', result?.token);
+                        Session.set("locals", result?.locals);
+                        Session.set("facilities", result?.remotes);
+                        Session.set("isLogin", true);
+                        Session.set("isActive", "hospital");
+                        Session.set("headers", result?.token);
 
                         Session.set("coreURL", result?.remotes[0].systems[0].coreUrl);
 
@@ -61,7 +61,7 @@ Template.login.events({
                         alert("Not Authorized: " + `${errorMessage}`)
                     } else {
                         alert("Internet Connection error!")
-                        Session.set('isLogin', false);
+                        Session.set("isLogin", false);
                         instance.isLogging.set(false);
                     }
                 }

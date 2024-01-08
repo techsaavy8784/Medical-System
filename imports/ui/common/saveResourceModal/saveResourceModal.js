@@ -1,8 +1,9 @@
-import './saveResourceModal.html'
+import './saveResourceModal.html';
 
-import { Template } from "meteor/templating"
-import { Session } from "meteor/session"
-import { Meteor } from "meteor/meteor"
+import { Template } from "meteor/templating";
+import { Session } from "meteor/session";
+import { Meteor } from "meteor/meteor";
+import { localsHelpers } from "/imports/helpers/localsHelpers";
 
 
 Template.saveResourceModal.onCreated(function resourceOnCreated(){
@@ -64,7 +65,7 @@ Template.saveResourceModal.events({
         const patientId = Session.get("currentPatientID");
         const patientName = Session.get("currentPatientName");
         const resourceType = Session.get("resourceType");
-        const destSystemId = Session.get("practices")[0]?.systems[0].id;
+        const destSystemId = localsHelpers.getLocals()[0]?.systems[0].id;
         const srcResource = Session.get("selectedDoc")?.resource;
         const srcResourceId = Session.get("selectedDoc")?.resource.id;
         const body = {
@@ -86,7 +87,7 @@ Template.saveResourceModal.events({
                     alert("ERROR !" + errorInfo.resourceType + "\n" + errorInfo.issue[0]?.details?.text)
                 } else {
                     console.log("result: ", result)
-                    const practiceName = Session.get("practices")[0]?.displayName
+                    const practiceName = localsHelpers.getLocals()[0]?.displayName
                     alert(`Resource successfully imported to your ${practiceName}`)
                 }
             });

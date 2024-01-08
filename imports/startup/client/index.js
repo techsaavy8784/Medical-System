@@ -3,3 +3,5 @@
 import './routes';
 import '/imports/ui/utils/globalHelpers';
 import '/imports/helpers/patientHelpers';
+import '/imports/helpers/localsHelpers';
+import '/imports/helpers/remotesHelpers';

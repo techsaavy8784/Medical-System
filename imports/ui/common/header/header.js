@@ -5,6 +5,7 @@ import { Session } from 'meteor/session';
 import { Meteor } from "meteor/meteor"
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Router } from "meteor/iron:router";
+import { localsHelpers } from "/imports/helpers/localsHelpers";
 
 const activeHopital = () => {
     const facilities = Session.get("facilities");
@@ -14,14 +15,14 @@ const activeHopital = () => {
 }
 
 const activePractice = () => {
-    const practices = Session.get("practices");
+    const practices = localsHelpers.getLocals();
     if (practices?.length) {
         return (practices[0].displayName + "/" + practices[0].systems[0].displayName);
     }
 }
 
 Template.header.onCreated(function headerOnCreated() {
-    this.practices = new ReactiveVar(Session.get("practices"));
+    this.practices = new ReactiveVar(localsHelpers.getLocals());
     this.isLogin = new ReactiveVar(Session.get("isLogin"));
     this.versionId = new ReactiveVar("");
 
@@ -101,7 +102,7 @@ Template.header.events({
     },
     'click .click-Practice': function(event) {
         Session.set("isActive", "practice");
-        const practice = Session.get("practices")[0];
+        const practice = localsHelpers.getLocals()[0];
         Session.set("coreURL", practice.systems[0].coreUrl);
     }
 });

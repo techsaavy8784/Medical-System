@@ -4,6 +4,7 @@ import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Session } from "meteor/session";
 import { patientHelpers } from '/imports/helpers/patientHelpers';
+import { localsHelpers } from "/imports/helpers/localsHelpers";
 
 Template.searchPatientModal.onCreated( function searchModalOnCreated(){
 	this.patientMrn = new ReactiveVar("");
@@ -73,7 +74,7 @@ Template.searchPatientModal.events({
 		const isActive = Session.get("isActive");
 		const authToken = Session.get("headers");
 		const facility = Session.get("facilities")[0];
-		const practice = Session.get("practices")[0];
+		const practice = localsHelpers.getLocals()[0];
 
 		const coreUrl = () => {
 			if (isActive === "hospital") {
