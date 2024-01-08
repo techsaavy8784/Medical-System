@@ -59,13 +59,13 @@ Template.login.onCreated(function loginOnCreated() {
 
                   Session.set("userRole", result.role);
                   console.log("userRole", result.role)
-                  Session.set('practices', result?.practices);
-                  Session.set('facilities', result?.facilities);
+                  Session.set('practices', result?.locals);
+                  Session.set('facilities', result?.remotes);
                   Session.set('isLogin', true);
                   Session.set('isActive', "hospital");
                   Session.set('headers', result?.token);
                   
-                  Session.set("coreURL", result?.facilities[0].systems[0].coreUrl);
+                  Session.set("coreURL", result?.remotes[0].systems[0].coreUrl);
 
                   
                   Router.go('/');
