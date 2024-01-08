@@ -74,12 +74,12 @@ Template.searchPatientModal.events({
 		Session.set("isFindLoading", true);
 		const isActive = Session.get("isActive");
 		const authToken = Session.get("headers");
-		const facility = remotesHelpers.getRemotes()[0];
+		const remote = remotesHelpers.getRemotes()[0];
 		const local = localsHelpers.getLocals()[0];
 
 		const coreUrl = () => {
 			if (isActive === "hospital") {
-				return facility?.systems[0]?.coreUrl;
+				return remote?.systems[0]?.coreUrl;
 			} else {
 				return local?.systems[0]?.coreUrl;
 			}

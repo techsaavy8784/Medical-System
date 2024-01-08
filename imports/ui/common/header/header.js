@@ -97,8 +97,8 @@ Template.header.events({
     },
     'click .click-Hospital': function(event, instance) {
         Session.set("isActive", "hospital");
-        const facility = remotesHelpers.getRemotes()[0];
-        Session.set("coreURL", facility.systems[0].coreUrl);
+        const remote = remotesHelpers.getRemotes()[0];
+        Session.set("coreURL", remote.systems[0].coreUrl);
     },
     'click .click-Local': function(event) {
         Session.set("isActive", "local");
