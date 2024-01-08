@@ -6,7 +6,7 @@ Meteor.methods({
     loginUser: function (username, password) {
         // Make an HTTP POST request to the authorize API endpoint
         const requestUrl = baseUrl + "authorize";
-        console.log("requestUrl", requestUrl)
+        console.log("requestUrl", requestUrl);
         try {
             const response = HTTP.post(requestUrl, {
                 data: {
@@ -18,7 +18,7 @@ Meteor.methods({
             return response?.data;
 
         } catch (error) {
-            console.error("Error fetching tagline:", error);
+            console.error("Error in loginUser:", error);
             return error;
         }
     }

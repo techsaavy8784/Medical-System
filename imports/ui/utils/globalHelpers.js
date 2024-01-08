@@ -14,6 +14,11 @@ Template.registerHelper('isLogin', function () {
     return Session.get("isLogin")
 });
 
+//global userInfo helper for whole application usage
+Template.registerHelper('userInfo', function () {
+    return Session.get("userInfo")
+});
+
 
 //get any session singular values just by name param
 Template.registerHelper('getSessionValue', function (name) {
