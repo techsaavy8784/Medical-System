@@ -8,6 +8,7 @@ import { localsHelpers } from "/imports/helpers/localsHelpers";
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
+import { remotesHelpers } from "/imports/helpers/remotesHelpers";
 
 
 const showPdfModal = async (data) => {
@@ -18,7 +19,7 @@ const showPdfModal = async (data) => {
     let pdfUrl = "";
     
 	const isActive = Session.get("isActive");
-    const facility = Session.get("facilities")[0];
+    const facility = remotesHelpers.getRemotes()[0];
     const local = localsHelpers.getLocals()[0];
     const authToken = Session.get("headers");
     const coreUrl = () => {
@@ -87,7 +88,7 @@ const showXmlModal = async (data) => {
     
     let xmlUrl = "";
 	const isActive = Session.get("isActive")
-    const facility = Session.get("facilities")[0]
+    const facility = remotesHelpers.getRemotes()[0]
     const local = localsHelpers.getLocals()[0]
     const authToken = Session.get("headers");
     const coreUrl = () => {

@@ -6,11 +6,12 @@ import { Meteor } from "meteor/meteor"
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Router } from "meteor/iron:router";
 import { localsHelpers } from "/imports/helpers/localsHelpers";
+import { remotesHelpers } from "/imports/helpers/remotesHelpers";
 
 const activeHopital = () => {
-    const facilities = Session.get("facilities");
-    if (facilities?.length) {
-        return (facilities[0]?.name + "/" + facilities[0]?.systems[0]?.name);
+    const remotes = remotesHelpers.getRemotes();
+    if (remotes?.length) {
+        return (remotes[0]?.name + "/" + remotes[0]?.systems[0]?.name);
     }
 }
 
@@ -96,7 +97,7 @@ Template.header.events({
     },
     'click .click-Hospital': function(event, instance) {
         Session.set("isActive", "hospital");
-        const facility = Session.get("facilities")[0];
+        const facility = remotesHelpers.getRemotes()[0];
         Session.set("coreURL", facility.systems[0].coreUrl);
     },
     'click .click-Local': function(event) {

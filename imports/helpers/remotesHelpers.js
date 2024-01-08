@@ -1,5 +1,5 @@
 export const remotesHelpers = {
-    userRole() {
-        return Session.get("userRole");
+    getRemotes() {
+        return Session.get("remotes");
     }
 };

@@ -47,7 +47,7 @@ Template.login.events({
                         Session.set("userInfo", result);
                         Session.set("userRole", result.role);
                         Session.set("locals", result?.locals);
-                        Session.set("facilities", result?.remotes);
+                        Session.set("remotes", result?.remotes);
                         Session.set("isLogin", true);
                         Session.set("isActive", "hospital");
                         Session.set("headers", result?.token);

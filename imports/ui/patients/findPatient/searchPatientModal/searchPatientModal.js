@@ -5,6 +5,7 @@ import { ReactiveVar } from "meteor/reactive-var";
 import { Session } from "meteor/session";
 import { patientHelpers } from '/imports/helpers/patientHelpers';
 import { localsHelpers } from "/imports/helpers/localsHelpers";
+import { remotesHelpers } from "/imports/helpers/remotesHelpers";
 
 Template.searchPatientModal.onCreated( function searchModalOnCreated(){
 	this.patientMrn = new ReactiveVar("");
@@ -73,7 +74,7 @@ Template.searchPatientModal.events({
 		Session.set("isFindLoading", true);
 		const isActive = Session.get("isActive");
 		const authToken = Session.get("headers");
-		const facility = Session.get("facilities")[0];
+		const facility = remotesHelpers.getRemotes()[0];
 		const local = localsHelpers.getLocals()[0];
 
 		const coreUrl = () => {
