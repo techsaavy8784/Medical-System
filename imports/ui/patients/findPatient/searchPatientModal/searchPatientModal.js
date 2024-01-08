@@ -74,13 +74,13 @@ Template.searchPatientModal.events({
 		const isActive = Session.get("isActive");
 		const authToken = Session.get("headers");
 		const facility = Session.get("facilities")[0];
-		const practice = localsHelpers.getLocals()[0];
+		const local = localsHelpers.getLocals()[0];
 
 		const coreUrl = () => {
 			if (isActive === "hospital") {
 				return facility?.systems[0]?.coreUrl;
 			} else {
-				return practice?.systems[0]?.coreUrl;
+				return local?.systems[0]?.coreUrl;
 			}
 		}
 		let searchPatientQuery = "";

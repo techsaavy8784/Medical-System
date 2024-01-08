@@ -43,8 +43,8 @@ Meteor.methods({
             console.log("saveResponse: ", res);
             return res;
         } catch (error) {
-            console.error("Error saving patient in practice!", error);
-            throw new Meteor.Error('Error saving patient in practice!', error);
+            console.error("Error saving patient in local!", error);
+            throw new Meteor.Error('Error saving patient in local!', error);
         }
     },
     async getPdfXml (url, headers) {

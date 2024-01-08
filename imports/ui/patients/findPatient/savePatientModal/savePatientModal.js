@@ -70,8 +70,8 @@ Template.savePatientModal.events({
 			} else {
 				console.log("result: ", result)
 				if (result.statusCode === 201) {
-					const practiceName = localsHelpers.getLocals()[0]?.displayName
-					alert(`Patient successfully imported to ${practiceName}`)
+					const localName = localsHelpers.getLocals()[0]?.displayName
+					alert(`Patient successfully imported to ${localName}`)
 				} else if (result.statusCode === 401) {
 					alert("Your session has expired, please login");
 					Router.go("/login")

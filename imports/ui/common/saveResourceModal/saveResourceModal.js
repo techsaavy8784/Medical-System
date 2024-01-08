@@ -87,8 +87,8 @@ Template.saveResourceModal.events({
                     alert("ERROR !" + errorInfo.resourceType + "\n" + errorInfo.issue[0]?.details?.text)
                 } else {
                     console.log("result: ", result)
-                    const practiceName = localsHelpers.getLocals()[0]?.displayName
-                    alert(`Resource successfully imported to your ${practiceName}`)
+                    const localName = localsHelpers.getLocals()[0]?.displayName
+                    alert(`Resource successfully imported to your ${localName}`)
                 }
             });
         }

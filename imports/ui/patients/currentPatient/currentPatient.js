@@ -19,13 +19,13 @@ const showPdfModal = async (data) => {
     
 	const isActive = Session.get("isActive");
     const facility = Session.get("facilities")[0];
-    const practice = localsHelpers.getLocals()[0];
+    const local = localsHelpers.getLocals()[0];
     const authToken = Session.get("headers");
     const coreUrl = () => {
         if (isActive === "hospital") {
             return facility?.systems[0]?.coreUrl;
         } else {
-            return practice?.systems[0]?.coreUrl;
+            return local?.systems[0]?.coreUrl;
         }
     }
     if (!!data.resource.content || !!data.resource?.presentedForm) {
@@ -88,13 +88,13 @@ const showXmlModal = async (data) => {
     let xmlUrl = "";
 	const isActive = Session.get("isActive")
     const facility = Session.get("facilities")[0]
-    const practice = localsHelpers.getLocals()[0]
+    const local = localsHelpers.getLocals()[0]
     const authToken = Session.get("headers");
     const coreUrl = () => {
         if (isActive === "hospital") {
             return facility.systems[0].coreUrl
         } else {
-            return practice.systems[0].coreUrl
+            return local.systems[0].coreUrl
         }
     }
     console.log("dataXML", data);
