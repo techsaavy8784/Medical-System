@@ -52,7 +52,7 @@ ENV ROOT_URL=http://localhost:3000
 ENV MONGO_URL=mongodb://localhost:27017/uc-blaze
 ENV LOGIN_BASE_URL=http://dev.vertisoft.com:30300/api/rest/v1/
 ENV SAVE_CORE_URL=http://dev.vertisoft.com:30100
-ENV VERSION_ID=240106.0
+ENV VERSION_ID=240108.0
 ENV PORT=3000
 
 # Expose the default Meteor port

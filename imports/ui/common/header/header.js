@@ -9,7 +9,7 @@ import { Router } from "meteor/iron:router";
 const activeHopital = () => {
     const facilities = Session.get("facilities");
     if (facilities?.length) {
-        return (facilities[0].facilityName + "/" + facilities[0].systems[0].name);
+        return (facilities[0].name + "/" + facilities[0].systems[0].name);
     }
 }
 
