@@ -5,6 +5,7 @@ import { Router } from "meteor/iron:router";
 import { Session } from "meteor/session";
 
 import "/client/main.html";
+import "/imports/ui/common/loading/loading";
 import "/imports/ui/login/login";
 import "/imports/ui/home/home";
 import "/imports/ui/common/header/header";

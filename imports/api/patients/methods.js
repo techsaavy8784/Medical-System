@@ -47,6 +47,23 @@ Meteor.methods({
             throw new Meteor.Error('Error saving patient in local!', error);
         }
     },
+
+    async setActivePatient (url, body, headers) {
+        console.log("requestUrl", url);
+        console.log("body and headers ", {data: body, headers: headers})
+
+        try {
+            const res = await HTTP.post(url, {data: body, headers: headers});
+            // const { data } = res;
+            console.log("requestUrl", url);
+            console.log("setActivePatient Response: ", res);
+            console.log("setActivePatient sysCfgId: ", res.data.sysCfgId);
+            return res;
+        } catch (error) {
+            console.error("Error in setActivePatient!", error);
+            throw new Meteor.Error('Error setActivePatient!', error);
+        }
+    },
     async getPdfXml (url, headers) {
         try {
             console.log("pdfUrl", url);

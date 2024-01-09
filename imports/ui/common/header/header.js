@@ -7,6 +7,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import { Router } from "meteor/iron:router";
 import { localsHelpers } from "/imports/helpers/localsHelpers";
 import { remotesHelpers } from "/imports/helpers/remotesHelpers";
+import { patientHelpers } from "/imports/helpers/patientHelpers";
 
 const activeHopital = () => {
     const remotes = remotesHelpers.getRemotes();
@@ -99,10 +100,14 @@ Template.header.events({
         Session.set("isActive", "hospital");
         const remote = remotesHelpers.getRemotes()[0];
         Session.set("coreURL", remote.systems[0].coreUrl);
+        //reset all saved session values related to current patient
+        patientHelpers.resetCurrentPatient();
     },
     'click .click-Local': function(event) {
         Session.set("isActive", "local");
         const local = localsHelpers.getLocals()[0];
         Session.set("coreURL", local.systems[0].coreUrl);
+        //reset all saved session values related to current patient
+        patientHelpers.resetCurrentPatient();
     }
 });

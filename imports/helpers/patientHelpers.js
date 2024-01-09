@@ -49,5 +49,19 @@ export const patientHelpers = {
         }).catch((error) => {
             console.log("errorFinding", error)
         })
+    },
+
+    //this helper will reset current user info when user
+    //switch between local and remote
+    resetCurrentPatient() {
+        Session.set("currentPatientInfo", null);
+        Session.set("currentPatientData", null);
+        Session.set("currentPatientID", null);
+        Session.set("currentPatienDOB", null);
+        Session.set("currentPatientName", null);
+        Session.set("selectedPatientInfo", null);
+        Session.set("patientMrn", null);
+        Session.set("fhirModalData", null);
+        Router.go(`/find-patient`)
     }
 };
