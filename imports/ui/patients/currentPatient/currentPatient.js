@@ -176,10 +176,18 @@ Template.currentPatient.helpers({
         return Session.get("isFindingDoc");
     },
     currentPatientDocs() {
-        return Session.get("getPatientDocs")?.patients;
+        if(Session.get('isActive') === 'local'){
+            return Session.get("getLocalPatientDocs")?.patients;
+        } else {
+            return Session.get("getPatientDocs")?.patients;
+        }
     },
     emptySearchDocs() {
-        return !Session.get("getPatientDocs")?.patients?.length;
+        if(Session.get('isActive') === 'local'){
+            return !Session.get("getLocalPatientDocs")?.patients?.length;
+        } else {
+            return !Session.get("getPatientDocs")?.patients?.length;
+        }
     },
     resourceId() {
         return Template.instance().data.resourceId;

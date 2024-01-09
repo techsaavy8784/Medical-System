@@ -26,6 +26,7 @@ Router.route("/login", function () {
 
 Router.route("/find-patient", function () {
     Session.set("getPatientDocs", null)
+    Session.set("getLocalPatientDocs", null)
     Session.set("currentPatientInfo", null)
     const isLogin = Session.get("isLogin")
     this.render("findPatient")

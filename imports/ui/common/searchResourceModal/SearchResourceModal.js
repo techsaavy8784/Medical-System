@@ -76,7 +76,12 @@ const getPatientDocs = async (url, headers) => {
         )
     }).catch((error) => {
         // show error on screen
-        Session.set("getPatientDocs", null);
+        if(Session.get('isActive') === 'local'){
+            Session.set("getLocalPatientDocs", null);
+        } else {
+            Session.set("getPatientDocs", null);
+        }
+
         Session.set("isFindingDoc", false);
         // alert("Error: " + "resourceType: " + error.error.response?.data?.resourceType)
         // alert("Error: " + "There is no Search Result")
@@ -86,15 +91,27 @@ const getPatientDocs = async (url, headers) => {
 const setDocs = (res) => {
     Session.set("searchResult", true);
     Session.set("isFindingDoc", false);
-    Session.set("getPatientDocs", {
-        patients: res?.bundle?.entry,
+    if(Session.get('isActive') === 'local'){
+        Session.set("getLocalPatientDocs", {
+            patients: res?.bundle?.entry,
             cache: {
                 id: res?.queryId,
                 pageNumber: res?.pageNumber,
                 totalPages: res?.pageNumber,
                 countInPage: res?.countInPage,
             },
-    })
+        })
+    } else {
+        Session.set("getPatientDocs", {
+            patients: res?.bundle?.entry,
+            cache: {
+                id: res?.queryId,
+                pageNumber: res?.pageNumber,
+                totalPages: res?.pageNumber,
+                countInPage: res?.countInPage,
+            },
+        })
+    }
 }
 
 
