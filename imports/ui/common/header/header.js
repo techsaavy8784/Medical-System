@@ -66,6 +66,14 @@ Template.header.helpers({
         return Session.get("currentPatientInfo");
     },
 
+    remoteActivePatientSummary() {
+        return Session.get('remoteActivePatientSummary');
+    },
+
+    localActivePatientSummary() {
+        return Session.get('localActivePatientSummary');
+    },
+
     hospitalStyle() {
         if (Session.get("isActive") === "hospital") {
             return "color: blue";
@@ -101,13 +109,13 @@ Template.header.events({
         const remote = remotesHelpers.getRemotes()[0];
         Session.set("coreURL", remote.systems[0].coreUrl);
         //reset all saved session values related to current patient
-        patientHelpers.resetCurrentPatient();
+        patientHelpers.setActiveRemotePatient();
     },
     'click .click-Local': function(event) {
         Session.set("isActive", "local");
         const local = localsHelpers.getLocals()[0];
         Session.set("coreURL", local.systems[0].coreUrl);
         //reset all saved session values related to current patient
-        patientHelpers.resetCurrentPatient();
+        patientHelpers.setActiveLocalPatient();
     }
 });

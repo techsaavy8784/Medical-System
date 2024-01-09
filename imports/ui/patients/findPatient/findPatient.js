@@ -9,6 +9,7 @@ import { Session } from "meteor/session";
 import { Router } from "meteor/iron:router";
 import { Meteor } from "meteor/meteor";
 import { alertHelpers } from "/imports/helpers/alertHelpers";
+import { patientHelpers } from "/imports/helpers/patientHelpers";
 
 
 Template.findPatient.onCreated(function findPatientOnCreated() {
@@ -104,19 +105,14 @@ Template.findPatient.events({
 					const currentPatient = "Patient: ID: "+ this.resource.id + " " + this.resource?.name[0]?.text + " - DOB: " + this.resource?.birthDate;
 					const patientDisplaySummary = "Patient: ID: "+ activePatient.id + " " + activePatient?.name[0]?.text + " - DOB: " + activePatient?.birthDate;
 
-					//	oldCode start
-					// TODO refactor it when setActivePatient is done
-					Session.set("currentPatientInfo", patientDisplaySummary);
-					Session.set("currentPatientData", this);
-					Session.set("currentPatientID", activePatient.id);
-					Session.set("currentPatienDOB", activePatient?.DOB);
-					Session.set("currentPatientName", activePatient?.name[0]?.text);
+					//save both (remote/local) Session values to display both at once
+					if(Session.get('isActive') === 'local'){
+						patientHelpers.setActiveLocalPatient(activePatient, patientDisplaySummary);
+					} else {
+						patientHelpers.setActiveRemotePatient(activePatient, patientDisplaySummary);
+					}
 					const route = `/current-patient/${activePatient.id}`
 					Router.go(route)
-					Session.set("selectedPatientInfo", this);
-					Session.set("patientMrn", activePatient.id);
-					Session.set("fhirModalData", activePatient.text.div);
-					//	oldCode ENd
 				}
 			});
 			console.groupEnd();

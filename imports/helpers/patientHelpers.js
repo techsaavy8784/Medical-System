@@ -53,6 +53,19 @@ export const patientHelpers = {
 
     //this helper will reset current user info when user
     //switch between local and remote
+    setCurrentPatient(activePatient, patientDisplaySummary) {
+        Session.set("currentPatientInfo", patientDisplaySummary);
+        // Session.set("currentPatientData", this);
+        Session.set("currentPatientID", activePatient.id);
+        Session.set("currentPatienDOB", activePatient?.DOB);
+        Session.set("currentPatientName", activePatient?.name[0]?.text);
+        // Session.set("selectedPatientInfo", this);
+        Session.set("patientMrn", activePatient.id);
+        Session.set("fhirModalData", activePatient.text.div);
+    },
+
+    //this helper will reset current user info when user
+    //switch between local and remote
     resetCurrentPatient() {
         Session.set("currentPatientInfo", null);
         Session.set("currentPatientData", null);
@@ -62,6 +75,43 @@ export const patientHelpers = {
         Session.set("selectedPatientInfo", null);
         Session.set("patientMrn", null);
         Session.set("fhirModalData", null);
-        Router.go(`/find-patient`)
+        // Router.go(`/find-patient`)
+    },
+
+    //below functions save active patients only in session
+    //first it check if both params supplied then it save new values
+    //else it will check for old values and set the session
+    //in case both not found it will do nothing
+    setActiveLocalPatient(patient, displaySummary) {
+        if(patient && displaySummary){
+            Session.set('localActivePatient', patient);
+            Session.set('localActivePatientSummary', displaySummary);
+        } else {
+            patient = Session.get('localActivePatient');
+            displaySummary = Session.get('localActivePatientSummary');
+        }
+        if(patient && displaySummary) {
+            this.setCurrentPatient(patient, displaySummary);
+        } else {
+            this.resetCurrentPatient();
+        }
+    },
+    //below functions save active patients only in session
+    //first it check if both params supplied then it save new values
+    //else it will check for old values and set the session
+    //in case both not found it will do nothing
+    setActiveRemotePatient(patient, displaySummary) {
+        if(patient && displaySummary){
+            Session.set('remoteActivePatient', patient);
+            Session.set('remoteActivePatientSummary', displaySummary);
+        } else {
+            patient = Session.get('remoteActivePatient');
+            displaySummary = Session.get('remoteActivePatientSummary');
+        }
+        if(patient && displaySummary) {
+            this.setCurrentPatient(patient, displaySummary);
+        } else {
+            this.resetCurrentPatient();
+        }
     }
 };
