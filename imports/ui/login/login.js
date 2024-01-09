@@ -51,8 +51,11 @@ Template.login.events({
                         Session.set("isLogin", true);
                         Session.set("isActive", "hospital");
                         Session.set("headers", result?.token);
+                        //set both local and remote URLs in sessin
+                        Session.set('localURL', result?.locals[0]?.systems[0]?.coreUrl);
+                        Session.set('remoteURL', result?.remotes[0]?.systems[0]?.coreUrl);
 
-                        Session.set("coreURL", result?.remotes[0].systems[0].coreUrl);
+                        Session.set("coreURL", result?.remotes[0]?.systems[0]?.coreUrl);
 
                         Router.go('/');
                     } else if (result?.response?.statusCode === 401) {

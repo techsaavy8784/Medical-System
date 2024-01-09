@@ -61,11 +61,23 @@ Template.saveResourceModal.events({
     async 'click .save-doc-data'(event, instance) {
         event.preventDefault();
         const canSave = Session.get("showDocSaveModal");
-        const url = Session.get("coreURL") + "Patient";
+
+        let localURL = Session.get('localURL');
+        let remoteURL = Session.get('remoteURL');
+        //default value is localURL
+        let destSystemURL = localURL;
+        //if local active save to remote else vice versa
+
+        if (Session.get("isActive") === "local") {
+            destSystemURL = remoteURL;
+        } else {
+            destSystemURL = localURL;
+        }
+        const url = destSystemURL + "Patient";
         const patientId = Session.get("currentPatientID");
         const patientName = Session.get("currentPatientName");
         const resourceType = Session.get("resourceType");
-        const destSystemId = localsHelpers.getLocals()[0]?.systems[0].id;
+        const destSystemId = localsHelpers.getdestSystemId();
         const srcResource = Session.get("selectedDoc")?.resource;
         const srcResourceId = Session.get("selectedDoc")?.resource.id;
         const body = {

@@ -37,8 +37,21 @@ Template.savePatientModal.events({
 	async 'click .btn-save-patient'(event, instance) {
         event.preventDefault();
 		const inputMrn = instance.find('#patientMRN').value;
-		const url = Session.get("coreURL") + "Patient";
-		const destSystemId = localsHelpers.getLocals()[0].systems[0].id;
+
+		let localURL = Session.get('localURL');
+		let remoteURL = Session.get('remoteURL');
+		//default value is localURL
+		let destSystemURL = localURL;
+		//if local active save to remote else vice versa
+
+		if (Session.get("isActive") === "local") {
+			destSystemURL = remoteURL;
+		} else {
+			destSystemURL = localURL;
+		}
+
+		const url = destSystemURL + "Patient";
+		const destSystemId = localsHelpers.getdestSystemId();
 		const srcResource = Session.get("selectedPatientInfo").resource;
 
 		const body = {
