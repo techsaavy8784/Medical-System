@@ -230,7 +230,11 @@ Template.currentPatient.events({
         } else if(value === 'Save to MyEMR') {
 			Session.set("showDocSaveModal", true);
 			Session.set("saveDocModalData", this.text.div);
-		  $('#saveResourceModal').modal('show');
+            if(Session.get("activeResourceType") === "DocumentReference"){
+                $('#documentSaveModal').modal('show');
+            } else {
+                $('#saveResourceModal').modal('show');
+            }
         } else if (value === "Show PDF") {
             showPdfModal(this);
         } else if (value === "Show XML") {

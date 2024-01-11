@@ -14,6 +14,7 @@ import "/imports/ui/patients/currentPatient/currentPatient";
 
 //Document Reference
 import "/imports/ui/resources/document/documentSearchModal/documentSearchModal";
+import "/imports/ui/resources/document/documentSaveModal/documentSaveModal";
 
 Router.configure({
     layoutTemplate: 'mainContainer',
