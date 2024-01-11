@@ -26,7 +26,7 @@ const buildEndPoint = () => {
 
     const filterCount = Session.get("filterCount");
     if (!!filterCount) {
-        baseURL += `&_count=${filterCount}`
+        baseURL += `&_count=${filterCount}`;
     } 
     else {
         baseURL += `&_count=10`;
@@ -125,7 +125,7 @@ Template.SearchResourceModal.helpers({
         return filterCount === value ? "selected" : "";
     },
     isResourceId() {
-        return Template.instance().resourceId.get();
+        return Template.instance().resourceId.get() || false;
     },
 });
 
@@ -135,8 +135,8 @@ Template.SearchResourceModal.events({
 		$('#SearchResourceModal').modal('hide');
 
 		const target = event.target
-		const startDate = target?.startDate?.value
-		const endDate = target?.endDate?.value
+		const startDate = target?.startDate?.value;
+		const endDate = target?.endDate?.value;
 		const filterCount = target?.filterCount?.value;
         const category = target?.category?.value;
         const encounter = target?.encounter?.value;

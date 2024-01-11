@@ -3,7 +3,7 @@
 		"ROOT_URL": "http://localhost:3000",
 		"LOGIN_BASE_URL": "http://universalcharts.com:30100/api/rest/v1/",
 		"CORE_URL": "http://dev.vertisoft.com:30300",
-		"VERSION_ID": "240109.0",
+		"VERSION_ID": "240111.0",
 		"METEOR_DISABLE_OPTIMISTIC_CACHING": "1",
 		"METEOR_PROFILE": "100",
 		"METEOR_ALLOW_SUPERUSER": "1"
