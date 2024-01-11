@@ -32,13 +32,13 @@ Template.saveResourceModal.onRendered( function () {
 
 Template.saveResourceModal.helpers({
     showDocSaveModal() {
-        return Session.get("showDocSaveModal")
+        return Session.get("showDocSaveModal");
     },
     saveDocModalData() {
-        return Session.get("saveDocModalData")
+        return Session.get("saveDocModalData");
     },
     showDocFhirModal() {
-        return Session.get("showDocFhirModal")
+        return Session.get("showDocFhirModal");
     },
     showXMLModal() {
         return Session.get("showXMLModal");
@@ -62,17 +62,8 @@ Template.saveResourceModal.events({
         event.preventDefault();
         const canSave = Session.get("showDocSaveModal");
 
-        let localURL = Session.get('localURL');
-        let remoteURL = Session.get('remoteURL');
-        //default value is localURL
-        let destSystemURL = localURL;
-        //if local active save to remote else vice versa
+        let destSystemURL = localsHelpers.getdestSystemURL();
 
-        if (Session.get("isActive") === "local") {
-            destSystemURL = remoteURL;
-        } else {
-            destSystemURL = localURL;
-        }
         const url = destSystemURL + "Patient";
         const patientId = Session.get("currentPatientID");
         const patientName = Session.get("currentPatientName");
@@ -91,12 +82,12 @@ Template.saveResourceModal.events({
         console.log("payload", body);
         const token = Session.get("headers");
         if (canSave) {
-            console.log("save button is clicked.")
+            console.log("save button is clicked.");
             Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
                 if (error) {
                     console.log("error", error);
                     const errorInfo = error?.reason.response?.data
-                    alert("ERROR !" + errorInfo.resourceType + "\n" + errorInfo.issue[0]?.details?.text)
+                    alert("ERROR !" + errorInfo.resourceType + "\n" + errorInfo.issue[0]?.details?.text);
                 } else {
                     console.log("result: ", result)
                     const localName = localsHelpers.getLocals()[0]?.displayName
