@@ -12,6 +12,9 @@ import "/imports/ui/common/header/header";
 import "/imports/ui/patients/findPatient/findPatient";
 import "/imports/ui/patients/currentPatient/currentPatient";
 
+//Document Reference
+import "/imports/ui/resources/document/documentSearchModal/documentSearchModal";
+
 Router.configure({
     layoutTemplate: 'mainContainer',
     loadingTemplate: 'loading'

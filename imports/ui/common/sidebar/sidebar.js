@@ -29,6 +29,11 @@ Template.sidebar.events({
         instance.selectedResourceItem.set(activeResourceType);
         clearQuery();
         Session.set("activeResourceType",activeResourceType)
-        $("#SearchResourceModal").modal("show");
+        if(activeResourceType === "DocumentReference"){
+            $("#documentSearchModal").modal("show");
+        } else {
+            $("#SearchResourceModal").modal("show");
+        }
+
     }
 });

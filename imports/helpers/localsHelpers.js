@@ -1,4 +1,4 @@
-import {Session} from "meteor/session";
+import { Session } from "meteor/session";
 
 /***** all common helpers related to Locals will be added here *****/
 
