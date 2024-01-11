@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        Search {{resourceType}}
+                        Search {{activeResourceType}}
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -99,7 +99,7 @@
                                 />
                             </div>
                             <div class="col-6">
-                                <label for="filter-patient-count" class="form-label">{{resourceType}} Per Page</label>
+                                <label for="filter-patient-count" class="form-label">{{activeResourceType}} Per Page</label>
 
                                 <select name="filterCount" id="filter-patient-count" class="form-select filter-patient-count" value="{{filterCount}}">
                                     <option value="5" {{filterCount "5"}}>5</option>
@@ -111,7 +111,7 @@
                             </div>
                             <!-- <div class="col-6">
                 <label for="document-encounter" class="form-label"
-                  >{{resourceType}} Id</label>
+                  >{{activeResourceType}} Id</label>
                   <input
                     type="text"
                     name="encounter"

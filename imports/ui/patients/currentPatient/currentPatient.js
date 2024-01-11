@@ -30,10 +30,10 @@ const showPdfModal = async (data) => {
         }
     }
     if (!!data.resource.content || !!data.resource?.presentedForm) {
-        if (Session.get("resourceType") === "DocumentReference") {
+        if (Session.get("activeResourceType") === "DocumentReference") {
             const corePdf = data.resource?.content[0]?.attachment?.url.split("/")
             pdfUrl = coreUrl() + "Binary/" + corePdf[corePdf.length - 1];
-        } else if (Session.get("resourceType") === "DiagnosticReport") {
+        } else if (Session.get("activeResourceType") === "DiagnosticReport") {
             const corePdf = data.resource?.presentedForm[0]?.url.split("/");
             pdfUrl = coreUrl() + "Binary/" + corePdf[corePdf.length - 1];
         }
@@ -100,11 +100,11 @@ const showXmlModal = async (data) => {
     }
     console.log("dataXML", data);
     if (!!data.resource?.content || !!data.resource?.presentedForm) {
-        if (Session.get("resourceType") === "DocumentReference") {
+        if (Session.get("activeResourceType") === "DocumentReference") {
             // xmlUrl = data.resource?.content[0]?.attachment?.url
             const coreXml = data.resource?.content[1]?.attachment?.url.split("/");
             xmlUrl = coreUrl() + "Binary/" + coreXml[coreXml.length - 1];
-        } else if (Session.get("resourceType") === "DiagnosticReport") {
+        } else if (Session.get("activeResourceType") === "DiagnosticReport") {
             const coreXml = data.resource?.presentedForm[1]?.url.split("/");
             xmlUrl = coreUrl() + "Binary/" + coreXml[coreXml.length - 1];
 
@@ -197,9 +197,6 @@ Template.currentPatient.helpers({
     },
     endDate() {
         return Session.get("endDate");
-    },
-    resourceType() {
-        return  Session.get("resourceType");
     },
     searchResult() {
         return Session.get("searchResult");

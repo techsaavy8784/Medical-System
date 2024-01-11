@@ -15,7 +15,7 @@ Template.sidebar.onCreated(function sidebarOnCreated() {
 });
 
 Template.sidebar.onRendered(function () {
-    Session.set("resourceType", null);
+    Session.set("activeResourceType",null);
 });
 
 Template.sidebar.helpers({
@@ -25,10 +25,10 @@ Template.sidebar.helpers({
 Template.sidebar.events({
     async 'click .resource-item'(event, instance) {
         Session.set("searchResult", false);
-        const resourceType = event.currentTarget.id;
-        instance.selectedResourceItem.set(resourceType);
+        const activeResourceType = event.currentTarget.id;
+        instance.selectedResourceItem.set(activeResourceType);
         clearQuery();
-        Session.set("resourceType", resourceType)
+        Session.set("activeResourceType",activeResourceType)
         $("#SearchResourceModal").modal("show");
     }
 });

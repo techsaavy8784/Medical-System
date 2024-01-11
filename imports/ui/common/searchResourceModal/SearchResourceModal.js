@@ -9,7 +9,7 @@ import { Router } from "meteor/iron:router";
 
 const buildEndPoint = () => {
     let baseURL = Session.get("coreURL");
-    baseURL += Session.get("resourceType");
+    baseURL += Session.get("activeResourceType");
     const resourceId = Session.get("resourceId");
     const provenance = Session.get("provenance");
     if (resourceId) {
@@ -123,9 +123,6 @@ Template.SearchResourceModal.helpers({
     filterCount(value) {
         const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10";
         return filterCount === value ? "selected" : "";
-    },
-    resourceType() {
-        return Session.get("resourceType");
     },
     isResourceId() {
         return Template.instance().resourceId.get();

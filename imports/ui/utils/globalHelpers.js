@@ -26,7 +26,12 @@ Template.registerHelper('getSessionValue', function (name) {
 });
 
 
+//get active resource type for whole application
+Template.registerHelper('activeResourceType', function () {
+    return Session.get("activeResourceType");
+});
+
 //get resource style based on given resourceType params
-Template.registerHelper('getResourceStyle', function (resourceType) {
-    return (Session.get("resourceType") === resourceType) ? "background: #c0c7d4;" : null;
+Template.registerHelper('getResourceStyle', function (activeResourceType) {
+    return (Session.get("activeResourceType") === activeResourceType) ? "background: #c0c7d4;" : null;
 });

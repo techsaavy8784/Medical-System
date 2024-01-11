@@ -76,12 +76,12 @@ Template.saveResourceModal.events({
         const url = destSystemURL + "Patient";
         const patientId = Session.get("currentPatientID");
         const patientName = Session.get("currentPatientName");
-        const resourceType = Session.get("resourceType");
+        const activeResourceType = Session.get("activeResourceType");
         const destSystemId = localsHelpers.getdestSystemId();
         const srcResource = Session.get("selectedDoc")?.resource;
         const srcResourceId = Session.get("selectedDoc")?.resource.id;
         const body = {
-            "resourceType": resourceType,
+            "resourceType": activeResourceType,
             "destPatientId": patientId,
             "destPatientName": patientName,
             "destSystemId": destSystemId,

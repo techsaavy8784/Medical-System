@@ -13,15 +13,18 @@ import "/imports/ui/patients/findPatient/findPatient";
 import "/imports/ui/patients/currentPatient/currentPatient";
 
 Router.configure({
-    layoutTemplate: "mainContainer",
-})
+    layoutTemplate: 'mainContainer',
+    loadingTemplate: 'loading'
+});
 
 Router.route("/", function () {
-    this.render("home")
+    this.render("home");
+    this.layout('mainContainer');
 })
 
 Router.route("/login", function () {
-    this.render("login")
+    this.render("login");
+    this.layout('mainContainer');
 })
 
 Router.route("/find-patient", function () {
@@ -34,6 +37,7 @@ Router.route("/find-patient", function () {
         Router.go("/login")
     } else {
     }
+    this.layout('mainContainer');
 })
 
 Router.route("/current-patient", function () {
@@ -43,6 +47,7 @@ Router.route("/current-patient", function () {
         Router.go("/login")
     } else {
     }
+    this.layout('mainContainer');
 })
 
 Router.route("/current-patient/:_id", function () {
@@ -65,4 +70,5 @@ Router.route("/current-patient/:_id", function () {
             },
         })
     }
+    this.layout('mainContainer');
 })
