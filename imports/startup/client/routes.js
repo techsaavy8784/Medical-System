@@ -20,6 +20,10 @@ import "/imports/ui/resources/DocumentReference/DocumentReferenceSaveModal/Docum
 import "/imports/ui/resources/DiagnosticReport/DiagnosticReportSearchModal/DiagnosticReportSearchModal";
 import "/imports/ui/resources/DiagnosticReport/DiagnosticReportSaveModal/DiagnosticReportSaveModal";
 
+//Observation
+import "/imports/ui/resources/Observation/ObservationSearchModal/ObservationSearchModal";
+import "/imports/ui/resources/Observation/ObservationSaveModal/ObservationSaveModal";
+
 Router.configure({
     layoutTemplate: 'mainContainer',
     loadingTemplate: 'loading'
