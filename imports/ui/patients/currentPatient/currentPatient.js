@@ -167,6 +167,10 @@ Template.currentPatient.onCreated(function currentPatientOnCreated() {
 
 Template.currentPatient.onRendered( function (){
     Session.set("executeFinding", false);
+    //if patient not selected just return to find patients templates
+    if(!Session.get('currentPatientInfo')){
+        Router.go('find-patient')
+    }
 });
 
 Template.currentPatient.helpers({
@@ -246,7 +250,7 @@ Template.currentPatient.events({
     
     },
     'click .btn-show-search-doc-modal' (event, instance) {
-        // resourceHelpers.openActiveResourceModal();
-        $("#SearchResourceModal").modal("show");
+        resourceHelpers.openActiveResourceModal('Search');
+        // $("#SearchResourceModal").modal("show");
     }
 });

@@ -75,7 +75,7 @@ export const patientHelpers = {
         Session.set("selectedPatientInfo", null);
         Session.set("patientMrn", null);
         Session.set("fhirModalData", null);
-        // Router.go(`/find-patient`)
+        Router.go(`/find-patient`);
     },
 
     //below functions save active patients only in session
