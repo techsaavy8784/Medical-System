@@ -16,6 +16,10 @@ import "/imports/ui/patients/currentPatient/currentPatient";
 import "/imports/ui/resources/DocumentReference/DocumentReferenceSearchModal/DocumentReferenceSearchModal";
 import "/imports/ui/resources/DocumentReference/DocumentReferenceSaveModal/DocumentReferenceSaveModal";
 
+//Diagnostic Report
+import "/imports/ui/resources/DiagnosticReport/DiagnosticReportSearchModal/DiagnosticReportSearchModal";
+import "/imports/ui/resources/DiagnosticReport/DiagnosticReportSaveModal/DiagnosticReportSaveModal";
+
 Router.configure({
     layoutTemplate: 'mainContainer',
     loadingTemplate: 'loading'

@@ -2,6 +2,7 @@ import './sidebar.html';
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
 import { ReactiveVar } from "meteor/reactive-var";
+import { resourceHelpers } from "/imports/helpers/resourceHelpers";
 
 
 const clearQuery = () => {
@@ -28,12 +29,13 @@ Template.sidebar.events({
         const activeResourceType = event.currentTarget.id;
         instance.selectedResourceItem.set(activeResourceType);
         clearQuery();
-        Session.set("activeResourceType",activeResourceType)
-        if(activeResourceType === "DocumentReference"){
-            $("#DocumentReferenceSearchModal").modal("show");
-        } else {
-            $("#SearchResourceModal").modal("show");
-        }
+        Session.set("activeResourceType",activeResourceType);
+        resourceHelpers.openActiveResourceModal('Search');
+        // if(activeResourceType === "DocumentReference"){
+        //     $("#DocumentReferenceSearchModal").modal("show");
+        // } else {
+        //     $("#SearchResourceModal").modal("show");
+        // }
 
     }
 });
