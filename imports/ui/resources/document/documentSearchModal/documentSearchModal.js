@@ -70,6 +70,8 @@ const getPatientDocs = async (url, headers) => {
                 } else {
                     if (result.status === 200) {
                         resolver(result);
+                    } else {
+                        reject(result)
                     }
                 }
             }

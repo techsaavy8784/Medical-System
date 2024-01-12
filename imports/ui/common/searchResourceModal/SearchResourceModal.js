@@ -58,6 +58,9 @@ const getPatientDocs = async (url, headers) => {
             url,
             headers,
             (error, result) => {
+                console.group('patientTestQuery response')
+                console.group('error', error)
+                console.group('result', result)
                 if (error) {
                     console.log("errorFinding", error);
                     if (error.error?.response?.statusCode === 401) {
@@ -70,11 +73,14 @@ const getPatientDocs = async (url, headers) => {
                 } else {
                     if (result.status === 200) {
                         resolver(result);
+                    } else {
+                        reject(result)
                     }
                 }
             }
         )
     }).catch((error) => {
+        console.log('Unexpected Error', error)
         // show error on screen
         if(Session.get('isActive') === 'local'){
             Session.set("getLocalPatientDocs", null);
@@ -150,7 +156,7 @@ Template.SearchResourceModal.events({
         Session.set("provenance", provenance);
 
         console.log("isFindingDoc", Session.get("isFindingDoc"));
-        if (Session.get("isFindingDoc")) return;
+        // if (Session.get("isFindingDoc")) return;
         Session.set("isFindingDoc", true);
         const authToken = Session.get("headers");
         
