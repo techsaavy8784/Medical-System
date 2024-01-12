@@ -24,6 +24,10 @@ import "/imports/ui/resources/DiagnosticReport/DiagnosticReportSaveModal/Diagnos
 import "/imports/ui/resources/Observation/ObservationSearchModal/ObservationSearchModal";
 import "/imports/ui/resources/Observation/ObservationSaveModal/ObservationSaveModal";
 
+//QuestionnaireResponse
+import "/imports/ui/resources/QuestionnaireResponse/QuestionnaireResponseSearchModal/QuestionnaireResponseSearchModal";
+import "/imports/ui/resources/QuestionnaireResponse/QuestionnaireResponseSaveModal/QuestionnaireResponseSaveModal";
+
 //Immunization
 import "/imports/ui/resources/Immunization/ImmunizationSearchModal/ImmunizationSearchModal";
 import "/imports/ui/resources/Immunization/ImmunizationSaveModal/ImmunizationSaveModal";
