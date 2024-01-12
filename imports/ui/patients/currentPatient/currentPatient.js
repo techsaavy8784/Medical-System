@@ -235,11 +235,12 @@ Template.currentPatient.events({
         } else if(value === 'Save to MyEMR') {
 			Session.set("showDocSaveModal", true);
 			Session.set("saveDocModalData", this.text.div);
-            if(Session.get("activeResourceType") === "DocumentReference"){
-                $('#DocumentReferenceSaveModal').modal('show');
-            } else {
-                $('#saveResourceModal').modal('show');
-            }
+            resourceHelpers.openActiveResourceModal('Save');
+            // if(Session.get("activeResourceType") === "DocumentReference"){
+            //     $('#DocumentReferenceSaveModal').modal('show');
+            // } else {
+            //     $('#saveResourceModal').modal('show');
+            // }
         } else if (value === "Show PDF") {
             showPdfModal(this);
         } else if (value === "Show XML") {
