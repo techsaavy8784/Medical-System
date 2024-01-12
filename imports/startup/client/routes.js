@@ -24,6 +24,10 @@ import "/imports/ui/resources/DiagnosticReport/DiagnosticReportSaveModal/Diagnos
 import "/imports/ui/resources/Observation/ObservationSearchModal/ObservationSearchModal";
 import "/imports/ui/resources/Observation/ObservationSaveModal/ObservationSaveModal";
 
+//Condition
+import "/imports/ui/resources/Condition/ConditionSearchModal/ConditionSearchModal";
+import "/imports/ui/resources/Condition/ConditionSaveModal/ConditionSaveModal";
+
 Router.configure({
     layoutTemplate: 'mainContainer',
     loadingTemplate: 'loading'
