@@ -232,7 +232,7 @@ Template.currentPatient.events({
 			Session.set("showDocSaveModal", true);
 			Session.set("saveDocModalData", this.text.div);
             if(Session.get("activeResourceType") === "DocumentReference"){
-                $('#documentSaveModal').modal('show');
+                $('#DocumentReferenceSaveModal').modal('show');
             } else {
                 $('#saveResourceModal').modal('show');
             }

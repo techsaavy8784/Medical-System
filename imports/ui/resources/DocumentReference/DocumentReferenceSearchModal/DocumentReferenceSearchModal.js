@@ -1,4 +1,4 @@
-import "./documentSearchModal.html";
+import "./DocumentReferenceSearchModal.html";
 
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
@@ -121,12 +121,12 @@ const setDocs = (res) => {
 }
 
 
-Template.documentSearchModal.onCreated(function documentSearchModalOnCreated() {
-    console.group("I am isolated DocumentSearchModal")
+Template.DocumentReferenceSearchModal.onCreated(function DocumentReferenceSearchModalOnCreated() {
+    console.group("I am isolated DocumentReferenceSearchModal")
     this.resourceId = new ReactiveVar("");
 });
 
-Template.documentSearchModal.helpers({
+Template.DocumentReferenceSearchModal.helpers({
     filterCount(value) {
         const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10";
         return filterCount === value ? "selected" : "";
@@ -136,10 +136,10 @@ Template.documentSearchModal.helpers({
     },
 });
 
-Template.documentSearchModal.events({
+Template.DocumentReferenceSearchModal.events({
     async 'submit .search-doc-form' (event, instance) {
         event.preventDefault()
-		$('#documentSearchModal').modal('hide');
+		$('#DocumentReferenceSearchModal').modal('hide');
 
         const target = event.target
         const startDate = target?.startDate?.value;

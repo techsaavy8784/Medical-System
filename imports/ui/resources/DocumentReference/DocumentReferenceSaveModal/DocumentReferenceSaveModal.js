@@ -1,4 +1,4 @@
-import './documentSaveModal.html';
+import './DocumentReferenceSaveModal.html';
 
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
@@ -6,14 +6,14 @@ import { Meteor } from "meteor/meteor";
 import { localsHelpers } from "/imports/helpers/localsHelpers";
 
 
-Template.documentSaveModal.onCreated(function resourceOnCreated(){
+Template.DocumentReferenceSaveModal.onCreated(function resourceOnCreated(){
     Session.set("showDocSaveModal", false);
     Session.set("showDocFhirModal", false);
     Session.set("showXMLModal", false);
 });
 
-Template.documentSaveModal.onRendered( function () {
-    const modalElement = this.find('#documentSaveModal');
+Template.DocumentReferenceSaveModal.onRendered( function () {
+    const modalElement = this.find('#DocumentReferenceSaveModal');
 
     const instance = this;
     const parentInstance = instance.view.parentView.templateInstance();
@@ -30,7 +30,7 @@ Template.documentSaveModal.onRendered( function () {
     });
 });
 
-Template.documentSaveModal.helpers({
+Template.DocumentReferenceSaveModal.helpers({
     showDocSaveModal() {
         return Session.get("showDocSaveModal");
     },
@@ -57,7 +57,7 @@ Template.documentSaveModal.helpers({
     }
 });
 
-Template.documentSaveModal.events({
+Template.DocumentReferenceSaveModal.events({
     async 'click .save-doc-data'(event, instance) {
         event.preventDefault();
         const canSave = Session.get("showDocSaveModal");

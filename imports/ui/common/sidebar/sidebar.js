@@ -30,7 +30,7 @@ Template.sidebar.events({
         clearQuery();
         Session.set("activeResourceType",activeResourceType)
         if(activeResourceType === "DocumentReference"){
-            $("#documentSearchModal").modal("show");
+            $("#DocumentReferenceSearchModal").modal("show");
         } else {
             $("#SearchResourceModal").modal("show");
         }

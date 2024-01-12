@@ -13,8 +13,8 @@ import "/imports/ui/patients/findPatient/findPatient";
 import "/imports/ui/patients/currentPatient/currentPatient";
 
 //Document Reference
-import "/imports/ui/resources/document/documentSearchModal/documentSearchModal";
-import "/imports/ui/resources/document/documentSaveModal/documentSaveModal";
+import "/imports/ui/resources/DocumentReference/DocumentReferenceSearchModal/DocumentReferenceSearchModal";
+import "/imports/ui/resources/DocumentReference/DocumentReferenceSaveModal/DocumentReferenceSaveModal";
 
 Router.configure({
     layoutTemplate: 'mainContainer',
