@@ -9,6 +9,7 @@ import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { remotesHelpers } from "/imports/helpers/remotesHelpers";
+import { resourceHelpers } from "/imports/helpers/resourceHelpers";
 
 
 const showPdfModal = async (data) => {
@@ -245,6 +246,7 @@ Template.currentPatient.events({
     
     },
     'click .btn-show-search-doc-modal' (event, instance) {
+        // resourceHelpers.openActiveResourceModal();
         $("#SearchResourceModal").modal("show");
     }
 });

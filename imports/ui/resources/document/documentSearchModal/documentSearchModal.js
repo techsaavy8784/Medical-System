@@ -15,7 +15,7 @@ const buildEndPoint = () => {
     if (resourceId) {
         baseURL += `?_id=${resourceId}`;
         if (provenance)
-        baseURL += `&_revinclude=${provenance}`;
+            baseURL += `&_revinclude=${provenance}`;
         return baseURL;
     }
     baseURL += `?patient=${Session.get("currentPatientID")}`;
@@ -27,7 +27,7 @@ const buildEndPoint = () => {
     const filterCount = Session.get("filterCount");
     if (!!filterCount) {
         baseURL += `&_count=${filterCount}`;
-    } 
+    }
     else {
         baseURL += `&_count=10`;
     }
@@ -58,12 +58,15 @@ const getPatientDocs = async (url, headers) => {
             url,
             headers,
             (error, result) => {
+                console.group('patientTestQuery response')
+                console.group('error', error)
+                console.group('result', result)
                 if (error) {
                     console.log("errorFinding", error);
                     if (error.error?.response?.statusCode === 401) {
                         alert("Your session has expired, please login");
-                            Session.clear();
-                            Router.go("/login");
+                        Session.clear();
+                        Router.go("/login");
                         return
                     }
                     reject(error);
@@ -77,6 +80,7 @@ const getPatientDocs = async (url, headers) => {
             }
         )
     }).catch((error) => {
+        console.log('Unexpected Error', error)
         // show error on screen
         if(Session.get('isActive') === 'local'){
             Session.set("getLocalPatientDocs", null);
@@ -137,10 +141,10 @@ Template.documentSearchModal.events({
         event.preventDefault()
 		$('#documentSearchModal').modal('hide');
 
-		const target = event.target;
-		const startDate = target?.startDate?.value;
-		const endDate = target?.endDate?.value;
-		const filterCount = target?.filterCount?.value;
+        const target = event.target
+        const startDate = target?.startDate?.value;
+        const endDate = target?.endDate?.value;
+        const filterCount = target?.filterCount?.value;
         const category = target?.category?.value;
         const encounter = target?.encounter?.value;
         const provenance = target?.provenance?.value;
@@ -153,14 +157,14 @@ Template.documentSearchModal.events({
         Session.set("provenance", provenance);
 
         console.log("isFindingDoc", Session.get("isFindingDoc"));
-        if (Session.get("isFindingDoc")) return;
+        // if (Session.get("isFindingDoc")) return;
         Session.set("isFindingDoc", true);
         const authToken = Session.get("headers");
-        
+
         console.log("resourceURL---", buildEndPoint());
         const res = await getPatientDocs(buildEndPoint(), {
-			Authorization: authToken,
-		});
+            Authorization: authToken,
+        });
         setDocs(res);
 
         Session.set("executeFinding", true);
