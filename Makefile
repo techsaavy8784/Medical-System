@@ -12,10 +12,11 @@ stack_name := gui
 
 build:
 	@docker compose build --build-arg TAG=$(TAG) 
-
+	@docker image tag $(image_name):$(TAG) $(NS)/$(image_name):$(TAG)
+	@docker image push $(NS)/$(image_name):$(TAG)
+	
 push:
 	@docker image tag $(image_name):$(TAG) $(NS)/$(image_name):$(TAG)
-
 	@docker image push $(NS)/$(image_name):$(TAG)
 
 deploy:
