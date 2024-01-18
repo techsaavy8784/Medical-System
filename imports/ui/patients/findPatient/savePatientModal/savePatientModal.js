@@ -60,9 +60,12 @@ Template.savePatientModal.events({
 			"destSystemId": destSystemId,
 			"SrcResource": srcResource
 		}
-
+		console.group('Search Patient Modal');
+		console.log('desSystemId', destSystemId);
 		console.log("url", url);
 		console.log("payload", body);
+		console.groupEnd();
+
 		const token = Session.get("headers");
 
 		console.log("save button is clicked.");

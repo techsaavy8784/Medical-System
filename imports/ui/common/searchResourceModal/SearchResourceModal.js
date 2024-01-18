@@ -155,7 +155,10 @@ Template.SearchResourceModal.events({
         Session.set("encounter", encounter);
         Session.set("provenance", provenance);
 
-        console.log("isFindingDoc", Session.get("isFindingDoc"));
+        console.group('Search Resource Modal');
+        console.log(`${Session.get('isActive')} is active so I am Search with URL below`);
+        console.log(`${Session.get("coreURL")}`);
+        console.groupEnd();
         // if (Session.get("isFindingDoc")) return;
         Session.set("isFindingDoc", true);
         const authToken = Session.get("headers");
