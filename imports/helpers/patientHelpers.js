@@ -27,7 +27,7 @@ export const patientHelpers = {
                         // return error;
                     } else {
                         console.log("success: ", result)
-                        if (Session.get("isActive") === "hospital") {
+                        if (Session.get("isActive") === "remote") {
                             if (result.status === 200 && result.message === " No resources found") {
 
                                 resolver(result)

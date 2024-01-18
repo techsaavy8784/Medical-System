@@ -49,7 +49,7 @@ Template.login.events({
                         Session.set("locals", result?.locals);
                         Session.set("remotes", result?.remotes);
                         Session.set("isLogin", true);
-                        Session.set("isActive", "hospital");
+                        Session.set("isActive", "remote");
                         Session.set("headers", result?.token);
                         //set both local and remote URLs in sessin
                         Session.set('localURL', result?.locals[0]?.systems[0]?.coreUrl);

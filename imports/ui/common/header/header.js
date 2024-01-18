@@ -2,7 +2,7 @@ import './header.html';
 
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
-import { Meteor } from "meteor/meteor"
+import { Meteor } from "meteor/meteor";
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Router } from "meteor/iron:router";
 import { localsHelpers } from "/imports/helpers/localsHelpers";
@@ -43,7 +43,7 @@ Template.header.helpers({
     },
 
     activeHosPra() {
-        if (Session.get("isActive") === "hospital") {
+        if (Session.get("isActive") === "remote") {
             return activeHopital();
         } else if (Session.get("isActive") === "local") {
             return activeLocal();
@@ -59,7 +59,7 @@ Template.header.helpers({
     },
 
     isActiveHos() {
-        return Session.get("isActive") === "hospital";
+        return Session.get("isActive") === "remote";
     },
 
     currentPatientInfo() {  
@@ -74,14 +74,14 @@ Template.header.helpers({
         return Session.get('localActivePatientSummary');
     },
 
-    hospitalStyle() {
-        if (Session.get("isActive") === "hospital") {
+    remoteStyle() {
+        if (Session.get("isActive") === "remote") {
             return "color: blue";
         }
     },
 
     positionStyle() {
-        if (Session.get("isActive") === "hospital") {
+        if (Session.get("isActive") === "remote") {
             return "justify-content: start";
         } else {
             return "justify-content: end";
@@ -104,8 +104,8 @@ Template.header.events({
         }
 
     },
-    'click .click-Hospital': function(event, instance) {
-        Session.set("isActive", "hospital");
+    'click .click-Remote': function(event, instance) {
+        Session.set("isActive", "remote");
         const remote = remotesHelpers.getRemotes()[0];
         Session.set("coreURL", remote.systems[0].coreUrl);
         //reset all saved session values related to current patient

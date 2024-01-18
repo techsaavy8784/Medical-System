@@ -24,7 +24,7 @@ const showPdfModal = async (data) => {
     const local = localsHelpers.getLocals()[0];
     const authToken = Session.get("headers");
     const coreUrl = () => {
-        if (isActive === "hospital") {
+        if (isActive === "remote") {
             return remote?.systems[0]?.coreUrl;
         } else {
             return local?.systems[0]?.coreUrl;
@@ -93,7 +93,7 @@ const showXmlModal = async (data) => {
     const local = localsHelpers.getLocals()[0]
     const authToken = Session.get("headers");
     const coreUrl = () => {
-        if (isActive === "hospital") {
+        if (isActive === "remote") {
             return remote.systems[0].coreUrl
         } else {
             return local.systems[0].coreUrl

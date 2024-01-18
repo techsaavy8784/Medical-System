@@ -78,7 +78,7 @@ Template.searchPatientModal.events({
 		const local = localsHelpers.getLocals()[0];
 
 		const coreUrl = () => {
-			if (isActive === "hospital") {
+			if (isActive === "remote") {
 				return remote?.systems[0]?.coreUrl;
 			} else {
 				return local?.systems[0]?.coreUrl;
@@ -125,7 +125,7 @@ Template.searchPatientModal.events({
 			$('#searchPatientModal').modal('show');
 		}
 
-		if (isActive === "hospital") {
+		if (isActive === "remote") {
             if (res.bundle) {
                 Session.set("findPatientHos", {
                     patients: res?.bundle?.entry,

@@ -31,10 +31,10 @@ Template.findPatient.helpers({
 		return Session.get("isFindLoading");
 	},
 	isActive() {
-		return Session.get("isActive") === "hospital";
+		return Session.get("isActive") === "remote";
 	},
 	searchPatientQuery() {
-		if (Session.get("isActive") === "hospital") {
+		if (Session.get("isActive") === "remote") {
 			return Session.get("findPatientHos")?.query;
 		} else {
 			return Session.get("findPatientPra")?.query;
