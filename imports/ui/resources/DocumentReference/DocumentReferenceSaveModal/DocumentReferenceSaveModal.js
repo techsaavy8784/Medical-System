@@ -79,7 +79,7 @@ Template.DocumentReferenceSaveModal.events({
             "srcResourceId": srcResourceId,
             "SrcResource": srcResource
         }
-        console.group('DocumentReferenceSaveModal')
+        console.group(Session.get("activeResourceType"))
         console.log('desSystemId', destSystemId)
         console.log("payload", body);
         console.groupEnd();
