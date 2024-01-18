@@ -122,7 +122,6 @@ const setDocs = (res) => {
 
 
 Template.ConditionSearchModal.onCreated(function ConditionSearchModalOnCreated() {
-    console.group("I am isolated ConditionSearchModal")
     this.resourceId = new ReactiveVar("");
 });
 

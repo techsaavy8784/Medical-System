@@ -122,7 +122,6 @@ const setDocs = (res) => {
 
 
 Template.ImmunizationSearchModal.onCreated(function ImmunizationSearchModalOnCreated() {
-    console.group("I am isolated ImmunizationSearchModal")
     this.resourceId = new ReactiveVar("");
 });
 

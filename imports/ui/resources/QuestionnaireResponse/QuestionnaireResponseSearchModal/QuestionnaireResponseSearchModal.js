@@ -122,7 +122,6 @@ const setDocs = (res) => {
 
 
 Template.QuestionnaireResponseSearchModal.onCreated(function QuestionnaireResponseSearchModalOnCreated() {
-    console.group("I am isolated QuestionnaireResponseSearchModal")
     this.resourceId = new ReactiveVar("");
 });
 

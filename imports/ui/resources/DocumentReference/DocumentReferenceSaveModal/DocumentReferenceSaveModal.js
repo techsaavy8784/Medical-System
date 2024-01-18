@@ -79,7 +79,10 @@ Template.DocumentReferenceSaveModal.events({
             "srcResourceId": srcResourceId,
             "SrcResource": srcResource
         }
+        console.group('DocumentReferenceSaveModal')
+        console.log('desSystemId', destSystemId)
         console.log("payload", body);
+        console.groupEnd();
         const token = Session.get("headers");
         if (canSave) {
             console.log("save button is clicked.");

@@ -122,7 +122,6 @@ const setDocs = (res) => {
 
 
 Template.DocumentReferenceSearchModal.onCreated(function DocumentReferenceSearchModalOnCreated() {
-    console.group("I am isolated DocumentReferenceSearchModal")
     this.resourceId = new ReactiveVar("");
 });
 

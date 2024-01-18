@@ -122,7 +122,6 @@ const setDocs = (res) => {
 
 
 Template.DiagnosticReportSearchModal.onCreated(function DiagnosticReportSearchModalOnCreated() {
-    console.group("I am isolated DiagnosticReportSearchModal")
     this.resourceId = new ReactiveVar("");
 });
 

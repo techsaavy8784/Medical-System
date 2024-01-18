@@ -122,7 +122,6 @@ const setDocs = (res) => {
 
 
 Template.ObservationSearchModal.onCreated(function ObservationSearchModalOnCreated() {
-    console.group("I am isolated ObservationSearchModal")
     this.resourceId = new ReactiveVar("");
 });
 
