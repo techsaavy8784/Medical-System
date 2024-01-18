@@ -127,7 +127,7 @@ Template.searchPatientModal.events({
 
 		if (isActive === "remote") {
             if (res.bundle) {
-                Session.set("findPatientHos", {
+                Session.set("remoteSavedData", {
                     patients: res?.bundle?.entry,
                     cache: {
                         id: res?.queryId,
@@ -138,12 +138,12 @@ Template.searchPatientModal.events({
 					query: searchPatientQuery
                 })
             } else {
-                Session.set("findPatientHos", null)
+                Session.set("remoteSavedData", null)
             }
 		}  else {
             
             if (res?.bundle) {
-            Session.set("findPatientPra", {
+            Session.set("localSavedData", {
                 patients: res?.bundle?.entry,
                 cache: {
                     id: res?.queryId,
@@ -154,15 +154,15 @@ Template.searchPatientModal.events({
 				query: searchPatientQuery,
             })
             } else {
-                Session.set("findPatientPra", null)
+                Session.set("localSavedData", null)
             }
 		}
 		return false
 	},
     'click .reset': function (event, instance) {
 		event.preventDefault()
-        Session.set("findPatientHos", null)
-        Session.set("findPatientPra", null)
+        Session.set("remoteSavedData", null)
+        Session.set("localSavedData", null)
 		Session.set("isLastName", false);
 		instance.find('#findLastName').value = '';
 		instance.find('#findFirstName').value = '';

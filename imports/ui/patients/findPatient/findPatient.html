@@ -29,7 +29,7 @@
 									</thead>
 									<tbody>
 										{{#if isActive}}
-											{{#each findPatientHos}}
+											{{#each remoteSavedData}}
 												<tr class="savePatient">
 													<th scope="row">{{@index}}</th>
 													<td>
@@ -53,7 +53,7 @@
 												</tr>
 											{{/each}}
 										{{else}}
-											{{#each findPatientPra}}
+											{{#each localSavedData}}
 												<tr>
 													<th scope="row">{{@index}}</th>
 													<td>

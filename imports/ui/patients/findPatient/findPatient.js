@@ -21,11 +21,11 @@ Template.findPatient.helpers({
 	headers() {
 		return Session.get("headers");
 	},
-	findPatientHos() {
-		return Session.get("findPatientHos")?.patients;
+	remoteSavedData() {
+		return Session.get("remoteSavedData")?.patients;
 	},
-	findPatientPra() {
-		return Session.get("findPatientPra")?.patients;
+	localSavedData() {
+		return Session.get("localSavedData")?.patients;
 	},
 	isFindLoading() {
 		return Session.get("isFindLoading");
@@ -35,9 +35,9 @@ Template.findPatient.helpers({
 	},
 	searchPatientQuery() {
 		if (Session.get("isActive") === "remote") {
-			return Session.get("findPatientHos")?.query;
+			return Session.get("remoteSavedData")?.query;
 		} else {
-			return Session.get("findPatientPra")?.query;
+			return Session.get("localSavedData")?.query;
 		}
 	},
 })
