@@ -31,14 +31,14 @@
 										{{#if isActive}}
 											{{#each remoteSavedData}}
 												<tr class="savePatient">
-													<th scope="row">{{@index}}</th>
+                                                    <th scope="row"><input type="radio" name="select-patient" checked="{{getActiveRemotePatient}}"></th>
 													<td>
 														<div class="patientDiv textRawPatient" >
 															{{{text.div}}}
 														</div>
 													</td>
 													<td style="width: 10%">
-														
+
 														<select  id="inputFindPatient_{{@index}}" class="form-select inputFindPatient" >
 															<option selected5>
 																Select an Option
@@ -55,7 +55,7 @@
 										{{else}}
 											{{#each localSavedData}}
 												<tr>
-													<th scope="row">{{@index}}</th>
+                                                    <th scope="row"><input type="radio" name="select-patient" checked="{{getActiveLocalPatient}}"></th>
 													<td>
 														<div class="patientDiv textRawPatient">
 															{{{text.div}}}

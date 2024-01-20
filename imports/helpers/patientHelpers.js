@@ -53,8 +53,8 @@ export const patientHelpers = {
 
     //this helper will reset current user info when user
     //switch between local and remote
-    setCurrentPatient(activePatient, patientDisplaySummary) {
-        Session.set("currentPatientInfo", patientDisplaySummary);
+    setCurrentPatient(activePatient) {
+        Session.set("currentPatientSelected", true);
         // Session.set("currentPatientData", this);
         Session.set("currentPatientID", activePatient.id);
         Session.set("currentPatienDOB", activePatient?.DOB);
@@ -67,7 +67,7 @@ export const patientHelpers = {
     //this helper will reset current user info when user
     //switch between local and remote
     resetCurrentPatient() {
-        Session.set("currentPatientInfo", null);
+        Session.set("currentPatientSelected", null);
         Session.set("currentPatientData", null);
         Session.set("currentPatientID", null);
         Session.set("currentPatienDOB", null);
@@ -82,16 +82,14 @@ export const patientHelpers = {
     //first it check if both params supplied then it save new values
     //else it will check for old values and set the session
     //in case both not found it will do nothing
-    setActiveLocalPatient(patient, displaySummary) {
-        if(patient && displaySummary){
+    setActiveLocalPatient(patient) {
+        if(patient){
             Session.set('localActivePatient', patient);
-            Session.set('localActivePatientSummary', displaySummary);
         } else {
             patient = Session.get('localActivePatient');
-            displaySummary = Session.get('localActivePatientSummary');
         }
-        if(patient && displaySummary) {
-            this.setCurrentPatient(patient, displaySummary);
+        if(patient) {
+            this.setCurrentPatient(patient);
         } else {
             this.resetCurrentPatient();
         }
@@ -100,16 +98,14 @@ export const patientHelpers = {
     //first it check if both params supplied then it save new values
     //else it will check for old values and set the session
     //in case both not found it will do nothing
-    setActiveRemotePatient(patient, displaySummary) {
-        if(patient && displaySummary){
+    setActiveRemotePatient(patient) {
+        if(patient){
             Session.set('remoteActivePatient', patient);
-            Session.set('remoteActivePatientSummary', displaySummary);
         } else {
             patient = Session.get('remoteActivePatient');
-            displaySummary = Session.get('remoteActivePatientSummary');
         }
-        if(patient && displaySummary) {
-            this.setCurrentPatient(patient, displaySummary);
+        if(patient) {
+            this.setCurrentPatient(patient);
         } else {
             this.resetCurrentPatient();
         }

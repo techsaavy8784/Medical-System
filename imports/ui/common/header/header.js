@@ -1,4 +1,5 @@
 import './header.html';
+import '/imports/ui/common/creatorCreditsModal/creatorCredits.html';
 
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
@@ -25,22 +26,18 @@ const activeLocal = () => {
 
 Template.header.onCreated(function headerOnCreated() {
     this.locals = new ReactiveVar(localsHelpers.getLocals());
-    this.versionId = new ReactiveVar("");
 
     //get the versionId on initial render
     Meteor.call('getVersionId', (error, result) => {
         if (error) {
             console.log('application version not found with error', error)
         } else {
-            this.versionId.set(result);
+            Session.set("versionId", result);
         }
     });
 });
 
 Template.header.helpers({
-    versionId() {
-        return Template.instance().versionId.get();
-    },
 
     activeHosPra() {
         if (Session.get("isActive") === "remote") {
@@ -62,16 +59,8 @@ Template.header.helpers({
         return Session.get("isActive") === "remote";
     },
 
-    currentPatientInfo() {  
-        return Session.get("currentPatientInfo");
-    },
-
-    remoteActivePatientSummary() {
-        return Session.get('remoteActivePatientSummary');
-    },
-
-    localActivePatientSummary() {
-        return Session.get('localActivePatientSummary');
+    currentPatientSelected() {
+        return Session.get("currentPatientSelected");
     },
 
     remoteStyle() {
@@ -96,6 +85,9 @@ Template.header.helpers({
 });
 
 Template.header.events({
+    'click .credits': function(event) {
+        $('#creatorCreditsModal').modal('show');
+    },
     'click .btn-logout': function(event) {
         event.preventDefault();
         Session.clear();

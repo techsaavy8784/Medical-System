@@ -168,14 +168,14 @@ Template.currentPatient.onCreated(function currentPatientOnCreated() {
 Template.currentPatient.onRendered( function (){
     Session.set("executeFinding", false);
     //if patient not selected just return to find patients templates
-    if(!Session.get('currentPatientInfo')){
+    if(!Session.get('currentPatientSelected')){
         Router.go('find-patient')
     }
 });
 
 Template.currentPatient.helpers({
-    currentPatientInfo() {
-        return Session.get("currentPatientInfo");
+    currentPatientSelected() {
+        return Session.get("currentPatientSelected");
     },
     isFindingDoc() {
         return Session.get("isFindingDoc");

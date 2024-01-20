@@ -40,6 +40,13 @@ Template.findPatient.helpers({
 			return Session.get("localSavedData")?.query;
 		}
 	},
+	getActiveLocalPatient() {
+		return Session.get("currentPatientID") === this?.resource?.id;
+
+	},
+	getActiveRemotePatient() {
+		return Session.get("currentPatientID") === this?.resource?.id;
+	}
 })
 
 Template.findPatient.events({
@@ -69,7 +76,7 @@ Template.findPatient.events({
 			$('#showResourceModal').modal('show');
 		}
 	},
-	'click .textRawPatient' (event, instance) {
+	'change input[name="select-patient"], click .textRawPatient' (event, instance) {
 		//below is the patient on which user clicked
 		let patient = this;
 
@@ -101,15 +108,28 @@ Template.findPatient.events({
 					alert("ERROR !" + errorInfo?.resourceType + "\n" + errorInfo?.issue[0]?.details?.text)
 				} else {
 					console.log("result: ", result)
-					let activePatient = result.data.patient;
-					const currentPatient = "Patient: ID: "+ this.resource.id + " " + this.resource?.name[0]?.text + " - DOB: " + this.resource?.birthDate;
-					const patientDisplaySummary = "Patient: ID: "+ activePatient.id + " " + activePatient?.name[0]?.text + " - DOB: " + activePatient?.birthDate;
+					let { patientMRN, patientId, patientSummary, patioentName, patientDOB} = result?.data;
+					let activePatient = result?.data?.patient;
+					let summaryRecord = {
+						//TODO: fhir record is same as data object?
+						data: activePatient,
+						patientId,
+						patientName: patioentName,
+						patientDOB,
+						patientMRN,
+						patientSummary: patientSummary?.replaceAll(';', " -")
+					}
+					if(Session.get("isActive") === "local"){
+						Session.set("activeLocalPatient", summaryRecord);
+					} else {
+						Session.set("activeRemotePatient", summaryRecord);
+					}
 
 					//save both (remote/local) Session values to display both at once
 					if(Session.get('isActive') === 'local'){
-						patientHelpers.setActiveLocalPatient(activePatient, patientDisplaySummary);
+						patientHelpers.setActiveLocalPatient(activePatient);
 					} else {
-						patientHelpers.setActiveRemotePatient(activePatient, patientDisplaySummary);
+						patientHelpers.setActiveRemotePatient(activePatient);
 					}
 					const route = `/current-patient/${activePatient.id}`
 					Router.go(route)

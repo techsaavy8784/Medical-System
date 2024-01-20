@@ -3,6 +3,11 @@
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
 
+//global versionId helper for whole application usage
+Template.registerHelper('versionId', function () {
+    return Session.get("versionId");
+});
+
 //global isAdmin helper for whole application usage
 Template.registerHelper('isAdmin', function () {
     return Session.get("userRole") === "Admin";
@@ -34,4 +39,19 @@ Template.registerHelper('activeResourceType', function () {
 //get resource style based on given resourceType params
 Template.registerHelper('getResourceStyle', function (activeResourceType) {
     return (Session.get("activeResourceType") === activeResourceType) ? "background: #c0c7d4;" : null;
+});
+
+//get resource style based on given resourceType params
+Template.registerHelper('getPatientSummary', function (type) {
+    let patient;
+    if(type === 'local'){
+        patient = Session.get('activeLocalPatient')
+    } else {
+        patient = Session.get('activeRemotePatient')
+    }
+    if(patient){
+        return patient.patientSummary;
+        // let { familyName, givenName, birthDate, patientId, MRN } = patient;
+        // return `${familyName}, ${givenName}, ${birthDate}, ${patientId}, ${MRN}`
+    }
 });
