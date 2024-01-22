@@ -25,14 +25,16 @@ export const resourceHelpers = {
     },
 
     matchPatientDetails(){
+        let matchedFailed = false;
         //Extra Checks added as per ticket #186882040
         let activeRemotePatient = Session.get('activeRemotePatient');
         let activeLocalPatient = Session.get('activeLocalPatient');
         if(!(activeLocalPatient && activeRemotePatient)){
-            return
+            return;
         }
         //local and remote patient name check
         if(activeLocalPatient?.patientName !== activeRemotePatient?.patientName){
+            matchedFailed = true;
             console.log('patient name match failed')
             console.log('Local Patient Name is : ', activeLocalPatient?.patientName);
             console.log('Remote Patient Name is : ', activeRemotePatient?.patientName);
@@ -41,6 +43,7 @@ export const resourceHelpers = {
 
         //local and remote patient DOB check
         if(activeLocalPatient?.patientDOB !== activeRemotePatient?.patientDOB){
+            matchedFailed = true;
             console.log('patient name match failed')
             console.log('Local Patient DOB is : ', activeLocalPatient?.patientDOB);
             console.log('Remote Patient DOB is : ', activeRemotePatient?.patientDOB);
@@ -52,16 +55,19 @@ export const resourceHelpers = {
         console.log('RESOURCE', Session.get("selectedDoc")?.resource.subject);
 
         if(selectedResource?.subject?.reference?.split("/")[1] !== currentPatientInfo?.patientId){
+            matchedFailed = true;
             console.log('Resource patient ID match failed');
             console.log('Resource Patient ID is: ', selectedResource?.subject?.reference.split("/")[1]);
             console.log('Session Active Patient ID is: ', currentPatientInfo?.patientId);
             alert("Patient ID check failed");
         }
         if(selectedResource?.subject?.display !== currentPatientInfo.patientName){
+            matchedFailed = true;
             console.log('Resource Patient Name match failed')
             console.log('Resource Patient Name is: ', selectedResource?.subject?.display)
             console.log('Active Patient Name is: ', currentPatientInfo.patientName);
             alert("Patient Name check failed");
         }
+        return matchedFailed;
     }
 };

@@ -100,8 +100,10 @@ Template.DocumentReferenceSaveModal.events({
         const srcResource = Session.get("selectedDoc")?.resource;
         const srcResourceId = Session.get("selectedDoc")?.resource.id;
 
-        //Extra Checks added as per ticket #186882040
-        resourceHelpers.matchPatientDetails();
+        // TODO: what will do in that case
+        if(resourceHelpers.matchPatientDetails()){
+            return;
+        }
 
         const body = {
             "resourceType": activeResourceType,

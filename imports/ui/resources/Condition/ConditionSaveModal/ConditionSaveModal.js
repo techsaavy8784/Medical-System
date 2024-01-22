@@ -77,7 +77,11 @@ Template.ConditionSaveModal.events({
         }
 
         //Extra Checks added as per ticket #186882040
-        resourceHelpers.matchPatientDetails();
+        // TODO: what will do in that case
+        if(resourceHelpers.matchPatientDetails()){
+            return;
+        }
+
 
         const canSave = Session.get("showDocSaveModal");
 
