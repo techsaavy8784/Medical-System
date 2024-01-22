@@ -1,0 +1,22 @@
+<template name="patientMatchModal">
+    <div class="modal" tabindex="-1" role="dialog" id="patientMatchModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Please double confirm Details?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{#each values}}
+                        <p>{{text}}.</p>
+                        {{{separator @index}}}
+                    {{/each}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary close-match-modal">Confirm</button>
+                    <button type="button" class="btn btn-secondary close-match-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

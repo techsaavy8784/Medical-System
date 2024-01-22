@@ -11,6 +11,7 @@ import "/imports/ui/home/home";
 import "/imports/ui/common/header/header";
 import "/imports/ui/patients/findPatient/findPatient";
 import "/imports/ui/patients/currentPatient/currentPatient";
+import "/imports/ui/common/patientMatchModal/patientMatchModal";
 
 //Document Reference
 import "/imports/ui/resources/DocumentReference/DocumentReferenceSearchModal/DocumentReferenceSearchModal";

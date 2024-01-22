@@ -26,6 +26,7 @@ export const resourceHelpers = {
 
     matchPatientDetails(){
         let matchedFailed = false;
+        let matchFailedValues = [];
         //Extra Checks added as per ticket #186882040
         let activeRemotePatient = Session.get('activeRemotePatient');
         let activeLocalPatient = Session.get('activeLocalPatient');
@@ -38,7 +39,11 @@ export const resourceHelpers = {
             console.log('patient name match failed')
             console.log('Local Patient Name is : ', activeLocalPatient?.patientName);
             console.log('Remote Patient Name is : ', activeRemotePatient?.patientName);
-            alert("Patient Name check failed");
+            matchFailedValues.push(
+                { text: `Local Patient Name is :  ${activeLocalPatient?.patientName}`},
+                { text: `Remote Patient Name is :  ${activeRemotePatient?.patientName}`}
+            );
+            // alert("Patient Name check failed");
         }
 
         //local and remote patient DOB check
@@ -47,7 +52,11 @@ export const resourceHelpers = {
             console.log('patient name match failed')
             console.log('Local Patient DOB is : ', activeLocalPatient?.patientDOB);
             console.log('Remote Patient DOB is : ', activeRemotePatient?.patientDOB);
-            alert("Patient DOB check failed")
+            matchFailedValues.push(
+                { text: `Local Patient DOB is :  ${activeLocalPatient?.patientDOB}`},
+                { text: `Remote Patient DOB is :  ${activeRemotePatient?.patientDOB}`}
+            );
+            // alert("Patient DOB check failed")
         }
 
         let currentPatientInfo = Session.get("currentPatientInfo");
@@ -59,14 +68,26 @@ export const resourceHelpers = {
             console.log('Resource patient ID match failed');
             console.log('Resource Patient ID is: ', selectedResource?.subject?.reference.split("/")[1]);
             console.log('Session Active Patient ID is: ', currentPatientInfo?.patientId);
-            alert("Patient ID check failed");
+            matchFailedValues.push(
+                { text: `Resource Patient ID is:  ${selectedResource?.subject?.reference.split("/")[1]}`},
+                { text: `Session Active Patient ID is:  ${currentPatientInfo?.patientId}`}
+            );
+            // alert("Patient ID check failed");
         }
         if(selectedResource?.subject?.display !== currentPatientInfo.patientName){
             matchedFailed = true;
             console.log('Resource Patient Name match failed')
             console.log('Resource Patient Name is: ', selectedResource?.subject?.display)
             console.log('Active Patient Name is: ', currentPatientInfo.patientName);
-            alert("Patient Name check failed");
+            matchFailedValues.push(
+                { text: `Resource Patient Name is:  ${selectedResource?.subject?.display}`},
+                { text: `Active Patient Name is:  ${currentPatientInfo.patientName}`}
+            );
+            // alert("Patient Name check failed");
+        }
+        if(matchedFailed){
+            Session.set('matchFailedValues', matchFailedValues)
+            $('#patientMatchModal').modal('show');
         }
         return matchedFailed;
     }
