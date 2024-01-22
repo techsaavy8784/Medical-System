@@ -27,7 +27,7 @@
                             </div>
                         {{else}}
                             <div class="col-xs-12 mb-1">
-                                <button type="button" class="btn btn-warning confirm-patient-details mb-1">Confirm Patient Details</button>
+                                <button type="button" class="btn btn-primary confirm-patient-details mb-1">Confirm Patient Details</button>
                             </div>
                         {{/if}}
                         <div class="row">
@@ -35,7 +35,12 @@
                             <h5 class="text-bg-dark">Resource Details</h5>
                             <hr>
                         </div>
-                        {{{saveDocModalData}}}
+                        <p><b>Document Type :</b> {{documentResourceDetails 'documentType'}}</p>
+                        <p><b>Document Category :</b> {{documentResourceDetails 'documentCategory'}}</p>
+                        <p><b>Service End Date :</b> {{documentResourceDetails 'serviceEndDate'}}</p>
+                        <p><b>Document Status :</b> {{documentResourceDetails 'documentStatus'}}</p>
+                        <p><b>Verifying Provider :</b> {{documentResourceDetails 'verifyingProvider'}}</p>
+<!--                        {{{saveDocModalData}}}-->
                     {{else if showDocFhirModal }}
                         <pre>
                             {{fhirDocModalData}}

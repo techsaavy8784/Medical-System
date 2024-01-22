@@ -14,5 +14,13 @@ export const resourceHelpers = {
         console.log(activeResourceType)
         console.log(`#${activeResourceType}${modalType}Modal`)
         $(`#${activeResourceType}${modalType}Modal`).modal("show");
+    },
+
+    resourceDetails(key) {
+        let resource = Session.get("activeResourceType")?.resource;
+        if(resource){
+            return resource[key];
+        }
+
     }
 };

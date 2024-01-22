@@ -240,13 +240,11 @@ Template.currentPatient.events({
             } else {
                 patientDetails = Session.get('activeLocalPatient');
             }
-            console.log('patientDetaisl', patientDetails)
             if(!patientDetails){
                 //TODO: what should we do here
                 alert('Please Select the patient for both systems');
-                return;
+                // return;
             }
-            //TODO: should we have to change this data to customized the save modal
 			Session.set("showDocSaveModal", true);
 			Session.set("saveDocModalData", this.text.div);
             resourceHelpers.openActiveResourceModal('Save');

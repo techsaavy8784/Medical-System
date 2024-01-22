@@ -65,7 +65,23 @@ Template.DocumentReferenceSaveModal.helpers({
     },
     isPatientDetailsConfirmed() {
         return !Session.get('confirmPatientDetails');
-    }
+    },
+    documentResourceDetails(key) {
+        let documentResource = Session.get("selectedDoc")?.resource;
+        let documentResourceDetails;
+        if(documentResource){
+            documentResourceDetails = {
+                documentType: documentResource.type.text,
+                documentCategory: documentResource.category[0].text,
+                serviceEndDate: documentResource.context.period.end,
+                documentStatus: documentResource.docStatus,
+                verifyingProvider: documentResource.authenticator.display
+            }
+        }
+        if(documentResource){
+            return documentResourceDetails[key]
+        }
+    },
 });
 
 Template.DocumentReferenceSaveModal.events({
