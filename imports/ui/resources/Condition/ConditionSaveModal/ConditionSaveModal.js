@@ -78,7 +78,9 @@ Template.ConditionSaveModal.events({
 
         //Extra Checks added as per ticket #186882040
         // TODO: what will do in that case
-        if(resourceHelpers.matchPatientDetails()){
+        const res = await resourceHelpers.matchPatientDetails();
+
+        if(!res){
             return;
         }
 
@@ -108,7 +110,7 @@ Template.ConditionSaveModal.events({
         console.log("payload", body);
         console.groupEnd();
         const token = Session.get("headers");
-        if (canSave) {
+        // if (canSave) {
             console.log("save button is clicked.");
             Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
                 if (error) {
@@ -121,7 +123,7 @@ Template.ConditionSaveModal.events({
                     alert(`Resource successfully imported to your ${localName}`)
                 }
             });
-        }
+        // }
     },
     'click .confirm-patient-details' (event, instance) {
         Session.set('confirmPatientDetails', true);

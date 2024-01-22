@@ -1,4 +1,7 @@
 import "./patientMatchModal.html";
+Template.patientMatchModal.onCreated(function() {
+    Session.set('patientResourceConfirmed', false);
+})
 
 Template.patientMatchModal.helpers({
     values: () => Session.get("matchFailedValues"),
@@ -15,7 +18,12 @@ Template.patientMatchModal.helpers({
 })
 
 Template.patientMatchModal.events({
-    'click .close-match-modal' (event) {
+    'click .cancel-match-modal' (event) {
+        Session.set('patientResourceConfirmed', false);
+        $('#patientMatchModal').modal('hide');
+    },
+    'click .confirm-match-changes' (event) {
+        Session.set('patientResourceConfirmed', true);
         $('#patientMatchModal').modal('hide');
     }
 })

@@ -88,6 +88,15 @@ Template.DocumentReferenceSaveModal.events({
             return;
         }
 
+        //Extra Checks added as per ticket #186882040
+        // TODO: what will do in that case
+        const res = await resourceHelpers.matchPatientDetails()
+        if(!res){
+            return;
+        }
+
+
+
         const canSave = Session.get("showDocSaveModal");
 
         let destSystemURL = localsHelpers.getdestSystemURL();
@@ -99,12 +108,6 @@ Template.DocumentReferenceSaveModal.events({
         const destSystemId = localsHelpers.getdestSystemId();
         const srcResource = Session.get("selectedDoc")?.resource;
         const srcResourceId = Session.get("selectedDoc")?.resource.id;
-
-        // TODO: what will do in that case
-        if(resourceHelpers.matchPatientDetails()){
-            return;
-        }
-
         const body = {
             "resourceType": activeResourceType,
             "destPatientId": patientId,
@@ -119,20 +122,20 @@ Template.DocumentReferenceSaveModal.events({
         console.log("payload", body);
         console.groupEnd();
         const token = Session.get("headers");
-        if (canSave) {
-            console.log("save button is clicked.");
-            Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
-                if (error) {
-                    console.log("error", error);
-                    const errorInfo = error?.reason.response?.data
-                    alert("ERROR !" + errorInfo.resourceType + "\n" + errorInfo.issue[0]?.details?.text);
-                } else {
-                    console.log("result: ", result)
-                    const localName = localsHelpers.getLocals()[0]?.displayName
-                    alert(`Resource successfully imported to your ${localName}`)
-                }
-            });
-        }
+        // if (canSave) {
+        console.log("save button is clicked.");
+        Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
+            if (error) {
+                console.log("error", error);
+                const errorInfo = error?.reason.response?.data
+                alert("ERROR !" + errorInfo.resourceType + "\n" + errorInfo.issue[0]?.details?.text);
+            } else {
+                console.log("result: ", result)
+                const localName = localsHelpers.getLocals()[0]?.displayName
+                alert(`Resource successfully imported to your ${localName}`)
+            }
+        });
+        // }
     },
     'click .confirm-patient-details' (event, instance) {
         Session.set('confirmPatientDetails', true);
