@@ -4,12 +4,14 @@ import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { localsHelpers } from "/imports/helpers/localsHelpers";
+import { resourceHelpers } from "/imports/helpers/resourceHelpers";
 
 
 Template.ConditionSaveModal.onCreated(function resourceOnCreated(){
     Session.set("showDocSaveModal", false);
     Session.set("showDocFhirModal", false);
     Session.set("showXMLModal", false);
+    Session.set("confirmPatientDetails", false);
 });
 
 Template.ConditionSaveModal.onRendered( function () {
@@ -18,6 +20,7 @@ Template.ConditionSaveModal.onRendered( function () {
     const instance = this;
     const parentInstance = instance.view.parentView.templateInstance();
     $(modalElement).on('hidden.bs.modal', function (event) {
+        Session.set('confirmPatientDetails', false);
         const selectElement = parentInstance.find('.inputFindDoc');
         $(selectElement).val('Select an Option');
 
@@ -54,12 +57,28 @@ Template.ConditionSaveModal.helpers({
     },
     patientID() {
         return Session.get("currentPatientData")?.resource?.name[0]?.id;
-    }
+    },
+    patientDetailsConfirmed() {
+        return Session.get('confirmPatientDetails');
+    },
+    isPatientDetailsConfirmed() {
+        return !Session.get('confirmPatientDetails');
+    },
 });
 
 Template.ConditionSaveModal.events({
     async 'click .save-doc-data'(event, instance) {
         event.preventDefault();
+
+        //first check that user confirm the patient data or not
+        if(!Session.get('confirmPatientDetails')){
+            alert('Please confirm the Patient Details first');
+            return;
+        }
+
+        //Extra Checks added as per ticket #186882040
+        resourceHelpers.matchPatientDetails();
+
         const canSave = Session.get("showDocSaveModal");
 
         let destSystemURL = localsHelpers.getdestSystemURL();
@@ -80,7 +99,7 @@ Template.ConditionSaveModal.events({
             "SrcResource": srcResource
         }
         console.group(Session.get("activeResourceType"))
-        let destSystemName = destSystemId === `640ba5e3bd4105586a6dda74` ? `remote`: `local`;
+        let destSystemName = destSystemId === `640ba5e3bd4105586a6dda74` ? `remote`: `local`
         console.log('desSystemId', destSystemId, destSystemName)
         console.log("payload", body);
         console.groupEnd();
@@ -99,5 +118,8 @@ Template.ConditionSaveModal.events({
                 }
             });
         }
+    },
+    'click .confirm-patient-details' (event, instance) {
+        Session.set('confirmPatientDetails', true);
     }
 })

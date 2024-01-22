@@ -4,6 +4,7 @@ import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { localsHelpers } from "/imports/helpers/localsHelpers";
+import { resourceHelpers } from "/imports/helpers/resourceHelpers";
 
 
 Template.DocumentReferenceSaveModal.onCreated(function resourceOnCreated(){
@@ -51,15 +52,6 @@ Template.DocumentReferenceSaveModal.helpers({
     docXMLModalData() {
         return Session.get("docXMLModalData");
     },
-    patientDetail(key) {
-        let patientDetails;
-        if(Session.get('isActive') === 'local'){
-            patientDetails = Session.get('activeRemotePatient');
-        } else {
-            patientDetails = Session.get('activeLocalPatient');
-        }
-        return patientDetails && patientDetails[key]
-    },
     patientDetailsConfirmed() {
         return Session.get('confirmPatientDetails');
     },
@@ -67,19 +59,21 @@ Template.DocumentReferenceSaveModal.helpers({
         return !Session.get('confirmPatientDetails');
     },
     documentResourceDetails(key) {
-        let documentResource = Session.get("selectedDoc")?.resource;
-        let documentResourceDetails;
-        if(documentResource){
-            documentResourceDetails = {
-                documentType: documentResource.type.text,
-                documentCategory: documentResource.category[0].text,
-                serviceEndDate: documentResource.context.period.end,
-                documentStatus: documentResource.docStatus,
-                verifyingProvider: documentResource.authenticator.display
+        if(Session.get('activeResourceType') === "DocumentReference"){
+            let documentResource = Session.get("selectedDoc")?.resource;
+            let documentResourceDetails;
+            if(documentResource){
+                documentResourceDetails = {
+                    documentType: documentResource?.type?.text,
+                    documentCategory: documentResource?.category[0]?.text,
+                    serviceEndDate: documentResource?.context?.period?.end,
+                    documentStatus: documentResource?.docStatus,
+                    verifyingProvider: documentResource?.authenticator?.display
+                }
             }
-        }
-        if(documentResource){
-            return documentResourceDetails[key]
+            if(documentResource){
+                return documentResourceDetails[key]
+            }
         }
     },
 });
@@ -107,30 +101,7 @@ Template.DocumentReferenceSaveModal.events({
         const srcResourceId = Session.get("selectedDoc")?.resource.id;
 
         //Extra Checks added as per ticket #186882040
-        // console.log('SELECTEDDOC', Session.get("selectedDoc"))
-        console.log('RESOURCE', Session.get("selectedDoc")?.resource)
-        let selectedResource = Session.get("selectedDoc")?.resource;
-        console.log('RESOURCE', Session.get("selectedDoc")?.resource.subject)
-
-        if(selectedResource?.subject?.reference.split("/")[1] !== Session.get("currentPatientID")){
-            console.log('patient ID match failed')
-            console.log('Resource Patient ID is: ', selectedResource?.subject?.reference.split("/")[1])
-            console.log('Session Active Patient ID is: ', Session.get("currentPatientID"))
-            alert("Patient ID check failed")
-            return;
-        }
-        if(selectedResource?.subject?.display !== Session.get("currentPatientName")){
-            console.log('patient name match failed')
-            console.log('Resource Patient Name is: ', selectedResource?.subject?.display)
-            console.log('Session Active Patient Name is: ', Session.get("currentPatientName"))
-            alert("Patient Name check failed")
-            return;
-        }
-        //TODO: DOB not found in resource
-        // if(selectedResource?.DOB !== Session.get("currentPatienDOB")){
-        //     console.log('patient name match failed', selectedResource?.subject?.display, Session.get("currentPatientName"))
-        // }
-        console.log('I am running.......')
+        resourceHelpers.matchPatientDetails();
 
         const body = {
             "resourceType": activeResourceType,

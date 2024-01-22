@@ -250,7 +250,7 @@ Template.currentPatient.events({
             if(!patientDetails){
                 //TODO: what should we do here
                 alert('Please Select the patient for both systems');
-                // return;
+                return;
             }
 			Session.set("showDocSaveModal", true);
 			Session.set("saveDocModalData", this.text.div);

@@ -60,6 +60,16 @@ Template.registerHelper('getPatientSummary', function (type) {
 Template.registerHelper('isSaveDestSystemAllowed', function () {
     let isActive = Session.get('isActive');
     let destSystem = isActive === 'local' ? Session.get('remotes') : Session.get('locals');
-    let destSystemAbilities = destSystem[0]?.systems[0]?.abilities || [];
     return destSystem[0]?.systems[0]?.abilities.includes('SAVE');
+});
+
+//get opposite patient details for displaying in resource modals (save)
+Template.registerHelper('oppositePatientDetail', function (key) {
+    let patientDetails;
+    if(Session.get('isActive') === 'local'){
+        patientDetails = Session.get('activeRemotePatient');
+    } else {
+        patientDetails = Session.get('activeLocalPatient');
+    }
+    return patientDetails && patientDetails[key]
 });
