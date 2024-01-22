@@ -80,7 +80,8 @@ Template.ImmunizationSaveModal.events({
             "SrcResource": srcResource
         }
         console.group(Session.get("activeResourceType"))
-        console.log('desSystemId', destSystemId)
+        let destSystemName = destSystemId === `640ba5e3bd4105586a6dda74` ? `remote`: `local`
+        console.log('desSystemId', destSystemId, destSystemName)
         console.log("payload", body);
         console.groupEnd();
         const token = Session.get("headers");

@@ -79,13 +79,26 @@
             </div>
             <div class="container-fluid">
                 <div class="col-sm-6 d-flex justify-content-start click-Remote" style="cursor: pointer; {{remoteStyle}}">
-                    <a class="nav-link " aria-current="page"><h5>Remote - {{visitHopital}}</h5></a>
+                    <a class="nav-link " aria-current="page">
+                        {{#if isLocalActive}}
+                            <h5>Remote - {{visitHopital}}</h5>
+                        {{else}}
+                            <h4>Remote - {{visitHopital}}</h4>
+                        {{/if}}
+                    </a>
                 </div>
                 <!-- <div class="col-sm-4 d-flex justify-content-center">
 							<h6>{{currentPatientSelected}}</h6>
 					</div> -->
                 <div class="col-sm-6 d-flex justify-content-end click-Local" style="cursor: pointer; {{localStyle}}">
-                    <a class="nav-link " aria-disabled="true"><h5>Local - {{visitLocal}}</h5></a>
+                    <a class="nav-link " aria-disabled="true">
+                        {{#if isLocalActive}}
+                            <h4>Local - {{visitLocal}}</h4>
+                        {{else}}
+                            <h5>Local - {{visitLocal}}</h5>
+                        {{/if}}
+
+                    </a>
                 </div>
             </div>
         </nav>

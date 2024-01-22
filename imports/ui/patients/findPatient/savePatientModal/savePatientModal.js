@@ -61,7 +61,8 @@ Template.savePatientModal.events({
 			"SrcResource": srcResource
 		}
 		console.group('Search Patient Modal');
-		console.log('desSystemId', destSystemId);
+		let destSystemName = destSystemId === `640ba5e3bd4105586a6dda74` ? `remote`: `local`
+        console.log('desSystemId', destSystemId, destSystemName);
 		console.log("url", url);
 		console.log("payload", body);
 		console.groupEnd();

@@ -16,7 +16,7 @@ Template.sidebar.onCreated(function sidebarOnCreated() {
 });
 
 Template.sidebar.onRendered(function () {
-    Session.set("activeResourceType",null);
+    // Session.set("activeResourceType",null);
 });
 
 Template.sidebar.helpers({

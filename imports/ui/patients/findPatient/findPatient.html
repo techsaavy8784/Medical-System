@@ -46,7 +46,9 @@
 															<option>View details</option>
 															<option>Print Patient Info</option>
 															<option>View FHIR</option>
-															<option>Save Patient</option>
+                                                            {{#if isSavePatientAllowed}}
+                                                                <option>Save Patient</option>
+                                                            {{/if}}
 															<!-- <option>Show Resource</option> -->
 														</select>
 													</td>

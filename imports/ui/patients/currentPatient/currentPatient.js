@@ -233,14 +233,10 @@ Template.currentPatient.events({
 			
 		  $('#saveResourceModal').modal('show');
         } else if(value === 'Save to MyEMR') {
+            //TODO: should we have to change this data to customized the save modal
 			Session.set("showDocSaveModal", true);
 			Session.set("saveDocModalData", this.text.div);
             resourceHelpers.openActiveResourceModal('Save');
-            // if(Session.get("activeResourceType") === "DocumentReference"){
-            //     $('#DocumentReferenceSaveModal').modal('show');
-            // } else {
-            //     $('#saveResourceModal').modal('show');
-            // }
         } else if (value === "Show PDF") {
             showPdfModal(this);
         } else if (value === "Show XML") {

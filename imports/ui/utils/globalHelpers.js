@@ -27,7 +27,7 @@ Template.registerHelper('userInfo', function () {
 
 //get any session singular values just by name param
 Template.registerHelper('getSessionValue', function (name) {
-    return Session.get[name] || '';
+    return Session.get(`${name}`) || '';
 });
 
 
@@ -54,4 +54,12 @@ Template.registerHelper('getPatientSummary', function (type) {
         // let { familyName, givenName, birthDate, patientId, MRN } = patient;
         // return `${familyName}, ${givenName}, ${birthDate}, ${patientId}, ${MRN}`
     }
+});
+
+//get allowed abilities based on selected and dest system
+Template.registerHelper('isSavePatientAllowed', function () {
+    let isActive = Session.get('isActive');
+    let destSystem = isActive === 'local' ? Session.get('remotes') : Session.get('locals');
+    let destSystemAbilities = destSystem[0]?.systems[0]?.abilities || [];
+    return destSystem[0]?.systems[0]?.abilities.includes('SAVE');
 });

@@ -108,13 +108,12 @@ Template.findPatient.events({
 					alert("ERROR !" + errorInfo?.resourceType + "\n" + errorInfo?.issue[0]?.details?.text)
 				} else {
 					console.log("result: ", result)
-					let { patientMRN, patientId, patientSummary, patioentName, patientDOB} = result?.data;
+					let { patientMRN, patientId, patientSummary, patientName, patientDOB} = result?.data;
 					let activePatient = result?.data?.patient;
 					let summaryRecord = {
-						//TODO: fhir record is same as data object?
 						data: activePatient,
 						patientId,
-						patientName: patioentName,
+						patientName: patientName,
 						patientDOB,
 						patientMRN,
 						patientSummary: patientSummary?.replaceAll(';', " -")

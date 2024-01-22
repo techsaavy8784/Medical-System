@@ -1,18 +1,30 @@
 <template name="DocumentReferenceSaveModal">
-    <div class="modal fade" id="DocumentReferenceSaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal modal-lg fade" id="DocumentReferenceSaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Save Document Reference</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Review Patient and Resource details being saved</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     {{#if showDocSaveModal}}
+                        <div class="row">
+                            <h5 class="text-bg-dark">Patient Details</h5>
+                            <hr>
+                        </div>
                         <div class="col-xs-12">
-                            <label for="patientMrn" class="col-form-label" ><b>Patient MRN: </b>{{patientMrn}}</label>
+                            <label for="patientMrn" class="col-form-label" ><b>Patient Name: </b>{{getSessionValue 'currentPatientName'}}</label>
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="patientMrn" class="col-form-label" ><b>Patient DOB: </b>{{getSessionValue 'currentPatienDOB'}}</label>
                         </div>
                         <div class="col-xs-12">
                             <label for="patientMrn" class="col-form-label" ><b>Patient ID: </b>{{patientID}}</label>
+                        </div>
+                        <div class="row">
+                            <hr>
+                            <h5 class="text-bg-dark">Resource Details</h5>
+                            <hr>
                         </div>
                         {{{saveDocModalData}}}
                     {{else if showDocFhirModal }}

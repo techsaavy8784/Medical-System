@@ -53,7 +53,7 @@ Template.DocumentReferenceSaveModal.helpers({
         return Session.get("currentPatientID")
     },
     patientID() {
-        return Session.get("currentPatientData")?.resource?.name[0]?.id;
+        return Session.get("currentPatientID");
     }
 });
 
@@ -71,6 +71,33 @@ Template.DocumentReferenceSaveModal.events({
         const destSystemId = localsHelpers.getdestSystemId();
         const srcResource = Session.get("selectedDoc")?.resource;
         const srcResourceId = Session.get("selectedDoc")?.resource.id;
+
+        //Extra Checks added as per ticket #186882040
+        // console.log('SELECTEDDOC', Session.get("selectedDoc"))
+        console.log('RESOURCE', Session.get("selectedDoc")?.resource)
+        let selectedResource = Session.get("selectedDoc")?.resource;
+        console.log('RESOURCE', Session.get("selectedDoc")?.resource.subject)
+
+        if(selectedResource?.subject?.reference.split("/")[1] !== Session.get("currentPatientID")){
+            console.log('patient ID match failed')
+            console.log('Resource Patient ID is: ', selectedResource?.subject?.reference.split("/")[1])
+            console.log('Session Active Patient ID is: ', Session.get("currentPatientID"))
+            alert("Patient ID check failed")
+            return;
+        }
+        if(selectedResource?.subject?.display !== Session.get("currentPatientName")){
+            console.log('patient name match failed')
+            console.log('Resource Patient Name is: ', selectedResource?.subject?.display)
+            console.log('Session Active Patient Name is: ', Session.get("currentPatientName"))
+            alert("Patient Name check failed")
+            return;
+        }
+        //TODO: DOB not found in resource
+        // if(selectedResource?.DOB !== Session.get("currentPatienDOB")){
+        //     console.log('patient name match failed', selectedResource?.subject?.display, Session.get("currentPatientName"))
+        // }
+        console.log('I am running.......')
+
         const body = {
             "resourceType": activeResourceType,
             "destPatientId": patientId,
@@ -80,7 +107,8 @@ Template.DocumentReferenceSaveModal.events({
             "SrcResource": srcResource
         }
         console.group(Session.get("activeResourceType"))
-        console.log('desSystemId', destSystemId)
+        let destSystemName = destSystemId === `640ba5e3bd4105586a6dda74` ? `remote`: `local`
+        console.log('desSystemId', destSystemId, destSystemName)
         console.log("payload", body);
         console.groupEnd();
         const token = Session.get("headers");

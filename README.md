@@ -40,7 +40,8 @@ meteor --settings settings.json
 - preferred branch names to be either by the programmer or by large project scope
 - Preferred is your initials. That is why you see `dhf` and `dhfDev`
 - make sure to prevent the docker build error by making a local docker build before the code push
-- `docker compose up --build`
+- you must stop local mongodb if running on machine, else it will throw the same port error
+- `docker compose up`
 
 <br>
 
@@ -89,3 +90,7 @@ Imports
 
 -- utils
 ---- constants                  # it has application level constans like `baseUrl` etc
+```
+
+
+### Session Values

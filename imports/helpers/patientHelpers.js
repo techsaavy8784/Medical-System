@@ -54,10 +54,11 @@ export const patientHelpers = {
     //this helper will reset current user info when user
     //switch between local and remote
     setCurrentPatient(activePatient) {
+        console.log(activePatient)
         Session.set("currentPatientSelected", true);
         // Session.set("currentPatientData", this);
         Session.set("currentPatientID", activePatient.id);
-        Session.set("currentPatienDOB", activePatient?.DOB);
+        Session.set("currentPatienDOB", activePatient?.birthDate);
         Session.set("currentPatientName", activePatient?.name[0]?.text);
         // Session.set("selectedPatientInfo", this);
         Session.set("patientMrn", activePatient.id);

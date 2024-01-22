@@ -69,6 +69,10 @@ Template.header.helpers({
         }
     },
 
+    isLocalActive() {
+        return Session.get("isActive") === "local";
+    },
+
     positionStyle() {
         if (Session.get("isActive") === "remote") {
             return "justify-content: start";
