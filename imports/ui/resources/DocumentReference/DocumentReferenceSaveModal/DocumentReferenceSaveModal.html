@@ -13,14 +13,23 @@
                             <hr>
                         </div>
                         <div class="col-xs-12">
-                            <label for="patientMrn" class="col-form-label" ><b>Patient Name: </b>{{getSessionValue 'currentPatientName'}}</label>
+                            <label for="patientMrn" class="col-form-label" ><b>Patient Name: </b>{{patientDetail 'patientName'}}</label>
                         </div>
                         <div class="col-xs-12">
-                            <label for="patientMrn" class="col-form-label" ><b>Patient DOB: </b>{{getSessionValue 'currentPatienDOB'}}</label>
+                            <label for="patientMrn" class="col-form-label" ><b>Patient DOB: </b>{{patientDetail 'patientDOB'}}</label>
                         </div>
                         <div class="col-xs-12">
-                            <label for="patientMrn" class="col-form-label" ><b>Patient ID: </b>{{patientID}}</label>
+                            <label for="patientMrn" class="col-form-label" ><b>Patient MRN: </b>{{patientDetail "patientMRN"}}</label>
                         </div>
+                        {{#if patientDetailsConfirmed}}
+                            <div class="col-xs-12 mb-1">
+                                <h6 class="text-primary mb-1">Patient Details Confirmed !</h6>
+                            </div>
+                        {{else}}
+                            <div class="col-xs-12 mb-1">
+                                <button type="button" class="btn btn-warning confirm-patient-details mb-1">Confirm Patient Details</button>
+                            </div>
+                        {{/if}}
                         <div class="row">
                             <hr>
                             <h5 class="text-bg-dark">Resource Details</h5>
@@ -44,7 +53,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     {{#if showDocSaveModal}}
-                        <button type="button" class="btn btn-primary save-doc-data" data-bs-dismiss="modal">Save</button>
+                        <button type="button" class="btn btn-primary save-doc-data" data-bs-dismiss="modal" disabled="{{isPatientDetailsConfirmed}}">Save</button>
                     {{/if}}
                 </div>
             </div>

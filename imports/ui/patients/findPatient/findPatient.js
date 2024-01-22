@@ -108,6 +108,7 @@ Template.findPatient.events({
 					alert("ERROR !" + errorInfo?.resourceType + "\n" + errorInfo?.issue[0]?.details?.text)
 				} else {
 					console.log("result: ", result)
+					Session.set('currentPatientInfo', result?.data);
 					let { patientMRN, patientId, patientSummary, patientName, patientDOB} = result?.data;
 					let activePatient = result?.data?.patient;
 					let summaryRecord = {

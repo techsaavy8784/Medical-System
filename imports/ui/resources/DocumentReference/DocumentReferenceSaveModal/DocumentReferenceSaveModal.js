@@ -10,6 +10,7 @@ Template.DocumentReferenceSaveModal.onCreated(function resourceOnCreated(){
     Session.set("showDocSaveModal", false);
     Session.set("showDocFhirModal", false);
     Session.set("showXMLModal", false);
+    Session.set("confirmPatientDetails", false);
 });
 
 Template.DocumentReferenceSaveModal.onRendered( function () {
@@ -18,6 +19,7 @@ Template.DocumentReferenceSaveModal.onRendered( function () {
     const instance = this;
     const parentInstance = instance.view.parentView.templateInstance();
     $(modalElement).on('hidden.bs.modal', function (event) {
+        Session.set('confirmPatientDetails', false);
         const selectElement = parentInstance.find('.inputFindDoc');
         $(selectElement).val('Select an Option');
 
@@ -49,17 +51,33 @@ Template.DocumentReferenceSaveModal.helpers({
     docXMLModalData() {
         return Session.get("docXMLModalData");
     },
-    patientMrn() {
-        return Session.get("currentPatientID")
+    patientDetail(key) {
+        let patientDetails;
+        if(Session.get('isActive') === 'local'){
+            patientDetails = Session.get('activeRemotePatient');
+        } else {
+            patientDetails = Session.get('activeLocalPatient');
+        }
+        return patientDetails && patientDetails[key]
     },
-    patientID() {
-        return Session.get("currentPatientID");
+    patientDetailsConfirmed() {
+        return Session.get('confirmPatientDetails');
+    },
+    isPatientDetailsConfirmed() {
+        return !Session.get('confirmPatientDetails');
     }
 });
 
 Template.DocumentReferenceSaveModal.events({
     async 'click .save-doc-data'(event, instance) {
         event.preventDefault();
+
+        //first check that user confirm the patient data or not
+        if(!Session.get('confirmPatientDetails')){
+            alert('Please confirm the Patient Details first');
+            return;
+        }
+
         const canSave = Session.get("showDocSaveModal");
 
         let destSystemURL = localsHelpers.getdestSystemURL();
@@ -126,5 +144,8 @@ Template.DocumentReferenceSaveModal.events({
                 }
             });
         }
+    },
+    'click .confirm-patient-details' (event, instance) {
+        Session.set('confirmPatientDetails', true);
     }
 })

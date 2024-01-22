@@ -94,3 +94,19 @@ Imports
 
 
 ### Session Values
+
+1. activeLocalPatient
+2. activeRemotePatient
+3. activeResourceType
+4. coreURL
+5. currentPatientInfo
+6. currentPatientSelected
+7. isActive
+8. isLogin
+9. locals
+10. remotes
+11. localSavedData
+12. remoteSavedData
+13. remoteURL
+14. localURL
+15. userInfo

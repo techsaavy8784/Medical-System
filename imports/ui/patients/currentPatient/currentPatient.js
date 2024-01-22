@@ -232,7 +232,20 @@ Template.currentPatient.events({
 			console.log('Viewing details for:', this);
 			
 		  $('#saveResourceModal').modal('show');
-        } else if(value === 'Save to MyEMR') {
+        } else if(value === 'save-resource') {
+            // check that opposite system patient selected/exists or not
+            let patientDetails;
+            if(Session.get('isActive') === 'local'){
+                patientDetails = Session.get('activeRemotePatient');
+            } else {
+                patientDetails = Session.get('activeLocalPatient');
+            }
+            console.log('patientDetaisl', patientDetails)
+            if(!patientDetails){
+                //TODO: what should we do here
+                alert('Please Select the patient for both systems');
+                return;
+            }
             //TODO: should we have to change this data to customized the save modal
 			Session.set("showDocSaveModal", true);
 			Session.set("saveDocModalData", this.text.div);
