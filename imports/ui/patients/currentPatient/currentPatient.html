@@ -50,7 +50,10 @@
                                     <option selected5>
                                         Select an Option
                                     </option>
-                                    <option value="save-resource">Save to MyEMR</option>
+                                    {{#if isSaveDestSystemAllowed}}
+                                        <option value="save-resource">Save to {{destSystemName}}</option>
+                                    {{/if}}
+
                                     <option>Show PDF</option>
                                     <option>Show XML</option>
                                     <option>Print</option>

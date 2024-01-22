@@ -174,6 +174,13 @@ Template.currentPatient.onRendered( function (){
 });
 
 Template.currentPatient.helpers({
+    destSystemName() {
+        if(Session.get('isActive') === 'local'){
+            return 'Remote EMR';
+        }
+        return 'My EMR';
+
+    },
     currentPatientSelected() {
         return Session.get("currentPatientSelected");
     },
