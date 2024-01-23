@@ -56,9 +56,7 @@ export const patientHelpers = {
     setCurrentPatient(activePatient) {
         console.log(activePatient)
         Session.set("currentPatientSelected", true);
-        // Session.set("currentPatientData", this);
         Session.set("currentPatientID", activePatient.id);
-        Session.set("currentPatienDOB", activePatient?.birthDate);
         Session.set("currentPatientName", activePatient?.name[0]?.text);
         // Session.set("selectedPatientInfo", this);
         Session.set("patientMrn", activePatient.id);
@@ -69,9 +67,7 @@ export const patientHelpers = {
     //switch between local and remote
     resetCurrentPatient() {
         Session.set("currentPatientSelected", null);
-        Session.set("currentPatientData", null);
         Session.set("currentPatientID", null);
-        Session.set("currentPatienDOB", null);
         Session.set("currentPatientName", null);
         Session.set("selectedPatientInfo", null);
         Session.set("patientMrn", null);

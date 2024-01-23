@@ -53,7 +53,7 @@ Template.QuestionnaireResponseSaveModal.helpers({
         return Session.get("currentPatientID")
     },
     patientID() {
-        return Session.get("currentPatientData")?.resource?.name[0]?.id;
+        return Session.get("currentPatientID")
     }
 });
 
