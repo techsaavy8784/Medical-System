@@ -22,6 +22,23 @@ Meteor.methods({
     getVersionId: function() {
         return versionId
     },
+
+    async logUserAction (url, body, headers) {
+        console.log('logUserAction called........')
+        console.log("requestUrl", url);
+        console.log("body and headers ", {data: body, headers: headers})
+
+        try {
+            const res = await HTTP.post(url, {data: body, headers: headers});
+            // const { data } = res;
+            console.log("requestUrl", url);
+            console.log("logResponse: ", res);
+            return res;
+        } catch (error) {
+            console.error("Error in logging user Action!", error);
+            throw new Meteor.Error('Error logging user Action!', error);
+        }
+    },
 });
 
 /*

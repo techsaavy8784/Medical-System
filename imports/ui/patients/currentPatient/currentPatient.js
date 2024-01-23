@@ -10,6 +10,7 @@ import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { remotesHelpers } from "/imports/helpers/remotesHelpers";
 import { resourceHelpers } from "/imports/helpers/resourceHelpers";
+import { logHelpers } from "/imports/helpers/logHelpers";
 
 
 const showPdfModal = async (data) => {
@@ -232,6 +233,7 @@ Template.currentPatient.events({
 		Session.set("selectedDoc", this);
         // Handle based on entry and value
         if(value === 'FHIR') {
+            logHelpers.logAction("FHIR", "User Clicked on View FHIR")
 			const data = JSON.stringify(this, null, 2);
 
 			Session.set("fhirDocModalData", data);
