@@ -233,7 +233,7 @@ Template.currentPatient.events({
 		Session.set("selectedDoc", this);
         // Handle based on entry and value
         if(value === 'FHIR') {
-            logHelpers.logAction("FHIR", "User Clicked on View FHIR")
+            logHelpers.logAction("FHIR", "User Viewed the FHIR Resource");
 			const data = JSON.stringify(this, null, 2);
 
 			Session.set("fhirDocModalData", data);
@@ -242,6 +242,7 @@ Template.currentPatient.events({
 			
 		  $('#saveResourceModal').modal('show');
         } else if(value === 'save-resource') {
+            logHelpers.logAction("Save-Resource", "User Click on 'Save Resource'");
             // check that opposite system patient selected/exists or not
             let patientDetails;
             if(Session.get('isActive') === 'local'){
@@ -257,8 +258,10 @@ Template.currentPatient.events({
 			Session.set("saveDocModalData", this.text.div);
             resourceHelpers.openActiveResourceModal('Save');
         } else if (value === "Show PDF") {
+            logHelpers.logAction("Show-PDF", "User Viewed the PDF Resource");
             showPdfModal(this);
         } else if (value === "Show XML") {
+            logHelpers.logAction("Show-XML", "User Viewed the XML Resource");
           showXmlModal(this);
         
         }

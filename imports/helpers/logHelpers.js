@@ -33,7 +33,7 @@ export const logHelpers = {
             "resourceType" : resourceType,
             "resourceId" : resource.id,
             "srcResourceId" : resource.id,
-            "destResourceId" : "", //TODO: from where I can get this confirm all (srcResourceID and destResourceId)
+            "destResourceId" : "", // can be null if user just viewing or print anything (not sending anything)
             "systemId" : systemId,
             "srcSystemId" : srcSystemId,
             "destSystemId" : destSystemId,
@@ -44,7 +44,8 @@ export const logHelpers = {
 
         console.group('Log User Action');
 
-        const url = 'http://universalcharts.com/api/rest/v1/LogHipaa';
+        //TODO: add an new API variables instead of hard coding it
+        const url = 'http://universalcharts.com:30300/api/rest/v1/LogHipaa';
         console.log("url", url);
         console.log("payload", body);
         console.groupEnd();
