@@ -20,12 +20,12 @@ Template.searchPatientModal.onRendered(function () {
 	// console.log("inputField", inputField);
 	// inputField.focus();
 	// $('input').focus()
-	$('#patient-id').focus();
+	$('#findLastName').focus();
 
 	const searchPatientModal = this.find('#searchPatientModal');
 
 	$(searchPatientModal).on('shown.bs.modal', function (event) {
-		$('#patient-id').focus();
+		$('#findLastName').focus();
 	});
 
 	$(searchPatientModal).on('hidden.bs.modal', function (event) {

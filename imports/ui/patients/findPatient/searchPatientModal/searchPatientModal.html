@@ -9,56 +9,7 @@
 			<div class="modal-body">
 
 			<form id="formFindPatient" class="row g-3 search-patient-form">
-				
-				<div class="col-6">
-					<div class="form-floating">
-						{{#if canInputId}}
-						<input
-							type="text"
-							name="patientId"
-							class="form-control"
-							id="patient-id"
-							placeholder="Patient ID"
-						/>
-						{{else}}
-						<input
-							type="text"
-							name="patientId"
-							class="form-control"
-							id="patient-id"
-							placeholder="Patient ID"
-							disabled
-						/>
-						{{/if}}
-						<label for="patient-id"
-							>Patient ID</label>
-					</div>
-				</div>
-				<div class="col-6">
-					<div class="form-floating">
-						{{#if canInputMrn}}
-						<input
-							type="text"
-							name="patientMrn"
-							class="form-control"
-							id="patient-mrn"
-							placeholder="Medial Record Number"
-						/>
-						{{else}}
-						 
-						<input
-						type="text"
-						name="patientMrn"
-						class="form-control"
-						id="patient-mrn"
-						placeholder="Medial Record Number"
-						disabled
-					/>
-						{{/if}}
-						<label for="patient-mrn"
-							>Medial Record Number</label>
-					</div>
-				</div>
+
 				<div class="col-6">
 					<div class="form-floating">
 						{{#if isUnique}}
@@ -158,7 +109,56 @@
 						>
 					</div>
 				</div>
-					
+                <div class="col-6">
+                    <div class="form-floating">
+                        {{#if canInputId}}
+                            <input
+                                    type="text"
+                                    name="patientId"
+                                    class="form-control"
+                                    id="patient-id"
+                                    placeholder="Patient ID"
+                            />
+                        {{else}}
+                            <input
+                                    type="text"
+                                    name="patientId"
+                                    class="form-control"
+                                    id="patient-id"
+                                    placeholder="Patient ID"
+                                    disabled
+                            />
+                        {{/if}}
+                        <label for="patient-id"
+                        >Patient ID</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-floating">
+                        {{#if canInputMrn}}
+                            <input
+                                    type="text"
+                                    name="patientMrn"
+                                    class="form-control"
+                                    id="patient-mrn"
+                                    placeholder="Medical Record Number"
+                            />
+                        {{else}}
+
+                            <input
+                                    type="text"
+                                    name="patientMrn"
+                                    class="form-control"
+                                    id="patient-mrn"
+                                    placeholder="Medical Record Number"
+                                    disabled
+                            />
+                        {{/if}}
+                        <label for="patient-mrn"
+                        >Medial Record Number</label>
+                    </div>
+                </div>
+
 				<div class="col-xs-12">
 					<div class="col-xs-6 text-end">
 					{{#if isLastName}}

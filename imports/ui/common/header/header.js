@@ -81,6 +81,18 @@ Template.header.helpers({
         }
     },
 
+    headerPatientInfo() {
+        let patientDetails;
+        if(Session.get('isActive') === 'local'){
+            patientDetails = Session.get('activeLocalPatient');
+        } else {
+            patientDetails = Session.get('activeRemotePatient');
+        }
+        if(patientDetails){
+            return `${patientDetails.patientName} - ${patientDetails.patientDOB}`
+        }
+    },
+
     localStyle() {
         if (Session.get("isActive") === "local") {
             return "color: blue";
