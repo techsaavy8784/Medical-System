@@ -52,32 +52,6 @@ export const resourceHelpers = {
                 );
             }
 
-            // let currentPatientInfo = Session.get("currentPatientInfo");
-            // let selectedResource = Session.get("selectedDoc")?.resource;
-            // console.log('RESOURCE', Session.get("selectedDoc")?.resource.subject);
-            //
-            // if(selectedResource?.subject?.reference?.split("/")[1] !== currentPatientInfo?.patientId){
-            //     matchedFailed = true;
-            //     console.log('Resource patient ID match failed');
-            //     console.log('Resource Patient ID is: ', selectedResource?.subject?.reference.split("/")[1]);
-            //     console.log('Session Active Patient ID is: ', currentPatientInfo?.patientId);
-            //     matchFailedValues.push(
-            //         { text: `Resource Patient ID is:  ${selectedResource?.subject?.reference.split("/")[1]}`},
-            //         { text: `Session Active Patient ID is:  ${currentPatientInfo?.patientId}`}
-            //     );
-            //     // alert("Patient ID check failed");
-            // }
-            // if(selectedResource?.subject?.display !== currentPatientInfo.patientName){
-            //     matchedFailed = true;
-            //     console.log('Resource Patient Name match failed')
-            //     console.log('Resource Patient Name is: ', selectedResource?.subject?.display)
-            //     console.log('Active Patient Name is: ', currentPatientInfo.patientName);
-            //     matchFailedValues.push(
-            //         { text: `Resource Patient Name is:  ${selectedResource?.subject?.display}`},
-            //         { text: `Active Patient Name is:  ${currentPatientInfo.patientName}`}
-            //     );
-            //     // alert("Patient Name check failed");
-            // }
             if(matchedFailed){
                 Session.set('matchFailedValues', matchFailedValues)
                 $('#patientMatchModal').modal('show');

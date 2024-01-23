@@ -77,7 +77,6 @@ Template.ConditionSaveModal.events({
         }
 
         //Extra Checks added as per ticket #186882040
-        // TODO: what will do in that case
         const res = await resourceHelpers.matchPatientDetails();
 
         if(!res){

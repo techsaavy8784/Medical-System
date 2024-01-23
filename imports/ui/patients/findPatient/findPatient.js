@@ -108,7 +108,6 @@ Template.findPatient.events({
 					alert("ERROR !" + errorInfo?.resourceType + "\n" + errorInfo?.issue[0]?.details?.text)
 				} else {
 					console.log("result: ", result)
-					Session.set('currentPatientInfo', result?.data);
 					let { patientMRN, patientId, patientSummary, patientName, patientDOB} = result?.data;
 					let activePatient = result?.data?.patient;
 					let summaryRecord = {
@@ -119,17 +118,13 @@ Template.findPatient.events({
 						patientMRN,
 						patientSummary: patientSummary?.replaceAll(';', " -")
 					}
-					if(Session.get("isActive") === "local"){
-						Session.set("activeLocalPatient", summaryRecord);
-					} else {
-						Session.set("activeRemotePatient", summaryRecord);
-					}
+					Session.set('currentPatientInfo', summaryRecord);
 
 					//save both (remote/local) Session values to display both at once
 					if(Session.get('isActive') === 'local'){
-						patientHelpers.setActiveLocalPatient(activePatient);
+						patientHelpers.setActiveLocalPatient(summaryRecord);
 					} else {
-						patientHelpers.setActiveRemotePatient(activePatient);
+						patientHelpers.setActiveRemotePatient(summaryRecord);
 					}
 					const route = `/current-patient/${activePatient.id}`
 					Router.go(route)

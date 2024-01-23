@@ -248,8 +248,7 @@ Template.currentPatient.events({
                 patientDetails = Session.get('activeLocalPatient');
             }
             if(!patientDetails){
-                //TODO: what should we do here
-                alert('Please Select the patient for both systems');
+                alert('Please Select the patient for local system');
                 return;
             }
 			Session.set("showDocSaveModal", true);

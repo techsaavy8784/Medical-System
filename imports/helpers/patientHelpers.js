@@ -66,6 +66,7 @@ export const patientHelpers = {
     //this helper will reset current user info when user
     //switch between local and remote
     resetCurrentPatient() {
+        Session.set('currentPatientInfo', null)
         Session.set("currentPatientSelected", null);
         Session.set("currentPatientID", null);
         Session.set("currentPatientName", null);
@@ -80,13 +81,15 @@ export const patientHelpers = {
     //else it will check for old values and set the session
     //in case both not found it will do nothing
     setActiveLocalPatient(patient) {
+        console.log('setActiveLocalPatient', patient)
         if(patient){
-            Session.set('localActivePatient', patient);
+            Session.set('activeLocalPatient', patient);
         } else {
-            patient = Session.get('localActivePatient');
+            patient = Session.get('activeLocalPatient');
         }
-        if(patient) {
-            this.setCurrentPatient(patient);
+        Session.set('currentPatientInfo', patient);
+        if(patient?.data) {
+            this.setCurrentPatient(patient?.data);
         } else {
             this.resetCurrentPatient();
         }
@@ -97,12 +100,13 @@ export const patientHelpers = {
     //in case both not found it will do nothing
     setActiveRemotePatient(patient) {
         if(patient){
-            Session.set('remoteActivePatient', patient);
+            Session.set('activeRemotePatient', patient);
         } else {
-            patient = Session.get('remoteActivePatient');
+            patient = Session.get('activeRemotePatient');
         }
-        if(patient) {
-            this.setCurrentPatient(patient);
+        Session.set('currentPatientInfo', patient);
+        if(patient?.data) {
+            this.setCurrentPatient(patient?.data);
         } else {
             this.resetCurrentPatient();
         }
