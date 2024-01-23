@@ -58,6 +58,10 @@ Template.registerHelper('getPatientSummary', function (type) {
 
 //get allowed abilities based on selected and dest system
 Template.registerHelper('isSaveDestSystemAllowed', function () {
+    // if both system patient not selected just don't display it
+    if(!(Session.get('activeRemotePatient') && Session.get('activeLocalPatient'))){
+        return;
+    }
     let isActive = Session.get('isActive');
     let destSystem = isActive === 'local' ? Session.get('remotes') : Session.get('locals');
     return destSystem[0]?.systems[0]?.abilities.includes('SAVE');

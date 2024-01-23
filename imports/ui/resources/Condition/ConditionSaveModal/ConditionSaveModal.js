@@ -83,7 +83,7 @@ Template.ConditionSaveModal.events({
         if(!res){
             return;
         }
-
+        Session.set('patientOverRideConfirmed', false);
 
         const canSave = Session.get("showDocSaveModal");
 

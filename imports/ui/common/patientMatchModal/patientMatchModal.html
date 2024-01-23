@@ -8,12 +8,12 @@
                 </div>
                 <div class="modal-body">
                     {{#each values}}
-                        <p>{{text}}.</p>
+                        <p class="text-danger">{{text}}</p>
                         {{{separator @index}}}
                     {{/each}}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary confirm-match-changes">Confirm</button>
+                    <button type="button" class="btn btn-danger confirm-match-changes">Override</button>
                     <button type="button" class="btn btn-secondary cancel-match-modal" data-dismiss="modal">Cancel</button>
                 </div>
             </div>

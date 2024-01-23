@@ -64,6 +64,7 @@ Template.DocumentReferenceSaveModal.helpers({
             let documentResourceDetails;
             if(documentResource){
                 documentResourceDetails = {
+                    patientName: documentResource?.subject?.display,
                     documentType: documentResource?.type?.text,
                     documentCategory: documentResource?.category[0]?.text,
                     serviceEndDate: documentResource?.context?.period?.end,
@@ -94,8 +95,7 @@ Template.DocumentReferenceSaveModal.events({
         if(!res){
             return;
         }
-
-
+        Session.set('patientOverRideConfirmed', false);
 
         const canSave = Session.get("showDocSaveModal");
 
