@@ -1,5 +1,6 @@
 import "./patientMatchModal.html";
 import { Session } from "meteor/session";
+import { logHelpers } from "/imports/helpers/logHelpers";
 Template.patientMatchModal.onCreated(function() {
     Session.set('patientOverRideConfirmed', false);
 })
@@ -20,7 +21,7 @@ Template.patientMatchModal.helpers({
     },
     separator (index)  {
         let matchFailedValues = Session.get("matchFailedValues");
-        if(index > 0 && index < matchFailedValues.length - 2){
+        if(index > 0 && index < matchFailedValues?.length - 2){
             if (index % 2 === 1) {
                 return '<hr>'
             }
@@ -33,8 +34,9 @@ Template.patientMatchModal.events({
         Session.set('patientOverRideConfirmed', false);
         $('#patientMatchModal').modal('hide');
     },
-    'click .confirm-match-changes' (event) {
+    'click .override-changes' (event) {
         Session.set('patientOverRideConfirmed', true);
+        logHelpers.logAction("override", "User overrides the patient details which do not match");
         $('#patientMatchModal').modal('hide');
     }
 })

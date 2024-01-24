@@ -4,6 +4,7 @@ import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { localsHelpers } from "/imports/helpers/localsHelpers";
+import { logHelpers } from "/imports/helpers/logHelpers";
 
 Template.DocumentReferenceSaveModal.onCreated(function resourceOnCreated(){
     Session.set("showDocSaveModal", false);
@@ -94,6 +95,9 @@ Template.DocumentReferenceSaveModal.events({
             "srcResourceId": srcResourceId,
             "SrcResource": srcResource
         }
+
+        logHelpers.logAction(`${activeResourceType}-saved`, `User tried to Save the ${activeResourceType}`)
+
         console.group(Session.get("activeResourceType"))
         let destSystemName = destSystemId === `640ba5e3bd4105586a6dda74` ? `remote`: `local`
         console.log('desSystemId', destSystemId, destSystemName)
