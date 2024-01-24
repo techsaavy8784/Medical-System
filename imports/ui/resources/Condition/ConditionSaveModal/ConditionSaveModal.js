@@ -4,14 +4,11 @@ import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { localsHelpers } from "/imports/helpers/localsHelpers";
-import { resourceHelpers } from "/imports/helpers/resourceHelpers";
-
 
 Template.ConditionSaveModal.onCreated(function resourceOnCreated(){
     Session.set("showDocSaveModal", false);
     Session.set("showDocFhirModal", false);
     Session.set("showXMLModal", false);
-    Session.set("confirmPatientDetails", false);
 });
 
 Template.ConditionSaveModal.onRendered( function () {
@@ -20,7 +17,6 @@ Template.ConditionSaveModal.onRendered( function () {
     const instance = this;
     const parentInstance = instance.view.parentView.templateInstance();
     $(modalElement).on('hidden.bs.modal', function (event) {
-        Session.set('confirmPatientDetails', false);
         const selectElement = parentInstance.find('.inputFindDoc');
         $(selectElement).val('Select an Option');
 
@@ -58,31 +54,11 @@ Template.ConditionSaveModal.helpers({
     patientID() {
         return Session.get("currentPatientID")
     },
-    patientDetailsConfirmed() {
-        return Session.get('confirmPatientDetails');
-    },
-    isPatientDetailsConfirmed() {
-        return !Session.get('confirmPatientDetails');
-    },
 });
 
 Template.ConditionSaveModal.events({
     async 'click .save-doc-data'(event, instance) {
         event.preventDefault();
-
-        //first check that user confirm the patient data or not
-        if(!Session.get('confirmPatientDetails')){
-            alert('Please confirm the Patient Details first');
-            return;
-        }
-
-        //Extra Checks added as per ticket #186882040
-        const res = await resourceHelpers.matchPatientDetails();
-
-        if(!res){
-            return;
-        }
-        Session.set('patientOverRideConfirmed', false);
 
         const canSave = Session.get("showDocSaveModal");
 
@@ -123,8 +99,5 @@ Template.ConditionSaveModal.events({
                 }
             });
         // }
-    },
-    'click .confirm-patient-details' (event, instance) {
-        Session.set('confirmPatientDetails', true);
     }
 })

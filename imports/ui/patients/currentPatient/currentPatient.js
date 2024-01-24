@@ -254,6 +254,12 @@ Template.currentPatient.events({
                 alert('Please Select the patient for local system');
                 return;
             }
+
+            //Extra Checks added as per ticket #186882040
+            const res = await resourceHelpers.matchPatientDetails();
+            if(!res){
+                return;
+            }
 			Session.set("showDocSaveModal", true);
 			Session.set("saveDocModalData", this.text.div);
             resourceHelpers.openActiveResourceModal('Save');
