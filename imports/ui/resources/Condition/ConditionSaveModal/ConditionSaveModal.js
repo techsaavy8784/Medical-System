@@ -60,6 +60,8 @@ Template.ConditionSaveModal.events({
     async 'click .save-doc-data'(event, instance) {
         event.preventDefault();
 
+        Session.set('patientOverRideConfirmed', false);
+
         const canSave = Session.get("showDocSaveModal");
 
         let destSystemURL = localsHelpers.getdestSystemURL();
@@ -86,18 +88,18 @@ Template.ConditionSaveModal.events({
         console.groupEnd();
         const token = Session.get("headers");
         // if (canSave) {
-            console.log("save button is clicked.");
-            Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
-                if (error) {
-                    console.log("error", error);
-                    const errorInfo = error?.reason.response?.data
-                    alert("ERROR !" + errorInfo.resourceType + "\n" + errorInfo.issue[0]?.details?.text);
-                } else {
-                    console.log("result: ", result)
-                    const localName = localsHelpers.getLocals()[0]?.displayName
-                    alert(`Resource successfully imported to your ${localName}`)
-                }
-            });
+        console.log("save button is clicked.");
+        Meteor.call('savePatientResource', url, body, {Authorization: token}, (error, result) => {
+            if (error) {
+                console.log("error", error);
+                const errorInfo = error?.reason.response?.data
+                alert("ERROR !" + errorInfo.resourceType + "\n" + errorInfo.issue[0]?.details?.text);
+            } else {
+                console.log("result: ", result)
+                const localName = localsHelpers.getLocals()[0]?.displayName
+                alert(`Resource successfully imported to your ${localName}`)
+            }
+        });
         // }
     }
 })
