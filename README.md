@@ -92,6 +92,8 @@ Imports
 ---- constants                  # it has application level constans like `baseUrl` etc
 ```
 
+### Methods (server Side)
+Methods are the server-side functions that the Application uses to talk with any 3rd party API/services, so the current flow is a client calls the server-side method, and the server-side method talks with 3rd party URL and sends the result back to the client and the client display the changes, the client should never call any 3rd party API/URL directly
 
 ### Session Values
 
