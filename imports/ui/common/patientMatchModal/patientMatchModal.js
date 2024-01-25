@@ -10,11 +10,11 @@ Template.patientMatchModal.helpers({
     patientMatchModalTitle() {
         let sourcePatient, destPatient;
         if(Session.get("isActive") === "local"){
-            sourcePatient = Session.get('activeRemotePatient');
-            destPatient = Session.get('activeLocalPatient');
-        } else {
             sourcePatient = Session.get('activeLocalPatient');
             destPatient = Session.get('activeRemotePatient');
+        } else {
+            sourcePatient = Session.get('activeRemotePatient');
+            destPatient = Session.get('activeLocalPatient');
         }
         let activeResourceType = Session.get('activeResourceType');
         return `Please Override if ${destPatient?.patientName} is to receive ${sourcePatient?.patientName}'s ${activeResourceType}`
