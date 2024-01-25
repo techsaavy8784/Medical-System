@@ -125,6 +125,13 @@ Template.DocumentReferenceSearchModal.onCreated(function DocumentReferenceSearch
     this.resourceId = new ReactiveVar("");
 });
 
+Template.DocumentReferenceSearchModal.onRendered(function DocumentReferenceSearchModalOnRendered() {
+    const modalElement = this.find('#DocumentReferenceSearchModal');
+    $(modalElement).on('hidden.bs.modal', function (event) {
+        $(this).find('form').trigger('reset');
+    })
+});
+
 Template.DocumentReferenceSearchModal.helpers({
     filterCount(value) {
         const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10";
@@ -179,5 +186,9 @@ Template.DocumentReferenceSearchModal.events({
         } else {
             instance.resourceId.set(false);
         }
-    }
+    },
+    'click .reset': function (event, instance) {
+        event.preventDefault();
+        $('#DocumentReferenceSearchModal').find('form')[0].reset();
+    },
 });
