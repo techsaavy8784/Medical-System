@@ -125,6 +125,13 @@ Template.ImmunizationSearchModal.onCreated(function ImmunizationSearchModalOnCre
     this.resourceId = new ReactiveVar("");
 });
 
+Template.ImmunizationSearchModal.onRendered(function ImmunizationSearchModalOnRendered() {
+    const modalElement = this.find('#ImmunizationSearchModal');
+    $(modalElement).on('hidden.bs.modal', function (event) {
+        $(this).find('form').trigger('reset');
+    })
+});
+
 Template.ImmunizationSearchModal.helpers({
     filterCount(value) {
         const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10";
@@ -179,5 +186,9 @@ Template.ImmunizationSearchModal.events({
         } else {
             instance.resourceId.set(false);
         }
-    }
+    },
+    'click .reset': function (event, instance) {
+        event.preventDefault();
+        $('#ImmunizationSearchModal').find('form')[0].reset();
+    },
 });

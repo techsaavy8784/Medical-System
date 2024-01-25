@@ -125,6 +125,13 @@ Template.DiagnosticReportSearchModal.onCreated(function DiagnosticReportSearchMo
     this.resourceId = new ReactiveVar("");
 });
 
+Template.DiagnosticReportSearchModal.onRendered(function DiagnosticReportSearchModalOnRendered() {
+    const modalElement = this.find('#DiagnosticReportSearchModal');
+    $(modalElement).on('hidden.bs.modal', function (event) {
+        $(this).find('form').trigger('reset');
+    })
+});
+
 Template.DiagnosticReportSearchModal.helpers({
     filterCount(value) {
         const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10";
@@ -179,5 +186,9 @@ Template.DiagnosticReportSearchModal.events({
         } else {
             instance.resourceId.set(false);
         }
-    }
+    },
+    'click .reset': function (event, instance) {
+        event.preventDefault();
+        $('#DiagnosticReportSearchModal').find('form')[0].reset();
+    },
 });

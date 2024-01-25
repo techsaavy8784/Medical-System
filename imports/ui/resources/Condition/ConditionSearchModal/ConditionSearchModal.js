@@ -125,6 +125,13 @@ Template.ConditionSearchModal.onCreated(function ConditionSearchModalOnCreated()
     this.resourceId = new ReactiveVar("");
 });
 
+Template.ConditionSearchModal.onRendered(function ConditionSearchModalOnRendered() {
+    const modalElement = this.find('#ConditionSearchModal');
+    $(modalElement).on('hidden.bs.modal', function (event) {
+        $(this).find('form').trigger('reset');
+    })
+});
+
 Template.ConditionSearchModal.helpers({
     filterCount(value) {
         const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10";
@@ -179,5 +186,9 @@ Template.ConditionSearchModal.events({
         } else {
             instance.resourceId.set(false);
         }
-    }
+    },
+    'click .reset': function (event, instance) {
+        event.preventDefault();
+        $('#ConditionSearchModal').find('form')[0].reset();
+    },
 });

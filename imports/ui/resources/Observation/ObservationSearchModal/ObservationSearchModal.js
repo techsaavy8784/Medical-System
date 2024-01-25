@@ -125,6 +125,13 @@ Template.ObservationSearchModal.onCreated(function ObservationSearchModalOnCreat
     this.resourceId = new ReactiveVar("");
 });
 
+Template.ObservationSearchModal.onRendered(function ObservationSearchModalOnRendered() {
+    const modalElement = this.find('#ObservationSearchModal');
+    $(modalElement).on('hidden.bs.modal', function (event) {
+        $(this).find('form').trigger('reset');
+    })
+});
+
 Template.ObservationSearchModal.helpers({
     filterCount(value) {
         const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10";
@@ -179,5 +186,9 @@ Template.ObservationSearchModal.events({
         } else {
             instance.resourceId.set(false);
         }
-    }
+    },
+    'click .reset': function (event, instance) {
+        event.preventDefault();
+        $('#ObservationSearchModal').find('form')[0].reset();
+    },
 });

@@ -125,6 +125,13 @@ Template.QuestionnaireResponseSearchModal.onCreated(function QuestionnaireRespon
     this.resourceId = new ReactiveVar("");
 });
 
+Template.QuestionnaireResponseSearchModal.onRendered(function QuestionnaireResponseSearchModalOnRendered() {
+    const modalElement = this.find('#QuestionnaireResponseSearchModal');
+    $(modalElement).on('hidden.bs.modal', function (event) {
+        $(this).find('form').trigger('reset');
+    })
+});
+
 Template.QuestionnaireResponseSearchModal.helpers({
     filterCount(value) {
         const filterCount = Session.get("filterCount") ? Session.get("filterCount") : "10";
@@ -179,5 +186,9 @@ Template.QuestionnaireResponseSearchModal.events({
         } else {
             instance.resourceId.set(false);
         }
-    }
+    },
+    'click .reset': function (event, instance) {
+        event.preventDefault();
+        $('#QuestionnaireResponseSearchModal').find('form')[0].reset();
+    },
 });
