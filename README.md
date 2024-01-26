@@ -31,7 +31,7 @@ meteor --settings settings.json
 
 - Live: http://universalcharts.com/
 - Stack: Meteor and Blaze
-- Last Updated At: 12/01/2024
+- Last Updated At: 26/01/2024
 - Meteor Version: 2.13.3
 
 <br>
@@ -40,8 +40,8 @@ meteor --settings settings.json
 - preferred branch names to be either by the programmer or by large project scope
 - Preferred is your initials. That is why you see `dhf` and `dhfDev`
 - make sure to prevent the docker build error by making a local docker build before the code push
-- you must stop local mongodb if running on machine, else it will throw the same port error
-- `docker compose up`
+- you must stop local Mongodb if running docker locally, to avoid the same port error (27017)
+- local docker command `docker compose up`
 
 <br>
 
@@ -65,7 +65,7 @@ Imports
 
 -- api
 ---- miscellaneous            # it contains old mix server methods.
----- patients                 # it contains patients-server methods.
+---- patients                 # it contains patients related server methods.
 ---- users                    # it contains users related server methods.
 
 -- helpers                    # application-level helpers function categorized by functionality.
@@ -95,20 +95,35 @@ Imports
 ### Methods (server Side)
 Methods are the server-side functions that the Application uses to talk with any 3rd party API/services, so the current flow is a client calls the server-side method, and the server-side method talks with 3rd party URL and sends the result back to the client and the client display the changes, the client should never call any 3rd party API/URL directly
 
-### Session Values
+### Session
+The application manages the Session variables to easily manage values which shared across the application (for single template-specific variables please use the Template-level variables (reactiveVar)
 
-1. activeLocalPatient
-2. activeRemotePatient
-3. activeResourceType
-4. coreURL
-5. currentPatientInfo
-6. currentPatientSelected
-7. isActive
-8. isLogin
-9. locals
-10. remotes
-11. localSavedData
-12. remoteSavedData
-13. remoteURL
-14. localURL
-15. userInfo
+* Session values can be set by `Session.set('name', value);`
+* Session values can be obtained by `Session. get('name');`
+* `Session.keys` will print the whole session object in browser console 
+
+#### below are the list of most used session values as a reference
+
+1. `activeLocalPatient`
+2. `activeRemotePatient`
+3. `activeResourceType`
+4. `coreURL`
+5. `currentPatientInfo`
+6. `currentPatientSelected`
+7. `isActive`
+8. `isLogin`
+9. `locals`
+10. `remotes`
+11. `localSavedData`
+12. `remoteSavedData`
+13. `remoteURL`
+14. `localURL`
+15. `userInfo`
+
+
+### Helpers
+Helpers are the common functions differentiated by functionality type to easily manage common use cases
+for example, we have `logHelpers` which has a function named `logAction` and it takes two params named `logType` and `logMessage`
+so we can easily log any user action just by calling that helper in the whole application
+example `logHelpers.logAction("FHIR", "User Viewed the FHIR Resource");`
+the same goes for different types i.e `patientHelpers`, `resourceHelper` etc
