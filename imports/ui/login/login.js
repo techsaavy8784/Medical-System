@@ -3,7 +3,7 @@ import './login.html';
 import { Template } from 'meteor/templating';
 import { Meteor } from "meteor/meteor";
 import { ReactiveVar } from 'meteor/reactive-var';
-import { Router } from "meteor/iron:router";
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Session } from 'meteor/session';
 
 Template.login.onCreated(function loginOnCreated() {
@@ -57,7 +57,7 @@ Template.login.events({
 
                         Session.set("coreURL", result?.remotes[0]?.systems[0]?.coreUrl);
 
-                        Router.go('/');
+                        FlowRouter.go('/');
                     } else if (result?.response?.statusCode === 401) {
                         instance.isLogging.set(false);
                         const errorMessage = result.response?.data?.message;

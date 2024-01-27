@@ -8,6 +8,7 @@ import { localsHelpers } from "/imports/helpers/localsHelpers";
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { remotesHelpers } from "/imports/helpers/remotesHelpers";
 import { resourceHelpers } from "/imports/helpers/resourceHelpers";
 import { logHelpers } from "/imports/helpers/logHelpers";
@@ -170,7 +171,7 @@ Template.currentPatient.onRendered( function (){
     Session.set("executeFinding", false);
     //if patient not selected just return to find patients templates
     if(!Session.get('currentPatientSelected')){
-        Router.go('find-patient')
+        FlowRouter.redirect('/find-patient');
     }
 });
 

@@ -24,7 +24,7 @@ insecure@1.0.7                # Allow all DB writes from clients (for prototypin
 
 hot-module-replacement@0.5.3  # Update code in development without reloading the page
 blaze-hot               # Update files using Blaze's API with HMR
-iron:router
 http
 iron:layout
 session
+ostrio:flow-router-extra

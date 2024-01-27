@@ -4,7 +4,7 @@ import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Meteor } from "meteor/meteor";
-import { Router } from "meteor/iron:router";
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 
 const buildEndPoint = () => {
@@ -66,7 +66,7 @@ const getPatientDocs = async (url, headers) => {
                     if (error.error?.response?.statusCode === 401) {
                         alert("Your session has expired, please login");
                             Session.clear();
-                            Router.go("/login");
+                            FlowRouter.go("/login");
                         return
                     }
                     reject(error);

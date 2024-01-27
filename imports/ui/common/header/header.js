@@ -5,7 +5,7 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { Meteor } from "meteor/meteor";
 import { ReactiveVar } from 'meteor/reactive-var';
-import { Router } from "meteor/iron:router";
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { localsHelpers } from "/imports/helpers/localsHelpers";
 import { remotesHelpers } from "/imports/helpers/remotesHelpers";
 import { patientHelpers } from "/imports/helpers/patientHelpers";
@@ -107,8 +107,8 @@ Template.header.events({
     'click .btn-logout': function(event) {
         event.preventDefault();
         Session.clear();
-        if (Router.path() !== "/") {
-            Router.go('/login'); // Redirect to the login page
+        if (FlowRouter.path() !== "/") {
+            FlowRouter.go('/login'); // Redirect to the login page
         }
 
     },

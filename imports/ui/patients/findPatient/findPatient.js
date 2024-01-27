@@ -6,7 +6,7 @@ import './searchPatientModal/searchPatientModal';
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Session } from "meteor/session";
-import { Router } from "meteor/iron:router";
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Meteor } from "meteor/meteor";
 import { alertHelpers } from "/imports/helpers/alertHelpers";
 import { patientHelpers } from "/imports/helpers/patientHelpers";
@@ -127,7 +127,7 @@ Template.findPatient.events({
 						patientHelpers.setActiveRemotePatient(summaryRecord);
 					}
 					const route = `/current-patient/${activePatient.id}`
-					Router.go(route)
+					FlowRouter.go(route);
 				}
 			});
 			console.groupEnd();

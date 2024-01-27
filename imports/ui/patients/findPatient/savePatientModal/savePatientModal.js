@@ -3,7 +3,7 @@ import "./savePatientModal.html";
 import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
-import { Router } from "meteor/iron:router";
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { localsHelpers } from "/imports/helpers/localsHelpers";
 
 Template.savePatientModal.onRendered(function() {
@@ -79,7 +79,7 @@ Template.savePatientModal.events({
 					Session.set("isLogin", false)
 					Session.set("isFindLoading", false)
 
-					Router.go("/login");
+					FlowRouter.go("/login");
 					return ;
 				}
 				const errorInfo = error?.reason?.response?.data
@@ -91,7 +91,7 @@ Template.savePatientModal.events({
 					alert(`Patient successfully imported to ${localName}`)
 				} else if (result.statusCode === 401) {
 					alert("Your session has expired, please login");
-					Router.go("/login")
+					FlowRouter.go("/login")
 				}
 			}
 		});

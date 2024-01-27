@@ -1,7 +1,7 @@
 import "bootstrap/dist/js/bootstrap.bundle";
 import "bootstrap/dist/css/bootstrap.css";
 
-import { Router } from "meteor/iron:router";
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Session } from "meteor/session";
 
 import "/client/main.html";
@@ -37,63 +37,52 @@ import "/imports/ui/resources/Immunization/ImmunizationSaveModal/ImmunizationSav
 import "/imports/ui/resources/Condition/ConditionSearchModal/ConditionSearchModal";
 import "/imports/ui/resources/Condition/ConditionSaveModal/ConditionSaveModal";
 
-Router.configure({
-    layoutTemplate: 'mainContainer',
-    loadingTemplate: 'loading'
+
+FlowRouter.route('/', {
+    name: 'uc.home',
+    action() {
+        this.render('mainContainer', 'home');
+    }
 });
 
-Router.route("/", function () {
-    this.render("home");
-    this.layout('mainContainer');
-})
-
-Router.route("/login", function () {
-    this.render("login");
-    this.layout('mainContainer');
-})
-
-Router.route("/find-patient", function () {
-    Session.set("getPatientDocs", null)
-    Session.set("getLocalPatientDocs", null)
-    // Session.set("currentPatientSelected", null)
-    const isLogin = Session.get("isLogin")
-    this.render("findPatient")
-    if (!isLogin) {
-        Router.go("/login")
-    } else {
+FlowRouter.route('/login', {
+    name: 'uc.login',
+    action() {
+        this.render('mainContainer', 'login');
     }
-    this.layout('mainContainer');
-})
+});
 
-Router.route("/current-patient", function () {
-    const isLogin = Session.get("isLogin")
-    this.render("currentPatient")
-    if (!isLogin) {
-        Router.go("/login")
-    } else {
+FlowRouter.route('/find-patient', {
+    name: 'uc.findPatient',
+    action() {
+        Session.set("getPatientDocs", null);
+        Session.set("getLocalPatientDocs", null);
+        const isLogin = Session.get("isLogin");
+        if(!isLogin) {
+            FlowRouter.go('/login');
+        } else {
+            this.render('mainContainer', 'findPatient');
+        }
     }
-    this.layout('mainContainer');
-})
+});
 
-Router.route("/current-patient/:_id", function () {
-    // This function will be called when the route is accessed
-    const isLogin = Session.get("isLogin");
-    // Access the dynamic parameter using this.params._id
-    const resourceId = this.params._id;
-
-    // Perform actions or render templates based on the dynamic parameter
-    // For example:
-    if (!isLogin) {
-        Router.go("/login")
-    } else {
-        this.render("currentPatient", {
-            data: function () {
-                // Here you can pass any data to the template based on the resource ID
-                return {
-                    resourceId: resourceId,
-                }
-            },
-        })
+//any params with ? in flowRouter handled as optional params like :id?
+// so below router code works for both /current-patient and /current-patient/id
+FlowRouter.route('/current-patient/:_id?', {
+    name: 'uc.currentPatient',
+    action() {
+        const isLogin = Session.get("isLogin");
+        if(!isLogin) {
+            FlowRouter.go('/login');
+        } else {
+            this.render('mainContainer', 'currentPatient');
+        }
     }
-    this.layout('mainContainer');
-})
+});
+
+//if Route not found just redirect to homePage
+FlowRouter.notFound = {
+    action: function() {
+        FlowRouter.go('/')
+    }
+};

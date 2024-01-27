@@ -2,7 +2,7 @@
 
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
-import { Router } from "meteor/iron:router"
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 export const patientHelpers = {
     async getPatients(coreUrl, query, headers) {
@@ -20,7 +20,7 @@ export const patientHelpers = {
                             Session.set("isLogin", false)
                             Session.set("isFindLoading", false)
 
-                            Router.go("/login");
+                            FlowRouter.go("/login");
                         }
                         Session.set("isFindLoading", false)
                         reject(error)
@@ -73,7 +73,7 @@ export const patientHelpers = {
         Session.set("selectedPatientInfo", null);
         Session.set("patientMrn", null);
         Session.set("fhirModalData", null);
-        Router.go(`/find-patient`);
+        FlowRouter.go(`/find-patient`);
     },
 
     //below functions save active patients only in session
